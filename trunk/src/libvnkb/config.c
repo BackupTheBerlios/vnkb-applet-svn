@@ -97,6 +97,7 @@ void vnkb_import_param(Vnkb *vnkb,const char *name,const char *param)
   }
 
 
+  /* Xvnkb specific */
   if (!strcmp(name,"xvnkb_spell")) {
     if (!strcasecmp(param,"on"))
       vnkb_set_spelling(vnkb,TRUE);
@@ -104,6 +105,17 @@ void vnkb_import_param(Vnkb *vnkb,const char *name,const char *param)
       vnkb_set_spelling(vnkb,FALSE);
     else
       fprintf(stderr,"Unknown value %s of setting %s\n",param,name);
+    return;
+  }
+
+  /* Xvnkb specific */
+  if (!strcmp(name,"xvnkb_hotkey")) {
+    long state,sym;
+    sscanf(param,"%lx:%lx",&state,&sym);
+
+    vnkb->xvnkb->hotkey.state = state;
+    vnkb->xvnkb->hotkey.sym   = sym;
+    vnkb_xvnkb_update_switchkey(vnkb);
     return;
   }
 
@@ -297,7 +309,12 @@ void vnkb_save_config(Vnkb *vnkb)
 
 
 	fprintf(fp,"disable_on_exit=%s\n",vnkb->disable_on_exit ? "On" : "Off");
+
+	/* Xvnkb specific */
 	fprintf(fp,"xvnkb_spell=%s\n",vnkb->spelling ? "On" : "Off");
+	fprintf(fp,"xvnkb_hotkey=%lx:%lx\n",
+		vnkb->xvnkb->hotkey.state,
+		vnkb->xvnkb->hotkey.sym);
 
 	fclose(fp);
       }

@@ -27,6 +27,7 @@
 #include <gdk/gdkkeysyms.h>
 #include <glade/glade-xml.h>
 #include "eggcellrendererkeys.h"
+#include "xvnkb.h"
 
 typedef struct
 {
@@ -71,13 +72,15 @@ shortcut_edited_cb(GtkCellRendererText   *cell,
 		   guint		  keycode,
 		   gpointer               data)
 {
-  Vnkb *vnkb = (Vnkb*)data;
-  GtkTreeModel *model = GTK_TREE_MODEL(vnkb->store);
-  GtkTreePath *path = gtk_tree_path_new_from_string (path_string);
-  GtkTreeIter iter;
-  KeyEntry *key_entry, tmp_key;
-  GError *err = NULL;
-  char *str;
+  Vnkb 		*vnkb 	 = (Vnkb*)data;
+  GtkTreeModel 	*model 	 = GTK_TREE_MODEL(vnkb->store);
+  GtkTreePath 	*path 	 = gtk_tree_path_new_from_string (path_string);
+  GtkTreeIter 	 iter;
+  KeyEntry 	*key_entry, tmp_key;
+  GError 	*err 	 = NULL;
+  char 		*str;
+  GdkWindow 	*gdkroot = gdk_get_default_root_window();
+  Display 	*display = GDK_WINDOW_XDISPLAY(gdkroot);
 
   gtk_tree_model_get_iter (model, &iter, path);
   gtk_tree_model_get (model, &iter,
@@ -97,7 +100,12 @@ shortcut_edited_cb(GtkCellRendererText   *cell,
   *key_entry = tmp_key;
   gtk_tree_model_row_changed (model, path, &iter);
   gtk_tree_path_free (path);
-  vnkb_xvnkb_update_switchkey(vnkb,mask,keycode);
+
+  vnkb->xvnkb->hotkey.state = mask;
+  vnkb->xvnkb->hotkey.sym   = XKeycodeToKeysym(display,keycode,0);
+  if (vnkb->xvnkb->hotkey.state & VK_SHIFT)
+    vnkb->xvnkb->hotkey.sym = toupper(vnkb->xvnkb->hotkey.sym);
+  vnkb_xvnkb_update_switchkey(vnkb);
 }
 
 static void

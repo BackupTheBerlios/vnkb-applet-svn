@@ -39,7 +39,7 @@
 
 void vnkb_update_label(Vnkb *vnkb);
 //------------------------------------------
-void vnkb_xvnkb_update_switchkey(Vnkb *,int,int);
+void vnkb_xvnkb_update_switchkey(Vnkb *);
 
 //Display *display = NULL; /* HACK: if libxvnkb.so is loaded, then the content of this might change */
 
@@ -483,17 +483,9 @@ void vnkb_update_label(Vnkb *vnkb)
     gtk_label_set(GTK_LABEL(vnkb->label),label);
 }
 
-void vnkb_xvnkb_update_switchkey(Vnkb *vnkb,int state,int code)
+void vnkb_xvnkb_update_switchkey(Vnkb *vnkb)
 {
-  vk_hotkey_info hk;
-  GdkWindow *gdkroot = gdk_get_default_root_window();
-  Display *display = GDK_WINDOW_XDISPLAY(gdkroot);
-
-  hk.state = state;
-  hk.sym = XKeycodeToKeysym(display,code,0);
-  if (state & VK_SHIFT)
-    hk.sym = toupper(hk.sym);
-  UkSetPropValues(vnkb->xvnkb->AIMSwitchKey,&hk,2);
+  UkSetPropValues(vnkb->xvnkb->AIMSwitchKey,&vnkb->xvnkb->hotkey,2);
 }
 
 void vnkb_set_driver(Vnkb *vnkb,int driver)
