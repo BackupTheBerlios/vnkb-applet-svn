@@ -18,12 +18,13 @@
  * Boston, MA 02111-1307, USA.
  *
  * Authors:
- *      pclouds <pclouds@vnlinux.org>
+ *      Nguyen Thai Ngoc Duy <pclouds@vnlinux.org>
  *
  */
 
 #include <string.h>
-
+#include <stdio.h>
+#include <stdlib.h>
 #include <libintl.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
@@ -485,6 +486,12 @@ entry_disabled_changed_cb(GtkEntry *b,Vnkb *vnkb)
 }
 
 static void
+button_disable_exit_toggled_cb(GtkToggleButton *b,Vnkb *vnkb)
+{
+  vnkb->disable_on_exit = gtk_toggle_button_get_active(b);
+}
+
+static void
 fontbutton_enabled_set_cb(GtkFontButton *b,Vnkb *vnkb)
 {
   if (vnkb->font_enabled)
@@ -529,6 +536,28 @@ radio_unikey_clicked_cb(GtkRadioButton *b,Vnkb *vnkb)
   vnkb_set_driver(vnkb,DRIVER_UNIKEY);
 }
 
+static void
+button_unikey_macro_browse_clicked_cb(GtkButton *button, Vnkb *vnkb)
+{
+  GtkWidget *dialog;
+
+  dialog = gtk_file_chooser_dialog_new (_("Choose Macro File"),
+					NULL,
+					GTK_FILE_CHOOSER_ACTION_OPEN,
+					GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+					GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+					NULL);
+
+  if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
+    char *filename;
+
+    filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+    g_free (filename);
+  }
+
+  gtk_widget_destroy (dialog);
+}
+
 void vnkb_show_preferences (Vnkb *vnkb)
 {
   GladeXML *xml;
@@ -538,9 +567,11 @@ void vnkb_show_preferences (Vnkb *vnkb)
   GtkListStore *store;
   GtkTreeIter iter;
   GtkCellRenderer *cell;
+  GdkPixbuf *icon;
 
   xml = glade_xml_new (VNKB_GLADEDIR "/vnkb-preferences.glade", NULL, GETTEXT_PACKAGE);
   dlg = glade_xml_get_widget(xml,"vnkb_preferences_dialog");
+
 
   vnkb->widget_text_enabled = w = glade_xml_get_widget(xml,"entry_enabled");
   g_signal_connect(G_OBJECT(w),"changed",
@@ -627,6 +658,12 @@ void vnkb_show_preferences (Vnkb *vnkb)
 		    G_CALLBACK(fontbutton_enabled_set_cb), 
 		    vnkb);
 
+  button = glade_xml_get_widget (xml, "button_disable_exit");
+  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button),vnkb->disable_on_exit);
+  g_signal_connect (button, "toggled",
+		    G_CALLBACK(button_disable_exit_toggled_cb),
+		    vnkb);
+
   button = glade_xml_get_widget (xml, "fontbutton_disabled");
   if (vnkb->font_disabled)
     gtk_font_button_set_font_name(GTK_FONT_BUTTON(button),
@@ -655,6 +692,18 @@ void vnkb_show_preferences (Vnkb *vnkb)
   //gtk_window_set_screen (GTK_WINDOW (dlg),
   //gtk_widget_get_screen (GTK_WIDGET (fish)));
   
+  button = glade_xml_get_widget(xml,"buton_unikey_macro_browse");
+  g_signal_connect(G_OBJECT(button),"clicked",
+		   (GCallback) button_unikey_macro_browse_clicked_cb,
+		   vnkb);
+
+  icon = gtk_widget_render_icon (dlg,
+				 GTK_STOCK_PREFERENCES,
+				 GTK_ICON_SIZE_MENU,
+				 "vnkb_preferences_dialog");
+  gtk_window_set_icon (GTK_WINDOW (dlg), icon);
+
+
   //gtk_window_set_resizable (GTK_WINDOW (fish->preferences_dialog), FALSE);
   gtk_window_present (GTK_WINDOW (dlg));
 
@@ -761,3 +810,274 @@ void vnkb_set_driver(Vnkb *vnkb,int driver)
   if (vnkb->driver_changed)
     vnkb->driver_changed(vnkb);
 };
+
+void vnkb_import_param(Vnkb *vnkb,const char *name,const char *param)
+{
+  gboolean enable;
+  char *sep;
+
+  if (!strcmp(name,"charset")) {
+    if (!strcasecmp(param,"VNI"))
+      vnkb_set_charset(vnkb,VKC_VNI);
+    else if (!strcasecmp(param,"UTF8"))
+      vnkb_set_charset(vnkb,VKC_UTF8);
+    else if (!strcasecmp(param,"TCVN3"))
+      vnkb_set_charset(vnkb,VKC_TCVN);
+    else if (!strcasecmp(param,"VISCII"))
+      vnkb_set_charset(vnkb,VKC_VISCII);
+    else if (!strcasecmp(param,"VPS"))
+      vnkb_set_charset(vnkb,VKC_VPS);
+    else if (!strcasecmp(param,"VIQR"))
+      vnkb_set_charset(vnkb,VKC_VIQR);
+    else
+      fprintf(stderr,"Unknown charset %s\n",param);
+
+    return;
+  }
+
+  if (!strcmp(name,"method")) {
+    if (!strcasecmp(param,"VNI"))
+      vnkb_set_method(vnkb,VKM_VNI);
+    else if (!strcasecmp(param,"VIQR"))
+      vnkb_set_method(vnkb,VKM_VIQR);
+    else if (!strcasecmp(param,"VIQR*"))
+      vnkb_set_method(vnkb,VKM_VIQR_STAR);
+    else if (!strcasecmp(param,"TELEX"))
+      vnkb_set_method(vnkb,VKM_TELEX);
+    else if (!strcasecmp(param,"OFF"))
+      vnkb_set_method(vnkb,VKM_OFF);
+    else
+      fprintf(stderr,"Unknown input method %s\n",param);
+
+    return;
+  }
+
+  if (!strcmp(name,"label_mode")) {
+    if (!strcasecmp(param,"default"))
+      vnkb_set_label_mode(vnkb,VNKB_LABEL_DEFAULT);
+    else if (!strcasecmp(param,"custom"))
+      vnkb_set_label_mode(vnkb,VNKB_LABEL_CUSTOM);
+    else if (!strcasecmp(param,"im"))
+      vnkb_set_label_mode(vnkb,VNKB_LABEL_IM);
+    else
+      fprintf(stderr,"Unknown label mode %s\n",param);
+    vnkb_update_label(vnkb);
+    return;
+  }
+
+
+  if (!strcmp(name,"xvnkb_spell")) {
+    if (!strcasecmp(param,"on"))
+      vnkb_set_spelling(vnkb,TRUE);
+    else if (!strcasecmp(param,"off"))
+      vnkb_set_spelling(vnkb,FALSE);
+    else
+      fprintf(stderr,"Unknown value %s of setting %s\n",param,name);
+    return;
+  }
+
+  if (!strcmp(name,"disable_on_exit")) {
+    if (!strcasecmp(param,"on"))
+      vnkb->disable_on_exit = TRUE;
+    else if (!strcasecmp(param,"off"))
+      vnkb->disable_on_exit = FALSE;
+    else
+      fprintf(stderr,"Unknown value %s of setting %s\n",param,name);
+    return;
+  }
+
+  if (!strncmp(name,"enabled_",strlen("enabled_")))
+    enable = TRUE;
+  else if (!strncmp(name,"disabled_",strlen("disabled_")))
+    enable = FALSE;
+  else {
+    fprintf(stderr,"Unknown parameter %s\n",name);
+    return;
+  }
+  sep = strchr(name,'_');
+  sep ++;
+  if (!strcmp(sep,"text")) {
+    if (enable)
+      vnkb->text_enabled = g_strdup(param);
+    else
+      vnkb->text_disabled = g_strdup(param);
+    vnkb_update_label(vnkb);
+    return;
+  }
+  if (!strcmp(sep,"color")) {
+    unsigned int r,g,b;
+    GdkColor *color;
+    sscanf(param,"%x:%x:%x",&r,&g,&b);
+    if (enable)
+      color = &vnkb->color_enabled;
+    else
+      color = &vnkb->color_disabled;
+
+    color->red = r;
+    color->green = g;
+    color->blue = b;
+    vnkb_update_label(vnkb);
+    return;
+  }
+  if (!strcmp(sep,"font")) {
+    if (enable)
+      vnkb->font_enabled = g_strdup(param);
+    else
+      vnkb->font_disabled = g_strdup(param);
+    vnkb_update_label(vnkb);
+    return;
+  }
+}
+
+void vnkb_load_config(Vnkb *vnkb)
+{
+  char *home = getenv("HOME");
+  char *filename;
+
+  if (home) {
+    filename = g_strdup_printf("%s/.vnkb-applet.conf",home);
+    if (filename) {
+      FILE *fp = fopen(filename,"r");
+      if (fp) {
+	char buffer[256];
+	char *sep;
+	char *param;
+	int n = 0;
+
+	while (fgets(buffer,sizeof(buffer),fp)) {
+	  int l = strlen(buffer);
+	  n ++;
+	  if (l && buffer[l-1] != '\n') {
+	    fprintf(stderr,"Error: line %d in file %s too long\n",n,filename);
+	    continue;
+	  }
+
+	  if (!l)
+	    continue;
+
+	  buffer[l-1] = 0;
+
+	  if (buffer[0] == '#')
+	    continue;		/* comment */
+
+	  sep = strchr(buffer,'=');
+	  if (!sep) {
+	    fprintf(stderr,"Error: line %d in file %s not valid\n",n,filename);
+	    continue;
+	  }
+
+	  param = sep+1;
+	  *sep = 0;
+
+	  vnkb_import_param(vnkb,buffer,param);
+	}
+
+	fclose(fp);
+      }
+      g_free(filename);
+    }
+  }
+}
+
+void vnkb_save_config(Vnkb *vnkb)
+{
+  char *home = getenv("HOME");
+  char *filename;
+
+  if (home) {
+    filename = g_strdup_printf("%s/.vnkb-applet.conf",home);
+    if (filename) {
+      FILE *fp = fopen(filename,"w");
+      if (fp) {
+	char *param;
+
+	switch (vnkb->charset) {
+	case VKC_UTF8: param = "UTF8"; break;
+	case VKC_TCVN: param = "TCVN3"; break;
+	case VKC_VNI: param = "VNI"; break;
+	case VKC_VIQR: param ="VIQR"; break;
+	case VKC_VISCII: param ="VISCII"; break;
+	case VKC_VPS: param ="VPS"; break;
+	default: param = NULL;
+	}
+	if (param)
+	  fprintf(fp,"charset=%s\n",param);
+
+	switch (vnkb->method) {
+	case VKM_OFF: param = "OFF"; break;
+	case VKM_VIQR: param = "VIQR"; break;
+	case VKM_VIQR_STAR: param = "VIQR*"; break;
+	case VKM_VNI: param = "VNI"; break;
+	case VKM_TELEX: param = "TELEX"; break;
+	default:param = NULL;
+	}
+	if (param)
+	  fprintf(fp,"method=%s\n",param);
+
+	switch (vnkb->label_mode) {
+	case VNKB_LABEL_IM: param = "im"; break;
+	case VNKB_LABEL_DEFAULT: param = "default"; break;
+	case VNKB_LABEL_CUSTOM: param = "custom"; break;
+	default: param = NULL;
+	}
+	if (param)
+	  fprintf(fp,"label_mode=%s\n",param);
+
+	if (vnkb->text_enabled)
+	  fprintf(fp,"enabled_text=%s\n",vnkb->text_enabled);
+	if (vnkb->text_disabled)
+	  fprintf(fp,"disabled_text=%s\n",vnkb->text_disabled);
+
+	if (vnkb->font_enabled)
+	  fprintf(fp,"enabled_font=%s\n",vnkb->font_enabled);
+	if (vnkb->font_disabled)
+	  fprintf(fp,"disabled_font=%s\n",vnkb->font_disabled);
+
+	fprintf(fp,"enabled_color=%x:%x:%x\n",
+		(unsigned)vnkb->color_enabled.red,
+		(unsigned)vnkb->color_enabled.green,
+		(unsigned)vnkb->color_enabled.blue);
+
+	fprintf(fp,"disabled_color=%x:%x:%x\n",
+		(unsigned)vnkb->color_disabled.red,
+		(unsigned)vnkb->color_disabled.green,
+		(unsigned)vnkb->color_disabled.blue);
+
+
+	fprintf(fp,"disable_on_exit=%s\n",vnkb->disable_on_exit ? "On" : "Off");
+	fprintf(fp,"xvnkb_spell=%s\n",vnkb->spelling ? "On" : "Off");
+
+	fclose(fp);
+      }
+    }
+    g_free(filename);
+  }
+}
+
+void vnkb_init(Vnkb *vnkb,GtkWidget *container)
+{
+  vnkb_setup_widget(vnkb,container);
+  vnkb_get_sync_atoms(vnkb,TRUE);
+  vnkb_init_charset(vnkb);
+  vnkb_init_method(vnkb);
+  vnkb_init_enabled(vnkb);
+  vnkb_init_spelling(vnkb);
+  vnkb_set_event_filter(vnkb,TRUE);
+  vnkb_load_config(vnkb);
+
+  vnkb->initialized = TRUE;	/* done */
+}
+
+void vnkb_cleanup(Vnkb *vnkb)
+{
+  vnkb_save_config(vnkb);
+  if (vnkb->disable_on_exit) {
+    vnkb_set_enabled(vnkb,FALSE);
+    /*
+      because this function is call right before the program exits, 
+      we should flush the display to make sure xvnkb/unikey get it
+    */
+    gdk_display_flush(gdk_display_get_default());
+  }
+  vnkb_set_event_filter(vnkb,FALSE);
+}

@@ -14,15 +14,16 @@ struct _Vnkb {
   GtkListStore *store;		/* for preferences dialog (shortcut) */
   GtkTooltips *tooltip;
 
-  gboolean      	 enabled;
-  gboolean      	 spelling;
-  int           	 method;
-  int           	 backup_method;
-  int           	 charset;
-  gboolean 		 initialized;
-  gboolean		 filter_set;
-  int label_mode;
-  int driver;
+  gboolean      enabled;
+  gboolean      spelling;
+  gboolean 	disable_on_exit;
+  int           method;
+  int           backup_method;
+  int           charset;
+  gboolean 	initialized;
+  gboolean	filter_set;
+  int 		label_mode;
+  int 		driver;
 
   char *text_enabled;
   char *text_disabled;
@@ -46,6 +47,9 @@ struct _Vnkb {
 
   void (*driver_changed)(Vnkb *applet);
 };
+
+void vnkb_init(Vnkb *vnkb,GtkWidget *container);
+void vnkb_cleanup(Vnkb *vnkb);
 
 void vnkb_setup_widget (Vnkb *fish,GtkWidget *container);
 void vnkb_show_preferences (Vnkb *mc);

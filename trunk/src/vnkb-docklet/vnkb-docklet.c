@@ -57,6 +57,7 @@ vnkb_docklet_about_cb(GtkAction *action,Vnkb *vnkb)
 static void
 vnkb_docklet_exit_cb(GtkAction *action,Vnkb *vnkb)
 {
+  vnkb_cleanup(vnkb);
   gtk_exit(0);
 }
 
@@ -217,15 +218,7 @@ int main(int argc,char **argv)
   gtk_ui_manager_add_ui_from_string(docklet->uim,xml,-1,NULL);
   docklet->menu = gtk_ui_manager_get_widget(docklet->uim,"/MainMenu");
 
-  vnkb_setup_widget(vnkb,GTK_WIDGET(docklet->docklet));
-  vnkb_get_sync_atoms(vnkb,TRUE);
-  vnkb_init_charset(vnkb);
-  vnkb_init_method(vnkb);
-  vnkb_init_enabled(vnkb);
-  vnkb_init_spelling(vnkb);
-  vnkb_set_event_filter(vnkb,TRUE);
-
-  vnkb->initialized = TRUE;	/* done */
+  vnkb_init(vnkb,GTK_WIDGET(docklet->docklet));
 
   g_signal_connect(G_OBJECT(vnkb->button),
 		   "button-press-event",

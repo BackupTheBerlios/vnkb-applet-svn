@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vnkb-applet VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-21 14:12+0700\n"
-"PO-Revision-Date: 2004-04-21 14:14+0700\n"
+"POT-Creation-Date: 2004-04-22 15:55+0700\n"
+"PO-Revision-Date: 2004-04-22 15:56+0700\n"
 "Last-Translator: pclouds <pclouds@vnlinux.org>\n"
 "Language-Team: GnomeVI <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -44,59 +44,59 @@ msgstr "Loại phím tắt"
 msgid "Disabled"
 msgstr "Tắt"
 
-#: src/libvnkb/vnkb.c:564
+#: src/libvnkb/vnkb.c:571
 msgid "Function"
 msgstr "Chức năng"
 
-#: src/libvnkb/vnkb.c:577
+#: src/libvnkb/vnkb.c:584
 msgid "Shortcut"
 msgstr "Phím tắt"
 
-#: src/libvnkb/vnkb.c:583
+#: src/libvnkb/vnkb.c:590
 msgid "Enable Xvnkb"
 msgstr "Bật Xvnkb"
 
-#: src/libvnkb/vnkb.c:679 src/libvnkb/vnkb.c:719
+#: src/libvnkb/vnkb.c:692 src/libvnkb/vnkb.c:732
 msgid "Off"
 msgstr "Tắt"
 
-#: src/libvnkb/vnkb.c:680 src/libvnkb/vnkb.c:689 src/libvnkb/vnkb.c:720
+#: src/libvnkb/vnkb.c:693 src/libvnkb/vnkb.c:702 src/libvnkb/vnkb.c:733
 msgid "Vni"
 msgstr "Vni"
 
-#: src/libvnkb/vnkb.c:681 src/libvnkb/vnkb.c:721
+#: src/libvnkb/vnkb.c:694 src/libvnkb/vnkb.c:734
 msgid "Telex"
 msgstr "Telex"
 
-#: src/libvnkb/vnkb.c:682 src/libvnkb/vnkb.c:722
+#: src/libvnkb/vnkb.c:695 src/libvnkb/vnkb.c:735
 msgid "Viqr"
 msgstr "Viqr"
 
-#: src/libvnkb/vnkb.c:683 src/libvnkb/vnkb.c:723
+#: src/libvnkb/vnkb.c:696 src/libvnkb/vnkb.c:736
 msgid "Viqr*"
 msgstr "Viqr*"
 
-#: src/libvnkb/vnkb.c:684 src/libvnkb/vnkb.c:693
+#: src/libvnkb/vnkb.c:697 src/libvnkb/vnkb.c:706
 msgid "Unknown"
 msgstr "Không rõ"
 
-#: src/libvnkb/vnkb.c:688
+#: src/libvnkb/vnkb.c:701
 msgid "Unicode"
 msgstr "Unicode"
 
-#: src/libvnkb/vnkb.c:690
+#: src/libvnkb/vnkb.c:703
 msgid "Viscii"
 msgstr "Viscii"
 
-#: src/libvnkb/vnkb.c:691
+#: src/libvnkb/vnkb.c:704
 msgid "Vps"
 msgstr "Vps"
 
-#: src/libvnkb/vnkb.c:692
+#: src/libvnkb/vnkb.c:705
 msgid "Tcvn3"
 msgstr "Tcvn3"
 
-#: src/libvnkb/vnkb.c:696
+#: src/libvnkb/vnkb.c:709
 #, c-format
 msgid ""
 "Charset: %s\n"
@@ -130,18 +130,22 @@ msgid "Font"
 msgstr "Phông"
 
 #: src/libvnkb/vnkb-preferences.glade.h:8
+msgid "General"
+msgstr "Chung"
+
+#: src/libvnkb/vnkb-preferences.glade.h:9
 msgid "Preferences"
 msgstr "Tùy thích"
 
-#: src/libvnkb/vnkb-preferences.glade.h:9
+#: src/libvnkb/vnkb-preferences.glade.h:10
 msgid "Shortcuts"
 msgstr "Phím tắt"
 
-#: src/libvnkb/vnkb-preferences.glade.h:10
+#: src/libvnkb/vnkb-preferences.glade.h:11
 msgid "Text"
 msgstr "Tên"
 
-#: src/libvnkb/vnkb-preferences.glade.h:11
+#: src/libvnkb/vnkb-preferences.glade.h:12
 msgid ""
 "Vnkb-Applet.\n"
 "Written by pclouds@vnlinux.org"
@@ -149,23 +153,27 @@ msgstr ""
 "Vnkb-Applet.\n"
 "Viết bởi pclouds@vnlinux.org"
 
-#: src/libvnkb/vnkb-preferences.glade.h:13
+#: src/libvnkb/vnkb-preferences.glade.h:14
+msgid "_Disable when exit"
+msgstr "_Tắt khi thoát"
+
+#: src/libvnkb/vnkb-preferences.glade.h:15
 msgid "_Show Input Method"
 msgstr "_Hiện kiểu gõ"
 
-#: src/libvnkb/vnkb-preferences.glade.h:14
+#: src/libvnkb/vnkb-preferences.glade.h:16
 msgid "_Unikey"
 msgstr "_Unikey"
 
-#: src/libvnkb/vnkb-preferences.glade.h:15
+#: src/libvnkb/vnkb-preferences.glade.h:17
 msgid "_Use custom text"
 msgstr "_Dùng tên tự chọn"
 
-#: src/libvnkb/vnkb-preferences.glade.h:16
+#: src/libvnkb/vnkb-preferences.glade.h:18
 msgid "_Use default text"
 msgstr "_Dùng tên mặc định"
 
-#: src/libvnkb/vnkb-preferences.glade.h:17
+#: src/libvnkb/vnkb-preferences.glade.h:19
 msgid "_Xvnkb"
 msgstr "_Xvnkb"
 
@@ -185,40 +193,40 @@ msgstr "Giao diện Bộ gõ Tiếng Việt"
 msgid "Vnkb Factory"
 msgstr "Xưởng sản xuất Vnkb"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:1 src/vnkb-docklet/vnkb-docklet.c:144
-#: src/vnkb-docklet/vnkb-docklet.c:152
+#: src/vnkb-applet/VnkbApplet.xml.h:1 src/vnkb-docklet/vnkb-docklet.c:145
+#: src/vnkb-docklet/vnkb-docklet.c:153
 msgid "V_iqr"
 msgstr "V_iqr"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:2 src/vnkb-docklet/vnkb-docklet.c:153
+#: src/vnkb-applet/VnkbApplet.xml.h:2 src/vnkb-docklet/vnkb-docklet.c:154
 msgid "V_ps"
 msgstr "V_ps"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:3 src/vnkb-docklet/vnkb-docklet.c:145
+#: src/vnkb-applet/VnkbApplet.xml.h:3 src/vnkb-docklet/vnkb-docklet.c:146
 msgid "Vi_qr*"
 msgstr "Vi_qr*"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:4 src/vnkb-docklet/vnkb-docklet.c:151
+#: src/vnkb-applet/VnkbApplet.xml.h:4 src/vnkb-docklet/vnkb-docklet.c:152
 msgid "Vi_scii"
 msgstr "Vi_scii"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:5 src/vnkb-docklet/vnkb-docklet.c:135
+#: src/vnkb-applet/VnkbApplet.xml.h:5 src/vnkb-docklet/vnkb-docklet.c:136
 msgid "_About..."
 msgstr "_Giới thiệu..."
 
-#: src/vnkb-applet/VnkbApplet.xml.h:6 src/vnkb-docklet/vnkb-docklet.c:134
+#: src/vnkb-applet/VnkbApplet.xml.h:6 src/vnkb-docklet/vnkb-docklet.c:135
 msgid "_Charset"
 msgstr "_Bảng mã"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:7 src/vnkb-docklet/vnkb-docklet.c:158
+#: src/vnkb-applet/VnkbApplet.xml.h:7 src/vnkb-docklet/vnkb-docklet.c:159
 msgid "_Enable"
 msgstr "_Bật"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:8 src/vnkb-docklet/vnkb-docklet.c:133
+#: src/vnkb-applet/VnkbApplet.xml.h:8 src/vnkb-docklet/vnkb-docklet.c:134
 msgid "_Input Method"
 msgstr "_Kiểu gõ"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:9 src/vnkb-docklet/vnkb-docklet.c:141
+#: src/vnkb-applet/VnkbApplet.xml.h:9 src/vnkb-docklet/vnkb-docklet.c:142
 msgid "_Off"
 msgstr "_Tắt"
 
@@ -230,20 +238,20 @@ msgstr "_Tùy thích..."
 msgid "_Spelling Checking"
 msgstr "_Kiểm lỗi chính tả"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:12 src/vnkb-docklet/vnkb-docklet.c:154
+#: src/vnkb-applet/VnkbApplet.xml.h:12 src/vnkb-docklet/vnkb-docklet.c:155
 msgid "_Tcvn3"
 msgstr "_Tcvn3"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:13 src/vnkb-docklet/vnkb-docklet.c:143
+#: src/vnkb-applet/VnkbApplet.xml.h:13 src/vnkb-docklet/vnkb-docklet.c:144
 msgid "_Telex"
 msgstr "_Telex"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:14 src/vnkb-docklet/vnkb-docklet.c:149
+#: src/vnkb-applet/VnkbApplet.xml.h:14 src/vnkb-docklet/vnkb-docklet.c:150
 msgid "_Unicode"
 msgstr "_Unicode"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:15 src/vnkb-docklet/vnkb-docklet.c:142
-#: src/vnkb-docklet/vnkb-docklet.c:150
+#: src/vnkb-applet/VnkbApplet.xml.h:15 src/vnkb-docklet/vnkb-docklet.c:143
+#: src/vnkb-docklet/vnkb-docklet.c:151
 msgid "_Vni"
 msgstr "_Vni"
 

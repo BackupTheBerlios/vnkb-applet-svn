@@ -138,13 +138,7 @@ vnkb_applet_fill (VnkbApplet *fish)
 		    (GCallback) vnkb_applet_ui_component_event,
 		    fish);
 
-  vnkb_setup_widget (vnkb,GTK_WIDGET(fish));
-  vnkb_get_sync_atoms(vnkb,TRUE);
-
-  vnkb_init_charset(vnkb);
-  vnkb_init_method(vnkb);
-  vnkb_init_enabled(vnkb);
-  vnkb_init_spelling(vnkb);
+  vnkb_init (vnkb,GTK_WIDGET(fish));
 
   g_signal_connect(G_OBJECT(vnkb->button),
 		   "button-press-event",
@@ -253,7 +247,7 @@ static void
 vnkb_applet_destroy (GtkObject *object)
 {
   VnkbApplet *fish = (VnkbApplet *) object;
-  vnkb_set_event_filter(&fish->vnkb,FALSE);
+  vnkb_cleanup(&fish->vnkb);
   GTK_OBJECT_CLASS (parent_class)->destroy (object);
 }
 
