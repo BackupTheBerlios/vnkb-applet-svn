@@ -21,6 +21,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <gdk/gdkx.h>
+
 //--------------------------------------------------------
 // Contributed code from Pclouds (Nguyen Thai Ngoc Duy)
 // for synchronizing with xvnkb GUI
@@ -32,21 +34,21 @@
 #ifndef __XVNKB_H
 #define __XVNKB_H
 
-#define VK_SHIFT				0x01
-#define	VK_CAPS_LOCK			0x02
-#define VK_CONTROL				0x04
-#define VK_ALT					0x08
-#define VK_WINKEY				0x40
-#define	VK_NUM_LOCK				0x10
-#define	VK_SCROLL_LOCK			0x80
-#define	VK_NOTACCEPT_STATES		0x6C
-#define VK_UPPERCASE_STATES		(VK_SHIFT|VK_CAPS_LOCK)
+#define VK_SHIFT		0x01
+#define	VK_CAPS_LOCK		0x02
+#define VK_CONTROL		0x04
+#define VK_ALT			0x08
+#define VK_WINKEY		0x40
+#define	VK_NUM_LOCK		0x10
+#define	VK_SCROLL_LOCK		0x80
+#define	VK_NOTACCEPT_STATES	0x6C
+#define VK_UPPERCASE_STATES	(VK_SHIFT|VK_CAPS_LOCK)
 
 // when ukxim is run in xvnkb sync mode, it will
 // use these atoms for synchronization
 #define VKP_CHARSET	"VK_CHARSET"
 #define VKP_METHOD	"VK_METHOD"
-#define VKP_USING		"VK_USING"
+#define VKP_USING	"VK_USING"
 #define VKP_SPELLING	"VK_SPELLING"
 #define VKP_HOTKEY	"VK_HOTKEY"
 
@@ -56,7 +58,7 @@
 // atoms to avoid conflicts. (that also means no synchronization)
 #define UKP_CHARSET	"UK_CHARSET"
 #define UKP_METHOD	"UK_METHOD"
-#define UKP_USING		"UK_USING"
+#define UKP_USING	"UK_USING"
 #define UKP_SPELLING	"UK_SPELLING"
 #define UKP_HOTKEY	"UK_HOTKEY"
 
@@ -79,8 +81,8 @@ typedef enum {
 } vk_charsets;
 
 typedef struct {
-	long state;
-	long sym;
+  long state;
+  long sym;
 } vk_hotkey_info;
 
 //pklong: added atoms for stored preferd GUI posistion
@@ -89,5 +91,14 @@ typedef struct {
 
 //suspendNotify atom
 #define UKP_SUSPEND "UK_SUSPEND_MODE"
+
+struct _Xvnkb {
+  vk_hotkey_info hotkey;
+  Atom AIMCharset;
+  Atom AIMUsing;
+  Atom AIMMethod;
+  Atom AIMSwitchKey;
+  Atom AIMSpelling;
+};
 
 #endif

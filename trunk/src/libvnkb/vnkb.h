@@ -17,13 +17,20 @@
 #endif
 
 typedef struct _Vnkb Vnkb;
+typedef struct _Xvnkb Xvnkb;
+typedef struct _Xunikey Xunikey; 
+
 struct _Vnkb {
-  gpointer panel;
-  GtkWidget         	*label;
-  GtkWidget         	*button;
-  GtkWidget *widget_text_enabled,*widget_text_disabled;
-  GtkListStore *store;		/* for preferences dialog (shortcut) */
-  GtkTooltips *tooltip;
+  gpointer 	 panel;
+  Xvnkb 	*xvnkb;
+  Xunikey 	*xunikey;
+
+  GtkWidget     *label;
+  GtkWidget     *button;
+  GtkWidget 	*widget_text_enabled;
+  GtkWidget 	*widget_text_disabled;
+  GtkListStore 	*store;		/* for preferences dialog (shortcut) */
+  GtkTooltips 	*tooltip;
 
   gboolean      enabled;
   gboolean      spelling;
@@ -36,18 +43,18 @@ struct _Vnkb {
   int 		label_mode;
   int 		driver;
 
-  char *text_enabled;
-  char *text_disabled;
-  char *font_enabled;
-  char *font_disabled;
-  GdkColor color_enabled;
-  GdkColor color_disabled;
+  char 		*text_enabled;
+  char 		*text_disabled;
+  char 		*font_enabled;
+  char 		*font_disabled;
+  GdkColor 	 color_enabled;
+  GdkColor 	 color_disabled;
 
   void (*widget_setup)(Vnkb *vnkb,GtkWidget *container);
   void (*clicked_cb)(GtkButton *button,Vnkb *vnkb);
   GdkFilterReturn (*event_filter_cb)(GdkXEvent 	*xevent,
-					      GdkEvent 	*event,
-					      Vnkb *applet);
+				     GdkEvent 	*event,
+				     Vnkb 	*applet);
   
   void (*update_charset)(Vnkb *applet);
   void (*update_method)(Vnkb *applet);
@@ -73,7 +80,7 @@ void vnkb_toggle_enabled(Vnkb *vnkb);
 void vnkb_clicked_cb(GtkButton *button,Vnkb *vnkb);
 GdkFilterReturn vnkb_event_filter_cb(GdkXEvent 	*xevent,
 				     GdkEvent 	*event,
-				     Vnkb *applet);
+				     Vnkb 	*applet);
   
 
 void vnkb_init_charset(Vnkb *applet);

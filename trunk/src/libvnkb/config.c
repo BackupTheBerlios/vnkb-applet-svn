@@ -41,6 +41,7 @@
 #define N_(x) x
 #endif
 
+static
 void vnkb_import_param(Vnkb *vnkb,const char *name,const char *param)
 {
   gboolean enable;
