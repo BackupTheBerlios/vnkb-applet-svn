@@ -1,0 +1,28 @@
+<Root>
+  <popups>
+    <popup name="button3">
+      <submenu name="Input Method" _label="_Input Method">
+        <menuitem name="Item 1" type="radio" group="IM" verb="IM_Off" _label="_Off"/>
+        <menuitem name="Item 2" type="radio" group="IM" verb="IM_Vni" _label="_Vni"/>
+        <menuitem name="Item 3" type="radio" group="IM" verb="IM_Telex" _label="_Telex"/>
+        <menuitem name="Item 4" type="radio" group="IM" verb="IM_Viqr" _label="V_iqr"/>
+      </submenu>
+      <submenu name="Charset" _label="_Charset">
+        <menuitem name="Item 1" type="radio" group="CS" verb="CS_Unicode" _label="_Unicode"/>
+        <menuitem name="Item 2" type="radio" group="CS" verb="CS_Tcvn3" _label="_Tcvn3"/>
+        <menuitem name="Item 3" type="radio" group="CS" verb="CS_Vni" _label="_Vni"/>
+        <menuitem name="Item 4" type="radio" group="CS" verb="CS_Viqr" _label="V_iqr"/>
+        <menuitem name="Item 5" type="radio" group="CS" verb="CS_Viscii" _label="Vi_scii"/>
+        <menuitem name="Item 6" type="radio" group="CS" verb="CS_Vps" _label="V_ps"/>
+      </submenu>
+      <menuitem name="Item 0" verb="Enable" _label="_Enable" type="toggle" />
+
+      <menuitem name="Item 1" verb="Props" _label="_Preferences..."
+    		pixtype="stock" pixname="gtk-properties"/>
+      <menuitem name="Item 2" verb="Help" _label="_Help"
+    		pixtype="stock" pixname="gtk-help"/>
+      <menuitem name="Item 3" verb="About" _label="_About..."
+    		pixtype="stock" pixname="gnome-stock-about"/>
+    </popup>
+  </popups>
+</Root>

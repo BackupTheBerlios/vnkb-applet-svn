@@ -25,7 +25,11 @@
 #include <string.h>
 
 #include <gtk/gtk.h>
+#include <gdk/gdkx.h>
 #include <panel-applet.h>
+#include "xvnkb.h"
+#include "uksync.h"
+#include "keycons.h"
 
 #define VNKB_APPLET(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), \
 			vnkb_applet_get_type(),          \
@@ -37,7 +41,11 @@ typedef struct {
 	PanelApplet        applet;
 
 	PanelAppletOrient  orientation;
+	GtkWidget         *label;
 
+	gboolean           enable;
+	int                method;
+	int                charset;
 } VnkbApplet;
 
 typedef struct {
@@ -49,13 +57,52 @@ static GType vnkb_applet_get_type (void);
 
 static GObjectClass *parent_class;
 
+static void show_preferences (BonoboUIComponent *uic, VnkbApplet *mc, const char *verbname);
+static void show_help (BonoboUIComponent *uic, VnkbApplet *mc, const char *verbname);
+static void show_about (BonoboUIComponent *uic, VnkbApplet *mc, const char *verbname);
+
+static void Dummy_Handler (BonoboUIComponent *uic, VnkbApplet *mc, const char *verbname);
+
+static void vnkb_ui_component_event (BonoboUIComponent *comp,
+				     const gchar                  *path,
+				     Bonobo_UIComponent_EventType  type,
+				     const gchar                  *state_string,
+				     VnkbApplet                    *data);
+
+static void getSyncAtoms(int xvnkbSync);
+
+//------------------------------------------
+static Atom AIMCharset, AIMUsing, AIMMethod, AIMViqrStarGui, AIMViqrStarCore;
+static Atom ASuspend;
+
+static const BonoboUIVerb vnkb_menu_verbs [] = {
+        BONOBO_UI_UNSAFE_VERB ("Props", show_preferences),
+        BONOBO_UI_UNSAFE_VERB ("Help",  show_help),
+        BONOBO_UI_UNSAFE_VERB ("About", show_about),
+
+        BONOBO_UI_UNSAFE_VERB ("IM_Off", Dummy_Handler),
+        BONOBO_UI_UNSAFE_VERB ("IM_Vni", Dummy_Handler),
+        BONOBO_UI_UNSAFE_VERB ("IM_Telex", Dummy_Handler),
+        BONOBO_UI_UNSAFE_VERB ("IM_Viqr", Dummy_Handler),
+
+        BONOBO_UI_UNSAFE_VERB ("CS_Unicode", Dummy_Handler),
+        BONOBO_UI_UNSAFE_VERB ("CS_Tcvn3", Dummy_Handler),
+        BONOBO_UI_UNSAFE_VERB ("CS_Vni", Dummy_Handler),
+        BONOBO_UI_UNSAFE_VERB ("CS_Viqr", Dummy_Handler),
+        BONOBO_UI_UNSAFE_VERB ("CS_Viscii", Dummy_Handler),
+        BONOBO_UI_UNSAFE_VERB ("CS_Vps", Dummy_Handler),
+
+        BONOBO_UI_VERB_END
+};
+
+
 static void
 setup_vnkb_widget (VnkbApplet *fish)
 {
 	GtkWidget *widget = (GtkWidget *) fish;
-	GtkWidget *label = gtk_label_new(_("V"));
+	fish->label = gtk_label_new(fish->enable ? _("V") : _("N"));
 
-	gtk_container_add (GTK_CONTAINER (widget), label);
+	gtk_container_add (GTK_CONTAINER (widget), fish->label);
 
 //	g_signal_connect (fish, "key_press_event",
 //			  G_CALLBACK (handle_keypress), fish);
@@ -67,9 +114,75 @@ static gboolean
 vnkb_applet_fill (VnkbApplet *fish)
 {
 	PanelApplet *applet = (PanelApplet *) fish;
+	BonoboUIComponent *component;
 	GError      *error = NULL;
+	long v;
+	char *cmd;
+
+	GdkWindow *gdkroot = gdk_get_default_root_window();
+	Window root = GDK_WINDOW_XID(gdkroot);
+	Display *display = GDK_WINDOW_XDISPLAY(gdkroot);
 
 	fish->orientation = panel_applet_get_orient (applet);
+
+	panel_applet_setup_menu_from_file (applet,
+					   NULL,
+					   "VnkbApplet.xml",
+					   NULL,
+					   vnkb_menu_verbs,
+					   fish);
+	
+	
+	component = panel_applet_get_popup_component (applet);
+	g_signal_connect (component,
+			  "ui-event",
+			  (GCallback) vnkb_ui_component_event,
+			  fish);
+
+	UkInitSync(display,root);
+	getSyncAtoms(TRUE);
+	v = UkGetPropValue(AIMCharset, VKC_UTF8);
+	fish->charset = SyncToUnikeyCharset((int)v);
+	
+	v = UkGetPropValue(AIMMethod, VKM_TELEX);
+	fish->method = v;
+
+	fish->enable = v != VKM_OFF;
+	if (!fish->enable)
+		fish->method = UkGetPropValue(AIMUsing, VKM_TELEX);
+
+	bonobo_ui_component_set_prop (component,
+				      "/commands/Enable",
+				      "state",
+				      (fish->enable ? "1" : "0"),
+				      NULL);
+
+	switch (fish->charset) {
+	case UNICODE_CHARSET: cmd = "/commands/CS_Unicode"; break;
+	case TCVN3_CHARSET: cmd = "/commands/CS_Tcvn3"; break;
+	case VNI_CHARSET: cmd = "/commands/CS_Vni"; break;
+	case VIQR_CHARSET: cmd ="/commands/CS_Viqr"; break;
+	//case VISCII_CHARSET: cmd="/commands/CS_Viscii"; break;
+	//case VPS_CHARSET: cmd="/commands/CS_Vps"; break;
+	default: cmd = NULL;
+	}
+	if (cmd) {
+		bonobo_ui_component_set_prop (component, "/commands/CS_Unicode", "state", "0", NULL);
+		bonobo_ui_component_set_prop (component, cmd, "state", "1", NULL);
+	}
+
+	switch (fish->method) {
+	case VKM_OFF: cmd = "/commands/IM_Off"; break;
+	case VKM_VIQR: cmd = "/commands/IM_Viqr"; break;
+	case VKM_VNI: cmd = "/commands/IM_Vni"; break;
+	case VKM_TELEX: cmd = "/commands/IM_Telex"; break;
+	default:cmd = NULL;
+	}
+
+	if (cmd) {
+		bonobo_ui_component_set_prop (component, "/commands/IM_Off", "state", "0", NULL);
+		bonobo_ui_component_set_prop (component, cmd, "state", "1", NULL);
+	}
 
 	setup_vnkb_widget (fish);
 
@@ -156,6 +269,143 @@ vnkb_applet_get_type (void)
 	}
 
 	return type;
+}
+
+static void
+show_preferences (BonoboUIComponent *uic, VnkbApplet *mc, const char *verbname)
+{
+	GtkWidget *dlg = gtk_message_dialog_new(NULL,
+						GTK_DIALOG_DESTROY_WITH_PARENT,
+						GTK_MESSAGE_ERROR,
+						GTK_BUTTONS_CLOSE,
+						"haha");
+	gtk_dialog_run(GTK_DIALOG(dlg));
+	gtk_widget_destroy(dlg);
+}
+
+static void
+show_help (BonoboUIComponent *uic, VnkbApplet *mc, const char *verbname)
+{
+}
+
+static void
+show_about (BonoboUIComponent *uic, VnkbApplet *mc, const char *verbname)
+{
+}
+
+static void getSyncAtoms(int xvnkbSync)
+{
+  GdkWindow *gdkroot = gdk_get_default_root_window();
+  Display *display = GDK_WINDOW_XDISPLAY(gdkroot);
+
+  long v;
+  
+  ASuspend = XInternAtom(display, UKP_SUSPEND, False);
+
+  if (xvnkbSync) {
+    AIMCharset = XInternAtom(display, VKP_CHARSET, False);
+    AIMMethod = XInternAtom(display, VKP_METHOD, False);
+    AIMUsing = XInternAtom(display, VKP_USING, False);
+  }
+  else {
+    AIMCharset = XInternAtom(display, UKP_CHARSET, False);
+    AIMMethod = XInternAtom(display, UKP_METHOD, False);
+    AIMUsing = XInternAtom(display, UKP_USING, False);
+  }
+
+  AIMViqrStarCore = XInternAtom(display, UKP_VIQR_STAR_CORE, False);
+  AIMViqrStarGui = XInternAtom(display, UKP_VIQR_STAR_GUI, False);
+
+  /*
+  v = UkGetPropValue(AIMCharset, VKC_UTF8);
+  GlobalOpt.charset = SyncToUnikeyCharset((int)v);
+
+  v = UkGetPropValue(AIMMethod, VKM_TELEX);
+  GlobalOpt.enabled = (v != VKM_OFF);
+
+  if (!GlobalOpt.enabled)
+    v = UkGetPropValue(AIMUsing, VKM_TELEX);
+
+  GlobalOpt.inputMethod = SyncToUnikeyMethod((int)v);
+
+  if (GlobalOpt.inputMethod == VIQR_INPUT) {
+    v = UkGetPropValue(AIMViqrStarCore, 0);
+    if (v != 0)
+      GlobalOpt.inputMethod = VIQR_STAR_INPUT;
+    UkSetPropValue(AIMViqrStarCore, 0);
+  }
+  */
+}
+
+static FILE *fp = NULL;
+
+static void Dummy_Handler (BonoboUIComponent *uic, VnkbApplet *mc, const char *verbname)
+{
+}
+
+static void vnkb_ui_component_event (BonoboUIComponent *comp,
+				     const gchar                  *path,
+				     Bonobo_UIComponent_EventType  type,
+				     const gchar                  *state_string,
+				     VnkbApplet                    *data)
+{
+
+	if (!strcmp(path,"Enable")) {
+		gboolean state;
+		state = !strcmp(state_string,"1");
+		if (state != data->enable) {
+			data->enable = state;
+			gtk_label_set_text(GTK_LABEL(data->label),data->enable ? _("V") : _("N"));
+			if (!data->enable) {
+				UkSetPropValue(AIMUsing,data->method);
+				UkSetPropValue(AIMMethod,VKM_OFF);
+			} else
+				UkSetPropValue(AIMMethod,data->method);
+
+			if (!fp) fp = fopen("/tmp/log","wt");
+			fprintf(fp,"Enable %d\n",state);
+			fflush(fp);
+		}
+		return;
+	}
+
+	if (!strncmp(path,"IM_",3)) {
+		int im = VKM_OFF;
+		if (!strcmp(path,"IM_Off")) im = VKM_OFF;
+		else if (!strcmp(path,"IM_Vni")) im = VKM_VNI;
+		else if (!strcmp(path,"IM_Telex")) im = VKM_TELEX;
+		else if (!strcmp(path,"IM_Viqr")) im = VKM_VIQR;
+		
+		if (!strcmp(state_string,"1") && data->method != im) {
+			data->method = im;
+			UkSetPropValue(AIMMethod,data->method);
+
+			if (!fp) fp = fopen("/tmp/log","wt");
+			fprintf(fp,"ZZ %s %d %s\n",path,type,state_string);
+			fflush(fp);
+		}
+		return;
+	}
+
+	if (!strncmp(path,"CS_",3)) {
+		int cs = UNICODE_CHARSET;
+		if (!strcmp(path,"CS_Unicode")) cs = UNICODE_CHARSET;
+		else if (!strcmp(path,"CS_Tcvn3")) cs = TCVN3_CHARSET;
+		else if (!strcmp(path,"CS_Vni")) cs = VNI_CHARSET;
+		else if (!strcmp(path,"CS_Viqr")) cs = VIQR_CHARSET;
+		//else if (!strcmp(path,"CS_Viscii")) cs = CS_VISCII;   
+		//else if (!strcmp(path,"CS_Vps")) cs = CS_VPS;
+
+		if (!strcmp(state_string,"1") && data->charset != cs) {
+			data->charset = cs;
+			UkSetPropValue(AIMCharset,data->charset);
+
+			if (!fp) fp = fopen("/tmp/log","wt");
+			fprintf(fp,"ZZ %s %d %s\n",path,type,state_string);
+			fflush(fp);
+		}
+		return;
+	}
 }
 
 PANEL_APPLET_BONOBO_FACTORY ("OAFIID:VnkbApplet_Factory",

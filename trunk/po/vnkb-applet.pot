@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-15 21:02+0700\n"
+"POT-Creation-Date: 2004-04-16 02:22+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,22 +16,82 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: GNOME_VnkbApplet_Factory.server.in.in.h:1
-msgid "Utilities"
+#: VnkbApplet_Factory.server.in.in.h:1
+msgid "Utility"
 msgstr ""
 
-#: GNOME_VnkbApplet_Factory.server.in.in.h:2
+#: VnkbApplet_Factory.server.in.in.h:2
 msgid "Vietnamese Keyboard Frontend"
 msgstr ""
 
-#: GNOME_VnkbApplet_Factory.server.in.in.h:3
+#: VnkbApplet_Factory.server.in.in.h:3
 msgid "Vnkb"
 msgstr ""
 
-#: GNOME_VnkbApplet_Factory.server.in.in.h:4
+#: VnkbApplet_Factory.server.in.in.h:4
 msgid "Vnkb Factory"
 msgstr ""
 
-#: vnkb-applet.c:56
+#: VnkbApplet.xml.h:1
+msgid "V_iqr"
+msgstr ""
+
+#: VnkbApplet.xml.h:2
+msgid "V_ps"
+msgstr ""
+
+#: VnkbApplet.xml.h:3
+msgid "Vi_scii"
+msgstr ""
+
+#: VnkbApplet.xml.h:4
+msgid "_About..."
+msgstr ""
+
+#: VnkbApplet.xml.h:5
+msgid "_Charset"
+msgstr ""
+
+#: VnkbApplet.xml.h:6
+msgid "_Enable"
+msgstr ""
+
+#: VnkbApplet.xml.h:7
+msgid "_Help"
+msgstr ""
+
+#: VnkbApplet.xml.h:8
+msgid "_Input Method"
+msgstr ""
+
+#: VnkbApplet.xml.h:9
+msgid "_Off"
+msgstr ""
+
+#: VnkbApplet.xml.h:10
+msgid "_Preferences..."
+msgstr ""
+
+#: VnkbApplet.xml.h:11
+msgid "_Tcvn3"
+msgstr ""
+
+#: VnkbApplet.xml.h:12
+msgid "_Telex"
+msgstr ""
+
+#: VnkbApplet.xml.h:13
+msgid "_Unicode"
+msgstr ""
+
+#: VnkbApplet.xml.h:14
+msgid "_Vni"
+msgstr ""
+
+#: vnkb-applet.c:103 vnkb-applet.c:358
 msgid "V"
+msgstr ""
+
+#: vnkb-applet.c:103 vnkb-applet.c:358
+msgid "N"
 msgstr ""

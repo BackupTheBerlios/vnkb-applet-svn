@@ -1,2 +1,3 @@
-GNOME_VnkbApplet_Factory.server.in.in
+VnkbApplet_Factory.server.in.in
+VnkbApplet.xml
 vnkb-applet.c
