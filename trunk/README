@@ -1,1 +1,4 @@
-GNOME Applet Frontend for xvnkb (and unikey maybe)
+GNOME Applet Frontend for xvnkb (and unikey maybe) and a docklet.
+
+After installing, you will get an "Vietnamese Keyboard" applet in Utility (if you have gnome) and vnkb-docklet, which is a docklet.
+

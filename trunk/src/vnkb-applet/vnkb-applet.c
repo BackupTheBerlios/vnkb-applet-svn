@@ -148,7 +148,7 @@ vnkb_applet_update_enabled(Vnkb *vnkb)
 				"state",
 				(fish->vnkb.enabled ? "1" : "0"),
 				NULL);
-  gtk_label_set_text(GTK_LABEL(fish->vnkb.label),fish->vnkb.enabled ? _("V") : _("N"));
+  vnkb_update_label(&fish->vnkb);
 }
 
 static void
@@ -290,13 +290,7 @@ vnkb_applet_get_type (void)
 static void
 vnkb_applet_show_preferences (BonoboUIComponent *uic, VnkbApplet *mc, const char *verbname)
 {
-  GtkWidget *dlg = gtk_message_dialog_new(NULL,
-					  GTK_DIALOG_DESTROY_WITH_PARENT,
-					  GTK_MESSAGE_ERROR,
-					  GTK_BUTTONS_CLOSE,
-					  "haha");
-  gtk_dialog_run(GTK_DIALOG(dlg));
-  gtk_widget_destroy(dlg);
+  vnkb_show_preferences(&mc->vnkb);
 }
 
 static void

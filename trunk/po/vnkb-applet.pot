@@ -8,13 +8,112 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-16 16:36+0700\n"
+"POT-Creation-Date: 2004-04-17 11:56+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: src/libvnkb/eggcellrendererkeys.c:20
+msgid "<New accelerator...>"
+msgstr ""
+
+#: src/libvnkb/eggcellrendererkeys.c:162 src/libvnkb/eggcellrendererkeys.c:163
+msgid "Accelerator key"
+msgstr ""
+
+#: src/libvnkb/eggcellrendererkeys.c:172 src/libvnkb/eggcellrendererkeys.c:173
+msgid "Accelerator modifiers"
+msgstr ""
+
+#: src/libvnkb/eggcellrendererkeys.c:181 src/libvnkb/eggcellrendererkeys.c:182
+msgid "Accelerator keycode"
+msgstr ""
+
+#: src/libvnkb/eggcellrendererkeys.c:192
+msgid "Accel Mode"
+msgstr ""
+
+#: src/libvnkb/eggcellrendererkeys.c:193
+msgid "The type of accelerator."
+msgstr ""
+
+#: src/libvnkb/eggcellrendererkeys.c:241
+#: src/libvnkb/vnkb-preferences.glade.h:5
+msgid "Disabled"
+msgstr ""
+
+#: src/libvnkb/vnkb.c:458
+msgid "Off"
+msgstr ""
+
+#: src/libvnkb/vnkb.c:459
+msgid "Vni"
+msgstr ""
+
+#: src/libvnkb/vnkb.c:460
+msgid "Telex"
+msgstr ""
+
+#: src/libvnkb/vnkb.c:461
+msgid "Viqr"
+msgstr ""
+
+#: src/libvnkb/vnkb-preferences.glade.h:1
+msgid "*"
+msgstr ""
+
+#: src/libvnkb/vnkb-preferences.glade.h:2
+msgid "About"
+msgstr ""
+
+#: src/libvnkb/vnkb-preferences.glade.h:3
+msgid "Appearance"
+msgstr ""
+
+#: src/libvnkb/vnkb-preferences.glade.h:4
+msgid "Color"
+msgstr ""
+
+#: src/libvnkb/vnkb-preferences.glade.h:6
+msgid "Enabled"
+msgstr ""
+
+#: src/libvnkb/vnkb-preferences.glade.h:7
+msgid "Font"
+msgstr ""
+
+#: src/libvnkb/vnkb-preferences.glade.h:8
+msgid "Preferences"
+msgstr ""
+
+#: src/libvnkb/vnkb-preferences.glade.h:9
+msgid "Shortcuts"
+msgstr ""
+
+#: src/libvnkb/vnkb-preferences.glade.h:10
+msgid "Text"
+msgstr ""
+
+#: src/libvnkb/vnkb-preferences.glade.h:11
+msgid ""
+"Vnkb-Applet.\n"
+"Written by pclouds@vnlinux.org"
+msgstr ""
+
+#: src/libvnkb/vnkb-preferences.glade.h:13
+msgid "_Show Input Method"
+msgstr ""
+
+#: src/libvnkb/vnkb-preferences.glade.h:14
+msgid "_Use custom text"
+msgstr ""
+
+#: src/libvnkb/vnkb-preferences.glade.h:15
+msgid "_Use default text"
+msgstr ""
 
 #: src/vnkb-applet/VnkbApplet_Factory.server.in.in.h:1
 msgid "Utility"
@@ -32,57 +131,57 @@ msgstr ""
 msgid "Vnkb Factory"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:1 src/vnkb-docklet/vnkb-docklet.c:106
-#: src/vnkb-docklet/vnkb-docklet.c:113
+#: src/vnkb-applet/VnkbApplet.xml.h:1 src/vnkb-docklet/vnkb-docklet.c:107
+#: src/vnkb-docklet/vnkb-docklet.c:114
 msgid "V_iqr"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:2 src/vnkb-docklet/vnkb-docklet.c:114
+#: src/vnkb-applet/VnkbApplet.xml.h:2 src/vnkb-docklet/vnkb-docklet.c:115
 msgid "V_ps"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:3 src/vnkb-docklet/vnkb-docklet.c:112
+#: src/vnkb-applet/VnkbApplet.xml.h:3 src/vnkb-docklet/vnkb-docklet.c:113
 msgid "Vi_scii"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:4 src/vnkb-docklet/vnkb-docklet.c:97
+#: src/vnkb-applet/VnkbApplet.xml.h:4 src/vnkb-docklet/vnkb-docklet.c:98
 msgid "_About..."
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:5 src/vnkb-docklet/vnkb-docklet.c:96
+#: src/vnkb-applet/VnkbApplet.xml.h:5 src/vnkb-docklet/vnkb-docklet.c:97
 msgid "_Charset"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:6 src/vnkb-docklet/vnkb-docklet.c:119
+#: src/vnkb-applet/VnkbApplet.xml.h:6 src/vnkb-docklet/vnkb-docklet.c:120
 msgid "_Enable"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:7 src/vnkb-docklet/vnkb-docklet.c:95
+#: src/vnkb-applet/VnkbApplet.xml.h:7 src/vnkb-docklet/vnkb-docklet.c:96
 msgid "_Input Method"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:8 src/vnkb-docklet/vnkb-docklet.c:103
+#: src/vnkb-applet/VnkbApplet.xml.h:8 src/vnkb-docklet/vnkb-docklet.c:104
 msgid "_Off"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:9 src/vnkb-docklet/vnkb-docklet.c:98
+#: src/vnkb-applet/VnkbApplet.xml.h:9 src/vnkb-docklet/vnkb-docklet.c:99
 msgid "_Preferences..."
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:10 src/vnkb-docklet/vnkb-docklet.c:115
+#: src/vnkb-applet/VnkbApplet.xml.h:10 src/vnkb-docklet/vnkb-docklet.c:116
 msgid "_Tcvn3"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:11 src/vnkb-docklet/vnkb-docklet.c:105
+#: src/vnkb-applet/VnkbApplet.xml.h:11 src/vnkb-docklet/vnkb-docklet.c:106
 msgid "_Telex"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:12 src/vnkb-docklet/vnkb-docklet.c:110
+#: src/vnkb-applet/VnkbApplet.xml.h:12 src/vnkb-docklet/vnkb-docklet.c:111
 msgid "_Unicode"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:13 src/vnkb-docklet/vnkb-docklet.c:104
-#: src/vnkb-docklet/vnkb-docklet.c:111
+#: src/vnkb-applet/VnkbApplet.xml.h:13 src/vnkb-docklet/vnkb-docklet.c:105
+#: src/vnkb-docklet/vnkb-docklet.c:112
 msgid "_Vni"
 msgstr ""
 
@@ -94,6 +193,6 @@ msgstr ""
 msgid "N"
 msgstr ""
 
-#: src/vnkb-docklet/vnkb-docklet.c:99
+#: src/vnkb-docklet/vnkb-docklet.c:100
 msgid "E_xit"
 msgstr ""
