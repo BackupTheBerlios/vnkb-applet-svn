@@ -4,6 +4,7 @@
 #include <gdk/gdkkeysyms.h>
 #include "eggcellrendererkeys.h"
 #include "eggaccelerators.h"
+#include "xvnkb.h"
 
 #ifndef EGG_COMPILATION
 #ifndef _
@@ -390,13 +391,15 @@ grab_key_callback (GtkWidget    *widget,
   
   keys = EGG_CELL_RENDERER_KEYS (data);
 
-  if (!event->state) {
+  if (!(event->state & ~(VK_CAPS_LOCK | VK_NUM_LOCK | VK_SCROLL_LOCK))) {
     if (!is_modifier(event->hardware_keycode)) {
-      if (accel_mods == 0 && accel_keyval == GDK_Escape)
+      accel_keyval = gdk_keyval_to_lower (event->keyval);
+      edited = FALSE;
+      if (accel_keyval == GDK_Escape)
 	goto out; /* cancel */
 
       /* clear the accelerator on Backspace */
-      if (accel_mods == 0 && accel_keyval == GDK_BackSpace) {
+      if (accel_keyval == GDK_BackSpace) {
 	cleared = TRUE;
 	goto out;
       }
@@ -480,6 +483,7 @@ grab_key_callback (GtkWidget    *widget,
   
   if (edited)
     {
+      accel_mods &= ~(VK_CAPS_LOCK | VK_NUM_LOCK | VK_SCROLL_LOCK);
       g_signal_emit_by_name (G_OBJECT (keys), "accel_edited", path,
 			     accel_keyval, accel_mods, event->hardware_keycode);
     }

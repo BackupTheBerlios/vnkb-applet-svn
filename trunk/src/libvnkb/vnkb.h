@@ -2,6 +2,9 @@
 #define VNKB_LABEL_CUSTOM  1
 #define VNKB_LABEL_IM      2
 
+#define DRIVER_XVNKB  0
+#define DRIVER_UNIKEY 1
+
 typedef struct _Vnkb Vnkb;
 struct _Vnkb {
   gpointer panel;
@@ -18,6 +21,7 @@ struct _Vnkb {
   gboolean 		 initialized;
   gboolean		 filter_set;
   int label_mode;
+  int driver;
 
   char *text_enabled;
   char *text_disabled;
@@ -38,12 +42,14 @@ struct _Vnkb {
   void (*update_spelling)(Vnkb *applet);
   void (*set_enabled)(Vnkb *applet,gboolean enable);
   void (*set_spelling)(Vnkb *applet,gboolean enable);
+
+  void (*driver_changed)(Vnkb *applet);
 };
 
 void vnkb_setup_widget (Vnkb *fish,GtkWidget *container);
 void vnkb_show_preferences (Vnkb *mc);
 void vnkb_show_about (Vnkb *mc);
-void vnkb_get_sync_atoms(int xvnkbSync);
+void vnkb_get_sync_atoms(Vnkb *,int xvnkbSync);
 void vnkb_set_event_filter(Vnkb *applet,int enable);
 void vnkb_toggle_enabled(Vnkb *vnkb);
 
@@ -71,6 +77,4 @@ void vnkb_set_method(Vnkb *vnkb,int im);
 void vnkb_set_charset(Vnkb *vnkb,int cs);
 
 void vnkb_set_label_mode(Vnkb *vnkb,int mode);
-
-extern Atom AIMCharset, AIMUsing, AIMMethod, AIMViqrStarGui, AIMViqrStarCore;
-extern Atom ASuspend;
+void vnkb_set_driver(Vnkb *vnkb,int driver);

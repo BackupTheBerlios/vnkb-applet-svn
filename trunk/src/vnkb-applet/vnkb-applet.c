@@ -93,6 +93,27 @@ static const BonoboUIVerb vnkb_menu_verbs [] = {
 };
 
 
+static void
+vnkb_applet_driver_changed(Vnkb *vnkb)
+{
+  GtkWidget *w;
+  PanelApplet *applet = (PanelApplet*)vnkb->panel;
+  BonoboUIComponent *component;
+  gboolean is_xvnkb = vnkb->driver == DRIVER_XVNKB;
+
+  component = panel_applet_get_popup_component (applet);
+
+
+  bonobo_ui_component_set_prop (component,"/commands/IM_StarViqr",
+				"hidden",(!is_xvnkb ? "0" : "1"),NULL);
+  bonobo_ui_component_set_prop (component,"/commands/CS_Vps",
+				"hidden",(is_xvnkb ? "0" : "1"),NULL);
+  bonobo_ui_component_set_prop (component,"/commands/CS_Viscii",
+				"hidden",(is_xvnkb ? "0" : "1"),NULL);
+  bonobo_ui_component_set_prop (component,"/commands/Spell",
+				"hidden",(is_xvnkb ? "0" : "1"),NULL);
+}
+
 static gboolean
 vnkb_applet_fill (VnkbApplet *fish)
 {
@@ -118,7 +139,7 @@ vnkb_applet_fill (VnkbApplet *fish)
 		    fish);
 
   vnkb_setup_widget (vnkb,GTK_WIDGET(fish));
-  vnkb_get_sync_atoms(TRUE);
+  vnkb_get_sync_atoms(vnkb,TRUE);
 
   vnkb_init_charset(vnkb);
   vnkb_init_method(vnkb);
@@ -176,12 +197,12 @@ vnkb_applet_update_charset(Vnkb *vnkb)
 
   component = panel_applet_get_popup_component (applet);
   switch (fish->vnkb.charset) {
-  case UNICODE_CHARSET: cmd = "/commands/CS_Unicode"; break;
-  case TCVN3_CHARSET: cmd = "/commands/CS_Tcvn3"; break;
-  case VNI_CHARSET: cmd = "/commands/CS_Vni"; break;
-  case VIQR_CHARSET: cmd ="/commands/CS_Viqr"; break;
-  //case VISCII_CHARSET: cmd="/commands/CS_Viscii"; break;
-  //case VPS_CHARSET: cmd="/commands/CS_Vps"; break;
+  case VKC_UTF8: cmd = "/commands/CS_Unicode"; break;
+  case VKC_TCVN: cmd = "/commands/CS_Tcvn3"; break;
+  case VKC_VNI: cmd = "/commands/CS_Vni"; break;
+  case VKC_VIQR: cmd ="/commands/CS_Viqr"; break;
+  case VKC_VISCII: cmd="/commands/CS_Viscii"; break;
+  case VKC_VPS: cmd="/commands/CS_Vps"; break;
   default: cmd = NULL;
   }
   if (cmd) {
@@ -203,6 +224,7 @@ vnkb_applet_update_method(Vnkb *vnkb)
   switch (fish->vnkb.method) {
   case VKM_OFF: cmd = "/commands/IM_Off"; break;
   case VKM_VIQR: cmd = "/commands/IM_Viqr"; break;
+  case VKM_VIQR_STAR: cmd = "/commands/IM_StarViqr"; break;
   case VKM_VNI: cmd = "/commands/IM_Vni"; break;
   case VKM_TELEX: cmd = "/commands/IM_Telex"; break;
   default:cmd = NULL;
@@ -246,6 +268,7 @@ vnkb_applet_instance_init (VnkbApplet      *fish,
   fish->vnkb.update_method = vnkb_applet_update_method;
   fish->vnkb.update_enabled = vnkb_applet_update_enabled;
   fish->vnkb.update_spelling = vnkb_applet_update_spelling;
+  fish->vnkb.driver_changed = vnkb_applet_driver_changed;
 
   fish->orientation = PANEL_APPLET_ORIENT_UP;
   panel_applet_set_flags (PANEL_APPLET (fish),
@@ -351,6 +374,7 @@ static void vnkb_applet_ui_component_event (BonoboUIComponent 			*comp,
     else if (!strcmp(path,"IM_Vni")) im = VKM_VNI;
     else if (!strcmp(path,"IM_Telex")) im = VKM_TELEX;
     else if (!strcmp(path,"IM_Viqr")) im = VKM_VIQR;
+    else if (!strcmp(path,"IM_StarViqr")) im = VKM_VIQR_STAR;
 
     if (!strcmp(state_string,"1"))
       vnkb_set_method(&data->vnkb,im);
@@ -359,13 +383,13 @@ static void vnkb_applet_ui_component_event (BonoboUIComponent 			*comp,
   }
 
   if (!strncmp(path,"CS_",3)) {
-    int cs = UNICODE_CHARSET;
-    if (!strcmp(path,"CS_Unicode")) cs = UNICODE_CHARSET;
-    else if (!strcmp(path,"CS_Tcvn3")) cs = TCVN3_CHARSET;
-    else if (!strcmp(path,"CS_Vni")) cs = VNI_CHARSET;
-    else if (!strcmp(path,"CS_Viqr")) cs = VIQR_CHARSET;
-    //else if (!strcmp(path,"CS_Viscii")) cs = CS_VISCII;   
-    //else if (!strcmp(path,"CS_Vps")) cs = CS_VPS;
+    int cs = VKC_UTF8;
+    if (!strcmp(path,"CS_Unicode")) cs = VKC_UTF8;
+    else if (!strcmp(path,"CS_Tcvn3")) cs = VKC_TCVN;
+    else if (!strcmp(path,"CS_Vni")) cs = VKC_VNI;
+    else if (!strcmp(path,"CS_Viqr")) cs = VKC_VIQR;
+    else if (!strcmp(path,"CS_Viscii")) cs = VKC_VISCII;   
+    else if (!strcmp(path,"CS_Vps")) cs = VKC_VPS;
 
     if (!strcmp(state_string,"1"))
       vnkb_set_charset(&data->vnkb,cs);

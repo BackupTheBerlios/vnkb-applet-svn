@@ -35,6 +35,9 @@
 #include "vnkb.h"
 #include "eggcellrendererkeys.h"
 
+#define UK_PROG_NAME "Unikey XIM"
+#define XVNKB_PROG_NAME             "VISCKEY"
+
 #ifndef _
 #define _(x) dgettext (GETTEXT_PACKAGE, x)
 #define N_(x) x
@@ -49,56 +52,63 @@ typedef struct
 
 
 //------------------------------------------
-Atom AIMCharset, AIMUsing, AIMMethod, AIMViqrStarGui, AIMViqrStarCore;
-Atom ASuspend,AIMSwitchKey,AIMSpelling;
+Atom AIMCharset, AIMUsing, AIMMethod;
+Atom BIMCharset, BIMUsing, BIMMethod;
+Atom BIMViqrStarGui, BIMViqrStarCore;
+Atom BSuspend,AIMSwitchKey,AIMSpelling;
 
 void vnkb_xvnkb_update_switchkey(Vnkb *,int,int);
 
+//Display *display = NULL; /* HACK: if libxvnkb.so is loaded, then the content of this might change */
+
 void
-vnkb_get_sync_atoms(int xvnkbSync)
+vnkb_get_sync_atoms(Vnkb *vnkb,int xvnkbSync)
 {
   GdkWindow *gdkroot = gdk_get_default_root_window();
-  Display *display = GDK_WINDOW_XDISPLAY(gdkroot);
+  Display *_display = GDK_WINDOW_XDISPLAY(gdkroot);
   Window root = GDK_WINDOW_XID(gdkroot);
+  Atom ProgAtom;		/* for detecting Unikey */
 
-  UkInitSync(display,root);
-  ASuspend = XInternAtom(display, UKP_SUSPEND, False);
-
-  if (xvnkbSync) {
-    AIMCharset = XInternAtom(display, VKP_CHARSET, False);
-    AIMMethod = XInternAtom(display, VKP_METHOD, False);
-    AIMUsing = XInternAtom(display, VKP_USING, False);
-    AIMSwitchKey = XInternAtom(display,VKP_HOTKEY,0);
-    AIMSpelling = XInternAtom(display,VKP_SPELLING,0);
-  }
+  ProgAtom = XInternAtom(_display, UK_PROG_NAME, False);
+  if (XGetSelectionOwner(_display, ProgAtom) != None)
+    vnkb_set_driver(vnkb,DRIVER_UNIKEY);
   else {
-    AIMCharset = XInternAtom(display, UKP_CHARSET, False);
-    AIMMethod = XInternAtom(display, UKP_METHOD, False);
-    AIMUsing = XInternAtom(display, UKP_USING, False);
+    vnkb_set_driver(vnkb,DRIVER_XVNKB);
+    /*
+    //ProgAtom = XInternAtom(_display, XVNKB_PROG_NAME, False);
+    //if (XGetSelectionOwner(_display,ProgAtom) != None)
+    if (!display)
+      vnkb_set_driver(vnkb,DRIVER_XVNKB);
+    else {
+      GtkWidget *dialog;
+      dialog = gtk_message_dialog_new (NULL,
+				       GTK_DIALOG_DESTROY_WITH_PARENT,
+				       GTK_MESSAGE_WARNING,
+				       GTK_BUTTONS_CLOSE,
+				       _("You have probably not run either Unikey or Xvnkb.\n"
+				       "This program is useless without one of them"));
+      gtk_dialog_run (GTK_DIALOG (dialog));
+      gtk_widget_destroy (dialog);
+    }
+    */
   }
 
-  AIMViqrStarCore = XInternAtom(display, UKP_VIQR_STAR_CORE, False);
-  AIMViqrStarGui = XInternAtom(display, UKP_VIQR_STAR_GUI, False);
+  UkInitSync(_display,root);
+  BSuspend = XInternAtom(_display, UKP_SUSPEND, False);
 
-  /*
-  v = UkGetPropValue(AIMCharset, VKC_UTF8);
-  GlobalOpt.charset = SyncToUnikeyCharset((int)v);
+  AIMCharset = XInternAtom(_display, VKP_CHARSET, False);
+  AIMMethod = XInternAtom(_display, VKP_METHOD, False);
+  AIMUsing = XInternAtom(_display, VKP_USING, False);
+  AIMSwitchKey = XInternAtom(_display,VKP_HOTKEY,0);
+  AIMSpelling = XInternAtom(_display,VKP_SPELLING,0);
 
-  v = UkGetPropValue(AIMMethod, VKM_TELEX);
-  GlobalOpt.enabled = (v != VKM_OFF);
+  BIMCharset = XInternAtom(_display, UKP_CHARSET, False);
+  BIMMethod = XInternAtom(_display, UKP_METHOD, False);
+  BIMUsing = XInternAtom(_display, UKP_USING, False);
 
-  if (!GlobalOpt.enabled)
-    v = UkGetPropValue(AIMUsing, VKM_TELEX);
+  BIMViqrStarCore = XInternAtom(_display, UKP_VIQR_STAR_CORE, False);
+  BIMViqrStarGui = XInternAtom(_display, UKP_VIQR_STAR_GUI, False);
 
-  GlobalOpt.inputMethod = SyncToUnikeyMethod((int)v);
-
-  if (GlobalOpt.inputMethod == VIQR_INPUT) {
-    v = UkGetPropValue(AIMViqrStarCore, 0);
-    if (v != 0)
-      GlobalOpt.inputMethod = VIQR_STAR_INPUT;
-    UkSetPropValue(AIMViqrStarCore, 0);
-  }
-  */
 }
 
 void
@@ -160,7 +170,7 @@ void vnkb_init_charset(Vnkb *vnkb)
   long v;
 
   v = UkGetPropValue(AIMCharset, VKC_UTF8);
-  vnkb->charset = SyncToUnikeyCharset((int)v);
+  vnkb->charset = v;
   vnkb_update_charset(vnkb);
 }
 
@@ -170,8 +180,6 @@ void vnkb_init_method(Vnkb *vnkb)
   v = UkGetPropValue(AIMMethod, VKM_TELEX);
   vnkb->method = v;
 
-  if (!(v != VKM_OFF))
-    vnkb->backup_method = UkGetPropValue(AIMUsing, VKM_TELEX);
   vnkb_update_method(vnkb);
 }
 
@@ -187,7 +195,7 @@ void vnkb_init_spelling(Vnkb *vnkb)
 {
   long v;
   v = UkGetPropValue(AIMSpelling, 0);
-  vnkb->enabled = v;
+  vnkb->spelling = v;
   vnkb_update_spelling(vnkb);
 }
 
@@ -250,24 +258,19 @@ vnkb_event_filter_cb(GdkXEvent 	*xevent,
     return GDK_FILTER_CONTINUE;
   
   
-  if (ev->atom == AIMCharset) {
+  if (ev->atom == AIMCharset || ev->atom == BIMCharset) {
     v = UkGetPropValue(ev->atom, VKC_UTF8);
-    vnkb->charset = SyncToUnikeyCharset(v);
-    vnkb_update_charset(vnkb);
+    vnkb_set_charset(vnkb,v);
     return GDK_FILTER_REMOVE;
-  } else if (ev->atom == AIMMethod) {
-    //fixSyncToUnikeyMethod();
-    //if (applet->vnkb.enabled)
-    //UnikeySetInputMethod(GlobalOpt.inputMethod);
-    vnkb->method = UkGetPropValue(ev->atom,VKM_TELEX);
-    vnkb->enabled = vnkb->method != VKM_OFF;
-    if (!vnkb->enabled)
-      vnkb->backup_method = UkGetPropValue(AIMUsing, VKM_TELEX);
-    vnkb_update_enabled(vnkb);
-    vnkb_update_method(vnkb);
+  } else if (ev->atom == AIMMethod || ev->atom == BIMMethod) {
+    v = UkGetPropValue(ev->atom,VKM_TELEX);
+    vnkb_set_method(vnkb,v);
+    vnkb_set_enabled(vnkb,v != VKM_OFF);
     return GDK_FILTER_REMOVE;
-  } else if (ev->atom == AIMUsing) {
-    //dont' need this
+  } else if (ev->atom == AIMUsing || ev->atom == BIMUsing) {
+    v = UkGetPropValue(ev->atom,VKM_TELEX);
+    if (v != vnkb->backup_method && v != VKM_OFF)
+      vnkb->backup_method = v;
     return GDK_FILTER_REMOVE;
   }
 
@@ -284,13 +287,18 @@ vnkb_set_enabled(Vnkb *vnkb,gboolean state)
       vnkb->enabled = state;
       vnkb_update_label(vnkb);
       if (!vnkb->enabled) {
-	if (vnkb->method != VKM_OFF)
-	  vnkb->backup_method = vnkb->method;
-	UkSetPropValue(AIMUsing,vnkb->method);
+	vnkb->backup_method = vnkb->method;
+	if (vnkb->backup_method == VKM_OFF) 
+	  vnkb->backup_method = VKM_TELEX;
+	UkSetPropValue(AIMUsing,vnkb->backup_method);
+	UkSetPropValue(BIMUsing,vnkb->backup_method);
 	UkSetPropValue(AIMMethod,VKM_OFF);
+	UkSetPropValue(BIMMethod,VKM_OFF);
       } else {
-	vnkb->method = vnkb->backup_method;
-	UkSetPropValue(AIMMethod,vnkb->method);
+	if (vnkb->backup_method == VKM_OFF) 
+	  vnkb->backup_method = VKM_TELEX;
+	UkSetPropValue(AIMMethod,vnkb->backup_method);
+	UkSetPropValue(BIMMethod,vnkb->backup_method);
       }
     }
   }
@@ -313,15 +321,59 @@ void vnkb_set_charset(Vnkb *vnkb,int cs)
 {
   if (vnkb->charset != cs) {
     vnkb->charset = cs;
-    UkSetPropValue(AIMCharset,vnkb->charset);
+    if (vnkb->driver == DRIVER_UNIKEY &&
+	(cs == VKC_VPS || cs == VKC_VISCII))
+      vnkb_set_charset(vnkb,
+		       vnkb->charset != VKC_VPS && vnkb->charset != VKC_VISCII ? 
+		       vnkb->charset : VKC_UTF8);
+    else {
+      UkSetPropValue(AIMCharset,vnkb->charset);
+      UkSetPropValue(BIMCharset,vnkb->charset);
+    }
   }
 }
 
 void vnkb_set_method(Vnkb *vnkb,int im)
 {
+  long v;
+
+  if (im == VKM_VIQR) {
+    v = UkGetPropValue(BIMViqrStarGui,0);
+    if (v) {
+      g_print("Caught it!\n");
+      im = VKM_VIQR_STAR;
+      UkSetPropValue(BIMViqrStarGui,0);
+    }
+  }
+
   if (vnkb->method != im) {
+    if (vnkb->method != VKM_OFF)
+      vnkb->backup_method = vnkb->method;
     vnkb->method = im;
-    UkSetPropValue(AIMMethod,vnkb->method);
+    g_print("%d %d\n",vnkb->method,vnkb->backup_method);
+    switch (im) {
+    case VKM_VIQR_STAR:
+      if (vnkb->driver == DRIVER_UNIKEY) {
+	UkSetPropValue(BIMViqrStarCore, 1);
+	UkSetPropValue(BIMViqrStarGui, 1);
+        UkSetPropValue(BIMMethod,VKM_VIQR);
+      } else
+	UkSetPropValue(AIMMethod,VKM_VIQR);
+      break;
+/*      
+    case VKM_VIQR:
+      UkSetPropValue(AIMMethod,VKM_VIQR);
+      UkSetPropValue(BIMMethod,VKM_VIQR);
+      break;
+*/
+    default:
+      if (im == VKM_OFF) {
+	UkSetPropValue(AIMUsing,vnkb->backup_method);
+	UkSetPropValue(BIMUsing,vnkb->backup_method);
+      }
+      UkSetPropValue(AIMMethod,vnkb->method);
+      UkSetPropValue(BIMMethod,vnkb->method);
+    }
   }
 }
 
@@ -464,6 +516,18 @@ colorbutton_enabled_set_cb(GtkColorButton *b,Vnkb *vnkb)
   vnkb_update_label(vnkb);
 }
 
+static void
+radio_xvnkb_clicked_cb(GtkRadioButton *b,Vnkb *vnkb)
+{
+  vnkb_set_driver(vnkb,DRIVER_XVNKB);
+}
+
+static void
+radio_unikey_clicked_cb(GtkRadioButton *b,Vnkb *vnkb)
+{
+  vnkb_set_driver(vnkb,DRIVER_UNIKEY);
+}
+
 void vnkb_show_preferences (Vnkb *vnkb)
 {
   GladeXML *xml;
@@ -575,6 +639,18 @@ void vnkb_show_preferences (Vnkb *vnkb)
 			    (GCallback) gtk_widget_destroy, 
 			    dlg);
 
+  button = glade_xml_get_widget (xml, "radio_xvnkb");
+  g_signal_connect (button, "clicked",
+		    (GCallback) radio_xvnkb_clicked_cb, 
+		    vnkb);
+
+  button = glade_xml_get_widget (xml, "radio_unikey");
+  if (vnkb->driver == DRIVER_UNIKEY)
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button),TRUE);
+  g_signal_connect (button, "clicked",
+		    (GCallback) radio_unikey_clicked_cb, 
+		    vnkb);
+
   //gtk_window_set_screen (GTK_WINDOW (dlg),
   //gtk_widget_get_screen (GTK_WIDGET (fish)));
   
@@ -613,6 +689,7 @@ void vnkb_update_label(Vnkb *vnkb)
     case VKM_VNI: label = _("Vni"); break;
     case VKM_TELEX: label = _("Telex"); break;
     case VKM_VIQR: label = _("Viqr"); break;
+    case VKM_VIQR_STAR: label = _("Viqr*"); break;
     default: label = vnkb->enabled ? "V" : "N"; break;
     }
     break;
@@ -644,3 +721,12 @@ void vnkb_xvnkb_update_switchkey(Vnkb *vnkb,int state,int code)
     hk.sym = toupper(hk.sym);
   UkSetPropValues(AIMSwitchKey,&hk,2);
 }
+
+void vnkb_set_driver(Vnkb *vnkb,int driver)
+{
+  if (driver != DRIVER_XVNKB && driver != DRIVER_UNIKEY)
+    return;
+  vnkb->driver = driver;
+  if (vnkb->driver_changed)
+    vnkb->driver_changed(vnkb);
+};

@@ -7,65 +7,70 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vnkb-applet VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-17 15:34+0700\n"
-"PO-Revision-Date: 2004-04-17 15:34+0700\n"
+"POT-Creation-Date: 2004-04-18 09:04+0700\n"
+"PO-Revision-Date: 2004-04-17 20:34+0700\n"
 "Last-Translator: pclouds <pclouds@vnlinux.org>\n"
 "Language-Team: GnomeVI <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/libvnkb/eggcellrendererkeys.c:20
+#: src/libvnkb/eggcellrendererkeys.c:21
 msgid "<New accelerator...>"
 msgstr "<Phím tắt mới...>"
 
-#: src/libvnkb/eggcellrendererkeys.c:162 src/libvnkb/eggcellrendererkeys.c:163
+#: src/libvnkb/eggcellrendererkeys.c:163 src/libvnkb/eggcellrendererkeys.c:164
 msgid "Accelerator key"
 msgstr "Phím tắt"
 
-#: src/libvnkb/eggcellrendererkeys.c:172 src/libvnkb/eggcellrendererkeys.c:173
+#: src/libvnkb/eggcellrendererkeys.c:173 src/libvnkb/eggcellrendererkeys.c:174
 msgid "Accelerator modifiers"
 msgstr "Phím bổ trợ"
 
-#: src/libvnkb/eggcellrendererkeys.c:181 src/libvnkb/eggcellrendererkeys.c:182
+#: src/libvnkb/eggcellrendererkeys.c:182 src/libvnkb/eggcellrendererkeys.c:183
 msgid "Accelerator keycode"
 msgstr "Keycode phím tắt"
 
-#: src/libvnkb/eggcellrendererkeys.c:192
+#: src/libvnkb/eggcellrendererkeys.c:193
 msgid "Accel Mode"
 msgstr "Mode phím tắt"
 
-#: src/libvnkb/eggcellrendererkeys.c:193
+#: src/libvnkb/eggcellrendererkeys.c:194
 msgid "The type of accelerator."
 msgstr "Loại phím tắt"
 
-#: src/libvnkb/eggcellrendererkeys.c:241
+#: src/libvnkb/eggcellrendererkeys.c:242
 #: src/libvnkb/vnkb-preferences.glade.h:5
 msgid "Disabled"
 msgstr "Tắt"
 
-#: src/libvnkb/vnkb.c:499
+#: src/libvnkb/vnkb.c:563
 msgid "Function"
 msgstr "Chức năng"
 
-#: src/libvnkb/vnkb.c:512
+#: src/libvnkb/vnkb.c:576
 msgid "Shortcut"
 msgstr "Phím tắt"
 
-#: src/libvnkb/vnkb.c:612
+#: src/libvnkb/vnkb.c:688
 msgid "Off"
 msgstr "Tắt"
 
-#: src/libvnkb/vnkb.c:613
+#: src/libvnkb/vnkb.c:689
 msgid "Vni"
 msgstr "Vni"
 
-#: src/libvnkb/vnkb.c:614
+#: src/libvnkb/vnkb.c:690
 msgid "Telex"
 msgstr "Telex"
 
-#: src/libvnkb/vnkb.c:615
+#: src/libvnkb/vnkb.c:691
 msgid "Viqr"
+msgstr "Viqr"
+
+#: src/libvnkb/vnkb.c:692
+#, fuzzy
+msgid "Viqr*"
 msgstr "Viqr"
 
 #: src/libvnkb/vnkb-preferences.glade.h:1
@@ -117,12 +122,20 @@ msgid "_Show Input Method"
 msgstr "_Hiện kiểu gõ"
 
 #: src/libvnkb/vnkb-preferences.glade.h:14
+msgid "_Unikey"
+msgstr "_Unikey"
+
+#: src/libvnkb/vnkb-preferences.glade.h:15
 msgid "_Use custom text"
 msgstr "_Dùng tên tự chọn"
 
-#: src/libvnkb/vnkb-preferences.glade.h:15
+#: src/libvnkb/vnkb-preferences.glade.h:16
 msgid "_Use default text"
 msgstr "_Dùng tên mặc định"
+
+#: src/libvnkb/vnkb-preferences.glade.h:17
+msgid "_Xvnkb"
+msgstr "_Xvnkb"
 
 #: src/vnkb-applet/VnkbApplet_Factory.server.in.in.h:1
 msgid "Utility"
@@ -140,67 +153,86 @@ msgstr "Giao diện Bộ gõ Tiếng Việt"
 msgid "Vnkb Factory"
 msgstr "Xưởng sản xuất Vnkb"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:1 src/vnkb-docklet/vnkb-docklet.c:114
-#: src/vnkb-docklet/vnkb-docklet.c:121
+#: src/vnkb-applet/VnkbApplet.xml.h:1 src/vnkb-docklet/vnkb-docklet.c:144
+#: src/vnkb-docklet/vnkb-docklet.c:152
 msgid "V_iqr"
 msgstr "V_iqr"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:2 src/vnkb-docklet/vnkb-docklet.c:122
+#: src/vnkb-applet/VnkbApplet.xml.h:2 src/vnkb-docklet/vnkb-docklet.c:153
 msgid "V_ps"
 msgstr "V_ps"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:3 src/vnkb-docklet/vnkb-docklet.c:120
+#: src/vnkb-applet/VnkbApplet.xml.h:3 src/vnkb-docklet/vnkb-docklet.c:145
+#, fuzzy
+msgid "Vi_qr*"
+msgstr "Viqr"
+
+#: src/vnkb-applet/VnkbApplet.xml.h:4 src/vnkb-docklet/vnkb-docklet.c:151
 msgid "Vi_scii"
 msgstr "Vi_scii"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:4 src/vnkb-docklet/vnkb-docklet.c:105
+#: src/vnkb-applet/VnkbApplet.xml.h:5 src/vnkb-docklet/vnkb-docklet.c:135
 msgid "_About..."
 msgstr "_Giới thiệu..."
 
-#: src/vnkb-applet/VnkbApplet.xml.h:5 src/vnkb-docklet/vnkb-docklet.c:104
+#: src/vnkb-applet/VnkbApplet.xml.h:6 src/vnkb-docklet/vnkb-docklet.c:134
 msgid "_Charset"
 msgstr "_Bảng mã"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:6 src/vnkb-docklet/vnkb-docklet.c:127
+#: src/vnkb-applet/VnkbApplet.xml.h:7 src/vnkb-docklet/vnkb-docklet.c:158
 msgid "_Enable"
 msgstr "_Bật"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:7 src/vnkb-docklet/vnkb-docklet.c:103
+#: src/vnkb-applet/VnkbApplet.xml.h:8 src/vnkb-docklet/vnkb-docklet.c:133
 msgid "_Input Method"
 msgstr "_Kiểu gõ"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:8 src/vnkb-docklet/vnkb-docklet.c:111
+#: src/vnkb-applet/VnkbApplet.xml.h:9 src/vnkb-docklet/vnkb-docklet.c:141
 msgid "_Off"
 msgstr "_Tắt"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:9 src/vnkb-docklet/vnkb-docklet.c:106
+#: src/vnkb-applet/VnkbApplet.xml.h:10 src/vnkb-docklet/vnkb-docklet.c:136
 msgid "_Preferences..."
 msgstr "_Tùy thích..."
 
-#: src/vnkb-applet/VnkbApplet.xml.h:10 src/vnkb-docklet/vnkb-docklet.c:128
+#: src/vnkb-applet/VnkbApplet.xml.h:11 src/vnkb-docklet/vnkb-docklet.c:159
 msgid "_Spelling Checking"
 msgstr "_Kiểm lỗi chính tả"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:11 src/vnkb-docklet/vnkb-docklet.c:123
+#: src/vnkb-applet/VnkbApplet.xml.h:12 src/vnkb-docklet/vnkb-docklet.c:154
 msgid "_Tcvn3"
 msgstr "_Tcvn3"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:12 src/vnkb-docklet/vnkb-docklet.c:113
+#: src/vnkb-applet/VnkbApplet.xml.h:13 src/vnkb-docklet/vnkb-docklet.c:143
 msgid "_Telex"
 msgstr "_Telex"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:13 src/vnkb-docklet/vnkb-docklet.c:118
+#: src/vnkb-applet/VnkbApplet.xml.h:14 src/vnkb-docklet/vnkb-docklet.c:149
 msgid "_Unicode"
 msgstr "_Unicode"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:14 src/vnkb-docklet/vnkb-docklet.c:112
-#: src/vnkb-docklet/vnkb-docklet.c:119
+#: src/vnkb-applet/VnkbApplet.xml.h:15 src/vnkb-docklet/vnkb-docklet.c:142
+#: src/vnkb-docklet/vnkb-docklet.c:150
 msgid "_Vni"
 msgstr "_Vni"
 
-#: src/vnkb-docklet/vnkb-docklet.c:107
+#: src/vnkb-docklet/vnkb-docklet.c:137
 msgid "E_xit"
 msgstr "T_hoát"
+
+#~ msgid "Star Viqr"
+#~ msgstr "Star Viqr"
+
+#~ msgid "_Star Viqr"
+#~ msgstr "_Star Viqr"
+
+#~ msgid ""
+#~ "You have probably not run either Unikey or Xvnkb.\n"
+#~ "This program is useless without one of them"
+#~ msgstr ""
+#~ "Có lẽ bạn chưa chạy Unikey hoặc Xvnkb.\n"
+#~ "Chương trình này vô dụng nếu bạn không chạy một trong hai chương trình "
+#~ "trên."
 
 #~ msgid "V"
 #~ msgstr "V"
@@ -213,6 +245,3 @@ msgstr "T_hoát"
 
 #~ msgid "_Help"
 #~ msgstr "Trợ _giúp"
-
-#~ msgid "Vnkb"
-#~ msgstr "Vnkb"

@@ -65,7 +65,8 @@ typedef enum {
   VKM_OFF,
   VKM_VNI,
   VKM_TELEX,
-  VKM_VIQR
+  VKM_VIQR,
+  VKM_VIQR_STAR
 } vk_methods;
 
 typedef enum {
