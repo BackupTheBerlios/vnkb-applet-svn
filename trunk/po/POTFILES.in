@@ -1,10 +1,11 @@
+[encoding: UTF-8] 
 src/libvnkb/eggaccelerators.c
 src/libvnkb/eggaccelerators.h
 src/libvnkb/eggcellrendererkeys.c
 src/libvnkb/eggcellrendererkeys.h
 src/libvnkb/vnkb.c
 src/libvnkb/vnkb-preferences.glade
+src/vnkb-applet/vnkb-applet.c
 src/vnkb-applet/VnkbApplet_Factory.server.in.in
 src/vnkb-applet/VnkbApplet.xml
-src/vnkb-applet/vnkb-applet.c
 src/vnkb-docklet/vnkb-docklet.c
