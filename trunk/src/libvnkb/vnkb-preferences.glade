@@ -133,7 +133,6 @@
 
 	      <child>
 		<widget class="GtkCheckButton" id="checkbutton5">
-		  <property name="visible">True</property>
 		  <property name="can_focus">True</property>
 		  <property name="label" translatable="yes">Update _Xvnkb config when exit</property>
 		  <property name="use_underline">True</property>
@@ -152,7 +151,6 @@
 
 	      <child>
 		<widget class="GtkCheckButton" id="checkbutton6">
-		  <property name="visible">True</property>
 		  <property name="can_focus">True</property>
 		  <property name="label" translatable="yes">Update _Unikey config when exit</property>
 		  <property name="use_underline">True</property>
@@ -995,7 +993,6 @@
 
 		  <child>
 		    <widget class="GtkButton" id="button2">
-		      <property name="visible">True</property>
 		      <property name="can_default">True</property>
 		      <property name="can_focus">True</property>
 		      <property name="label">gtk-save</property>

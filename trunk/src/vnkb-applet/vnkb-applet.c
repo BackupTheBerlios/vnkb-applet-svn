@@ -223,6 +223,9 @@ vnkb_applet_update_method(Vnkb *vnkb)
   }
 
   if (cmd) {
+    FILE *fp = fopen("/tmp/log","a");
+    fprintf(fp,"Update method %s\n",cmd);
+    fclose(fp);
     //bonobo_ui_component_set_prop (component, "/commands/IM_Off", "state", "0", NULL);
     bonobo_ui_component_set_prop (component, cmd, "state", "1", NULL);
   }
@@ -347,8 +350,11 @@ static void vnkb_applet_ui_component_event (BonoboUIComponent 			*comp,
 {
 
   if (!strcmp(path,"Enable")) {
+    FILE *fp = fopen("/tmp/log","a");
     gboolean state;
     state = !strcmp(state_string,"1");
+    fprintf(fp,"Enable %d\n",state);
+    fclose(fp);
     vnkb_set_enabled(&data->vnkb,state);
     return;
   }
@@ -368,8 +374,12 @@ static void vnkb_applet_ui_component_event (BonoboUIComponent 			*comp,
     else if (!strcmp(path,"IM_Viqr")) im = VKM_VIQR;
     else if (!strcmp(path,"IM_StarViqr")) im = VKM_VIQR_STAR;
 
-    if (!strcmp(state_string,"1"))
+    if (!strcmp(state_string,"1")) {
+      FILE *fp = fopen("/tmp/log","a");
+      fprintf(fp,"Method %d\n",im);
+      fclose(fp);
       vnkb_set_method(&data->vnkb,im);
+    }
 
     return;
   }
