@@ -27,7 +27,6 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include "xvnkb.h"
-#include <libgnome/libgnome.h>
 #include "uksync.h"
 #include "keycons.h"
 #include "vnkb.h"
@@ -117,7 +116,7 @@ void
 vnkb_setup_widget (Vnkb *fish,GtkWidget *widget)
 {
   fish->button = gtk_button_new();
-  fish->label = gtk_label_new(fish->enabled ? _("V") : _("N"));
+  fish->label = gtk_label_new(fish->enabled ? "V" : "N");
 
   gtk_container_add (GTK_CONTAINER (fish->button), fish->label);
   gtk_container_add (GTK_CONTAINER (widget), fish->button);
@@ -248,7 +247,7 @@ vnkb_set_enabled(Vnkb *vnkb,gboolean state)
   else {
     if (state != vnkb->enabled) {
       vnkb->enabled = state;
-      gtk_label_set_text(GTK_LABEL(vnkb->label),vnkb->enabled ? _("V") : _("N"));
+      gtk_label_set_text(GTK_LABEL(vnkb->label),vnkb->enabled ? "V" : "N");
       if (!vnkb->enabled) {
 	if (vnkb->method != VKM_OFF)
 	  vnkb->backup_method = vnkb->method;
