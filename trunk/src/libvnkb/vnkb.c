@@ -223,19 +223,21 @@ void vnkb_update_charset(Vnkb *applet)
 {
   if (applet->update_charset)
     applet->update_charset(applet);
+  vnkb_update_label(applet);
 }
 
 void vnkb_update_method(Vnkb *applet)
 {
   if (applet->update_method)
     applet->update_method(applet);
+  vnkb_update_label(applet);
 }
 
 void vnkb_update_enabled(Vnkb *applet)
 {
-  vnkb_update_label(applet);
   if (applet->update_enabled)
     applet->update_enabled(applet);
+  vnkb_update_label(applet);
 }
 
 void vnkb_update_spelling(Vnkb *applet)
@@ -711,6 +713,30 @@ void vnkb_show_preferences (Vnkb *vnkb)
 
 }
 
+const char* charset_to_text(int cs)
+{
+  switch (cs) {
+  case VKC_UTF8: return _("Unicode");
+  case VKC_VNI: return _("Vni");
+  case VKC_VISCII: return _("Viscii");
+  case VKC_VPS: return _("Vps");
+  case VKC_TCVN: return _("Tcvn3");
+  default: return _("Unknown");
+  }
+}
+
+const char* method_to_text(int im)
+{
+  switch (im) {
+  case VKM_OFF: return _("Off");
+  case VKM_VNI: return _("Vni");
+  case VKM_TELEX: return _("Telex");
+  case VKM_VIQR: return _("Viqr");
+  case VKM_VIQR_STAR: return _("Viqr*");
+  default: return _("Unknown");
+  }
+}
+
 void vnkb_set_label_mode(Vnkb *vnkb,int mode)
 {
   vnkb->label_mode = mode;
@@ -719,39 +745,30 @@ void vnkb_set_label_mode(Vnkb *vnkb,int mode)
 
 void vnkb_update_label(Vnkb *vnkb)
 {
-  char *label;
+  const char *label;
   int type;
   char *new_label = NULL;
-  char *im,*cs;
 
-  switch (vnkb->method) {
-  case VKM_OFF: im = _("Off");break;
-  case VKM_VNI: im = _("Vni"); break;
-  case VKM_TELEX: im = _("Telex"); break;
-  case VKM_VIQR: im = _("Viqr"); break;
-  case VKM_VIQR_STAR: im = _("Viqr*"); break;
-  default: im = _("Unknown");
-  }
-
-  switch (vnkb->charset) {
-  case VKC_UTF8: cs = _("Unicode");break;
-  case VKC_VNI: cs = _("Vni"); break;
-  case VKC_VISCII: cs = _("Viscii"); break;
-  case VKC_VPS: cs = _("Vps"); break;
-  case VKC_TCVN: cs = _("Tcvn3"); break;
-  default: cs = _("Unknown");
-  }
-
-  label = g_strdup_printf(_("Charset: %s\nInput method: %s"),cs,im);
-  if (label) {
+  if (vnkb->method == VKM_OFF)
+    new_label = g_strdup_printf(_("Charset: %s\nInput method: %s (Off)"),
+			    charset_to_text(vnkb->charset),
+			    method_to_text(vnkb->backup_method));
+  else
+    new_label = g_strdup_printf(_("Charset: %s\nInput method: %s"),
+			    charset_to_text(vnkb->charset),
+			    method_to_text(vnkb->method));
+  if (new_label) {
     gtk_tooltips_set_tip(vnkb->tooltip,
 			 vnkb->button,
-			 label,
+			 new_label,
 			 NULL);
-    g_free(label);
+    g_free(new_label);
+    new_label = NULL;
   }
 
-  gtk_widget_modify_fg(vnkb->label,GTK_STATE_NORMAL,vnkb->enabled ? &vnkb->color_enabled : &vnkb->color_disabled);
+  gtk_widget_modify_fg(vnkb->label,
+		       GTK_STATE_NORMAL,
+		       vnkb->enabled ? &vnkb->color_enabled : &vnkb->color_disabled);
   /*gtk_widget_modify_bg(vnkb->button,GTK_STATE_NORMAL,!vnkb->enabled ? &vnkb->color_enabled : &vnkb->color_disabled);
   gtk_widget_modify_fg(vnkb->button,GTK_STATE_NORMAL,vnkb->enabled ? &vnkb->color_enabled : &vnkb->color_disabled);*/
 
@@ -764,16 +781,12 @@ void vnkb_update_label(Vnkb *vnkb)
     break;
 
   case VNKB_LABEL_IM: 
-    switch (vnkb->method) {
-    case VKM_OFF: label = _("Off");break;
-    case VKM_VNI: label = _("Vni"); break;
-    case VKM_TELEX: label = _("Telex"); break;
-    case VKM_VIQR: label = _("Viqr"); break;
-    case VKM_VIQR_STAR: label = _("Viqr*"); break;
-    default: label = vnkb->enabled ? "V" : "N"; break;
-    }
+    label = method_to_text(vnkb->method);
     break;
-  default: label = vnkb->enabled ? "V" : "N"; break;
+
+  default: 
+    label = vnkb->enabled ? "V" : "N";
+    break;
   }
 
   if (vnkb->enabled && vnkb->font_enabled) {

@@ -83,3 +83,6 @@ void vnkb_set_charset(Vnkb *vnkb,int cs);
 
 void vnkb_set_label_mode(Vnkb *vnkb,int mode);
 void vnkb_set_driver(Vnkb *vnkb,int driver);
+
+const char* charset_to_text(int cs);
+const char* method_to_text(int im);

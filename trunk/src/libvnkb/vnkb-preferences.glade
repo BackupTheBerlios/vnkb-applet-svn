@@ -113,10 +113,29 @@
 	      </child>
 
 	      <child>
+		<widget class="GtkCheckButton" id="checkbutton7">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="label" translatable="yes">_Auto detect Xvnkb/Unikey at startup</property>
+		  <property name="use_underline">True</property>
+		  <property name="relief">GTK_RELIEF_NORMAL</property>
+		  <property name="focus_on_click">True</property>
+		  <property name="active">False</property>
+		  <property name="inconsistent">False</property>
+		  <property name="draw_indicator">True</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">False</property>
+		  <property name="fill">False</property>
+		</packing>
+	      </child>
+
+	      <child>
 		<widget class="GtkCheckButton" id="checkbutton5">
 		  <property name="visible">True</property>
 		  <property name="can_focus">True</property>
-		  <property name="label" translatable="yes">_Update Xvnkb config when exit</property>
+		  <property name="label" translatable="yes">Update _Xvnkb config when exit</property>
 		  <property name="use_underline">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
 		  <property name="focus_on_click">True</property>
@@ -135,7 +154,7 @@
 		<widget class="GtkCheckButton" id="checkbutton6">
 		  <property name="visible">True</property>
 		  <property name="can_focus">True</property>
-		  <property name="label" translatable="yes">_Update Unikey config when exit</property>
+		  <property name="label" translatable="yes">Update _Unikey config when exit</property>
 		  <property name="use_underline">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
 		  <property name="focus_on_click">True</property>
