@@ -5,7 +5,11 @@ vnkb_applet_SOURCES = vnkb-applet.c xvnkb.h uksync.c uksync.h keycons.h
 
 vnkb_applet_LDADD = $(VNKB_LIBS)
 
-EXTRA_DIST = VnkbApplet_Factory.server.in.in	
+EXTRA_DIST = VnkbApplet_Factory.server.in.in	\
+	intltool-extract.in			\
+	intltool-merge.in			\
+	intltool-update.in			\
+	$(ui_DATA)
 
 serverdir       = $(libdir)/bonobo/servers
 server_in_files = VnkbApplet_Factory.server.in

@@ -1,21 +1,36 @@
 <Root>
+  <commands>
+    <cmd type="radio" group="IM" name="IM_Off" _label="_Off"/>
+    <cmd type="radio" group="IM" name="IM_Vni" _label="_Vni"/>
+    <cmd type="radio" group="IM" name="IM_Telex" _label="_Telex"/>
+    <cmd type="radio" group="IM" name="IM_Viqr" _label="V_iqr"/>
+
+    <cmd type="radio" group="CS" name="CS_Unicode" _label="_Unicode"/>
+    <cmd type="radio" group="CS" name="CS_Tcvn3" _label="_Tcvn3"/>
+    <cmd type="radio" group="CS" name="CS_Vni" _label="_Vni"/>
+    <cmd type="radio" group="CS" name="CS_Viqr" _label="V_iqr"/>
+    <cmd type="radio" group="CS" name="CS_Viscii" _label="Vi_scii"/>
+    <cmd type="radio" group="CS" name="CS_Vps" _label="V_ps"/>
+
+    <cmd name="Enable" _label="_Enable" type="toggle" />
+  </commands>
   <popups>
     <popup name="button3">
       <submenu name="Input Method" _label="_Input Method">
-        <menuitem name="Item 1" type="radio" group="IM" verb="IM_Off" _label="_Off"/>
-        <menuitem name="Item 2" type="radio" group="IM" verb="IM_Vni" _label="_Vni"/>
-        <menuitem name="Item 3" type="radio" group="IM" verb="IM_Telex" _label="_Telex"/>
-        <menuitem name="Item 4" type="radio" group="IM" verb="IM_Viqr" _label="V_iqr"/>
+        <menuitem name="Item 1" verb="IM_Off" />
+        <menuitem name="Item 2" verb="IM_Vni" />
+        <menuitem name="Item 3" verb="IM_Telex" />
+        <menuitem name="Item 4" verb="IM_Viqr" />
       </submenu>
       <submenu name="Charset" _label="_Charset">
-        <menuitem name="Item 1" type="radio" group="CS" verb="CS_Unicode" _label="_Unicode"/>
-        <menuitem name="Item 2" type="radio" group="CS" verb="CS_Tcvn3" _label="_Tcvn3"/>
-        <menuitem name="Item 3" type="radio" group="CS" verb="CS_Vni" _label="_Vni"/>
-        <menuitem name="Item 4" type="radio" group="CS" verb="CS_Viqr" _label="V_iqr"/>
-        <menuitem name="Item 5" type="radio" group="CS" verb="CS_Viscii" _label="Vi_scii"/>
-        <menuitem name="Item 6" type="radio" group="CS" verb="CS_Vps" _label="V_ps"/>
+        <menuitem name="Item 1" verb="CS_Unicode" />
+        <menuitem name="Item 2" verb="CS_Tcvn3" />
+        <menuitem name="Item 3" verb="CS_Vni" />
+        <menuitem name="Item 4" verb="CS_Viqr" />
+        <menuitem name="Item 5" verb="CS_Viscii" />
+        <menuitem name="Item 6" verb="CS_Vps" />
       </submenu>
-      <menuitem name="Item 0" verb="Enable" _label="_Enable" type="toggle" />
+      <menuitem name="Item 0" verb="Enable" />
 
       <menuitem name="Item 1" verb="Props" _label="_Preferences..."
     		pixtype="stock" pixname="gtk-properties"/>
