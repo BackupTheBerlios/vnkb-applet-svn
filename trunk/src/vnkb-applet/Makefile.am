@@ -1,9 +1,9 @@
 libexec_PROGRAMS = vnkb-applet
 
-INCLUDES = $(VNKB_CFLAGS) -DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\"  -I..
+INCLUDES = $(VNKB_CFLAGS) -DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\"  -I../libvnkb
 
 vnkb_applet_SOURCES = vnkb-applet.c 
-vnkb_applet_LDADD = $(VNKB_LIBS) ../libvnkb.a
+vnkb_applet_LDADD = $(VNKB_LIBS) ../libvnkb/libvnkb.a
 
 EXTRA_DIST = VnkbApplet_Factory.server.in.in	\
 	intltool-extract.in			\
