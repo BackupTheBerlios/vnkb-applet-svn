@@ -312,7 +312,7 @@ vnkb_set_spelling(Vnkb *vnkb,gboolean state)
     vnkb->set_spelling(vnkb,state);
   else {
     if (state != vnkb->spelling) {
-      vnkb->enabled = state;
+      vnkb->spelling = state;
       UkSetPropValue(AIMSpelling,state);
     }
   }
