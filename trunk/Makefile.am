@@ -1,9 +1,15 @@
 SUBDIRS = po
 INCLUDES = $(VNKB_CFLAGS) -DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\" 
 libexec_PROGRAMS = vnkb-applet
-vnkb_applet_SOURCES = vnkb-applet.c xvnkb.h uksync.c uksync.h keycons.h
+bin_PROGRAMS = vnkb-docklet
 
+common_SOURCES =  xvnkb.h uksync.c uksync.h keycons.h vnkb.c vnkb.h
+
+vnkb_applet_SOURCES = vnkb-applet.c $(common_SOURCES)
 vnkb_applet_LDADD = $(VNKB_LIBS)
+
+vnkb_docklet_SOURCES = vnkb-docklet.c $(common_SOURCES) eggtrayicon.c eggtrayicon.h
+vnkb_docklet_LDADD = $(VNKB_LIBS)
 
 EXTRA_DIST = VnkbApplet_Factory.server.in.in	\
 	intltool-extract.in			\

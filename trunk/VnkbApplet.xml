@@ -13,6 +13,9 @@
     <cmd type="radio" group="CS" name="CS_Vps" _label="V_ps"/>
 
     <cmd name="Enable" _label="_Enable" type="toggle" />
+
+    <cmd name="Props" _label="_Preferences..." pixtype="stock" pixname="gtk-properties" />
+    <cmd name="About" _label="_About..." pixtype="stock" pixname="gnome-stock-about" />
   </commands>
   <popups>
     <popup name="button3">
@@ -32,12 +35,8 @@
       </submenu>
       <menuitem name="Item 0" verb="Enable" />
 
-      <menuitem name="Item 1" verb="Props" _label="_Preferences..."
-    		pixtype="stock" pixname="gtk-properties"/>
-      <menuitem name="Item 2" verb="Help" _label="_Help"
-    		pixtype="stock" pixname="gtk-help"/>
-      <menuitem name="Item 3" verb="About" _label="_About..."
-    		pixtype="stock" pixname="gnome-stock-about"/>
+      <menuitem name="Item 1" verb="Props" />
+      <menuitem name="Item 3" verb="About" />
     </popup>
   </popups>
 </Root>
