@@ -1,3 +1,8 @@
+#include <gtk/gtk.h>
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #define VNKB_LABEL_DEFAULT 0
 #define VNKB_LABEL_CUSTOM  1
 #define VNKB_LABEL_IM      2
@@ -5,10 +10,8 @@
 #define DRIVER_XVNKB  0
 #define DRIVER_UNIKEY 1
 
-#include <gtk/gtk.h>
-#include <libintl.h>
-
 #ifndef _
+#include <libintl.h>
 #define _(x) dgettext (GETTEXT_PACKAGE, x)
 #define N_(x) x
 #endif

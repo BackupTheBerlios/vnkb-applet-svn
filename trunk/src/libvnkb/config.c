@@ -67,15 +67,15 @@ void vnkb_import_param(Vnkb *vnkb,const char *name,const char *param)
 
   if (!strcmp(name,"method")) {
     if (!strcasecmp(param,"VNI"))
-      vnkb_set_method(vnkb,VKM_VNI);
+      vnkb->backup_method = VKM_VNI;
     else if (!strcasecmp(param,"VIQR"))
-      vnkb_set_method(vnkb,VKM_VIQR);
+      vnkb->backup_method = VKM_VIQR;
     else if (!strcasecmp(param,"VIQR*"))
-      vnkb_set_method(vnkb,VKM_VIQR_STAR);
+      vnkb->backup_method = VKM_VIQR_STAR;
     else if (!strcasecmp(param,"TELEX"))
-      vnkb_set_method(vnkb,VKM_TELEX);
-    else if (!strcasecmp(param,"OFF"))
-      vnkb_set_method(vnkb,VKM_OFF);
+      vnkb->backup_method = VKM_TELEX;
+//    else if (!strcasecmp(param,"OFF"))
+//      vnkb_set_method(vnkb,VKM_OFF);
     else
       fprintf(stderr,"Unknown input method %s\n",param);
 
@@ -101,6 +101,16 @@ void vnkb_import_param(Vnkb *vnkb,const char *name,const char *param)
       vnkb_set_spelling(vnkb,TRUE);
     else if (!strcasecmp(param,"off"))
       vnkb_set_spelling(vnkb,FALSE);
+    else
+      fprintf(stderr,"Unknown value %s of setting %s\n",param,name);
+    return;
+  }
+
+  if (!strcmp(name,"enable")) { // HACK: we call vnkb_set_enabled later
+    if (!strcasecmp(param,"on"))
+      vnkb->enabled = TRUE;
+    else if (!strcasecmp(param,"off"))
+      vnkb->enabled = FALSE;
     else
       fprintf(stderr,"Unknown value %s of setting %s\n",param,name);
     return;
@@ -202,6 +212,11 @@ void vnkb_load_config(Vnkb *vnkb)
 	  vnkb_import_param(vnkb,buffer,param);
 	}
 
+	if (vnkb->enabled) {
+	  vnkb->enabled = FALSE;
+	  vnkb_set_enabled(vnkb,TRUE);
+	} else
+	  vnkb_set_method(vnkb,VKM_OFF);
 	fclose(fp);
       }
       g_free(filename);
@@ -213,6 +228,7 @@ void vnkb_save_config(Vnkb *vnkb)
 {
   char *home = getenv("HOME");
   char *filename;
+  int v;
 
   if (home) {
     filename = g_strdup_printf("%s/.vnkb-applet.conf",home);
@@ -233,8 +249,11 @@ void vnkb_save_config(Vnkb *vnkb)
 	if (param)
 	  fprintf(fp,"charset=%s\n",param);
 
-	switch (vnkb->method) {
-	case VKM_OFF: param = "OFF"; break;
+	if (vnkb->method == VKM_OFF)
+	  v = vnkb->backup_method;
+	else
+	  v = vnkb->method;
+	switch (v) {
 	case VKM_VIQR: param = "VIQR"; break;
 	case VKM_VIQR_STAR: param = "VIQR*"; break;
 	case VKM_VNI: param = "VNI"; break;
@@ -243,6 +262,8 @@ void vnkb_save_config(Vnkb *vnkb)
 	}
 	if (param)
 	  fprintf(fp,"method=%s\n",param);
+
+	fprintf(fp,"enable=%s\n",(vnkb->enabled ? "On" : "Off"));
 
 	switch (vnkb->label_mode) {
 	case VNKB_LABEL_IM: param = "im"; break;

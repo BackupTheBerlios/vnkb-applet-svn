@@ -30,6 +30,7 @@
 #include "uksync.h"
 #include "keycons.h"
 #include "vnkb.h"
+#include <libintl.h>
 #include <gdk/gdkx.h>
 
 #define UK_PROG_NAME "Unikey XIM"

@@ -24,14 +24,13 @@
 
 #include <string.h>
 
-#include <gtk/gtk.h>
-#include <gdk/gdkx.h>
 #include <panel-applet.h>
 #include <libgnomeui/libgnomeui.h>
+#include "vnkb.h"
+#include <gdk/gdkx.h>
 #include "xvnkb.h"
 #include "uksync.h"
 #include "keycons.h"
-#include "vnkb.h"
 
 #define VNKB_APPLET(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), \
 			vnkb_applet_get_type(),          \
