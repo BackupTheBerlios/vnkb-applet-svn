@@ -3,7 +3,13 @@ noinst_LIBRARIES = libvnkb.a
 INCLUDES = $(VNKB_CFLAGS)\
 	 -DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	-DVNKB_GLADEDIR=\""$(gladedir)"\"
-libvnkb_a_SOURCES =  xvnkb.h uksync.c uksync.h keycons.h vnkb.c vnkb.h eggcellrendererkeys.c eggcellrendererkeys.h eggaccelerators.h eggaccelerators.c
+libvnkb_a_SOURCES =  xvnkb.h\
+	uksync.c uksync.h\
+	keycons.h\
+	vnkb.c vnkb.h\
+	pref.c config.c\
+	eggcellrendererkeys.c eggcellrendererkeys.h\
+	eggaccelerators.h eggaccelerators.c
 
 EXTRA_DIST = $(glade_DATA)
 

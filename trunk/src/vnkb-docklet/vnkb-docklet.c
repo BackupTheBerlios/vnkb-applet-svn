@@ -128,35 +128,33 @@ vnkb_docklet_driver_changed(Vnkb *vnkb)
   gtk_widget_set_visible(w,is_xvnkb);
 }
 
-#define _(X) X
-
 static GtkActionEntry entries[] = {
-  {"IM",NULL,_("_Input Method")},
-  {"CS",NULL,_("_Charset")},
-  {"About",NULL,_("_About..."),NULL,NULL,G_CALLBACK(vnkb_docklet_about_cb)},
+  {"IM",NULL,("_Input Method")},
+  {"CS",NULL,("_Charset")},
+  {"About",NULL,("_About..."),NULL,NULL,G_CALLBACK(vnkb_docklet_about_cb)},
   {"Props",GTK_STOCK_PREFERENCES,NULL,NULL,NULL,G_CALLBACK(vnkb_docklet_pref_cb)},
   {"Exit",GTK_STOCK_QUIT,NULL,NULL,NULL,G_CALLBACK(vnkb_docklet_exit_cb)},
 };
 
 static GtkRadioActionEntry im_entries[] = {
-  {"IM_Off",NULL,_("_Off"),NULL,NULL,0},
-  {"IM_Vni",NULL,_("_Vni"),NULL,NULL,1},
-  {"IM_Telex",NULL,_("_Telex"),NULL,NULL,2},
-  {"IM_Viqr",NULL,_("V_iqr"),NULL,NULL,3},
-  {"IM_StarViqr",NULL,_("Vi_qr*"),NULL,NULL,4},
+  {"IM_Off",NULL,("_Off"),NULL,NULL,0},
+  {"IM_Vni",NULL,("_Vni"),NULL,NULL,1},
+  {"IM_Telex",NULL,("_Telex"),NULL,NULL,2},
+  {"IM_Viqr",NULL,("V_iqr"),NULL,NULL,3},
+  {"IM_StarViqr",NULL,("Vi_qr*"),NULL,NULL,4},
 };
 
 static GtkRadioActionEntry cs_entries[] = {
-  {"CS_Unicode",NULL,_("_Unicode"),NULL,NULL,0},
-  {"CS_Vni",NULL,_("_Vni"),NULL,NULL,1},
-  {"CS_Viscii",NULL,_("Vi_scii"),NULL,NULL,2},
-  {"CS_Viqr",NULL,_("V_iqr"),NULL,NULL,3},
-  {"CS_Vps",NULL,_("V_ps"),NULL,NULL,4},
-  {"CS_Tcvn3",NULL,_("_Tcvn3"),NULL,NULL,5},
+  {"CS_Unicode",NULL,("_Unicode"),NULL,NULL,0},
+  {"CS_Vni",NULL,("_Vni"),NULL,NULL,1},
+  {"CS_Viscii",NULL,("Vi_scii"),NULL,NULL,2},
+  {"CS_Viqr",NULL,("V_iqr"),NULL,NULL,3},
+  {"CS_Vps",NULL,("V_ps"),NULL,NULL,4},
+  {"CS_Tcvn3",NULL,("_Tcvn3"),NULL,NULL,5},
 };
 
 static GtkToggleActionEntry toggle_entries[] = {
-  {"Enable",NULL,_("_Enable"),NULL,NULL,G_CALLBACK(vnkb_docklet_enabled_cb),0},
+  {"Enable",NULL,("_Enable"),NULL,NULL,G_CALLBACK(vnkb_docklet_enabled_cb),0},
   {"Spell",GTK_STOCK_SPELL_CHECK,NULL,NULL,NULL,G_CALLBACK(vnkb_docklet_spelling_cb),0},
 };
 

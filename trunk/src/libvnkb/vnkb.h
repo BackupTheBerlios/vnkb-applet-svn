@@ -5,6 +5,14 @@
 #define DRIVER_XVNKB  0
 #define DRIVER_UNIKEY 1
 
+#include <gtk/gtk.h>
+#include <libintl.h>
+
+#ifndef _
+#define _(x) dgettext (GETTEXT_PACKAGE, x)
+#define N_(x) x
+#endif
+
 typedef struct _Vnkb Vnkb;
 struct _Vnkb {
   gpointer panel;
@@ -86,3 +94,4 @@ void vnkb_set_driver(Vnkb *vnkb,int driver);
 
 const char* charset_to_text(int cs);
 const char* method_to_text(int im);
+
