@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-19 10:54+0700\n"
+"POT-Creation-Date: 2004-04-21 14:12+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,23 +53,27 @@ msgstr ""
 msgid "Shortcut"
 msgstr ""
 
-#: src/libvnkb/vnkb.c:679 src/libvnkb/vnkb.c:717
+#: src/libvnkb/vnkb.c:583
+msgid "Enable Xvnkb"
+msgstr ""
+
+#: src/libvnkb/vnkb.c:679 src/libvnkb/vnkb.c:719
 msgid "Off"
 msgstr ""
 
-#: src/libvnkb/vnkb.c:680 src/libvnkb/vnkb.c:689 src/libvnkb/vnkb.c:718
+#: src/libvnkb/vnkb.c:680 src/libvnkb/vnkb.c:689 src/libvnkb/vnkb.c:720
 msgid "Vni"
 msgstr ""
 
-#: src/libvnkb/vnkb.c:681 src/libvnkb/vnkb.c:719
+#: src/libvnkb/vnkb.c:681 src/libvnkb/vnkb.c:721
 msgid "Telex"
 msgstr ""
 
-#: src/libvnkb/vnkb.c:682 src/libvnkb/vnkb.c:720
+#: src/libvnkb/vnkb.c:682 src/libvnkb/vnkb.c:722
 msgid "Viqr"
 msgstr ""
 
-#: src/libvnkb/vnkb.c:683 src/libvnkb/vnkb.c:721
+#: src/libvnkb/vnkb.c:683 src/libvnkb/vnkb.c:723
 msgid "Viqr*"
 msgstr ""
 
@@ -215,11 +219,11 @@ msgstr ""
 msgid "_Off"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:10 src/vnkb-docklet/vnkb-docklet.c:136
+#: src/vnkb-applet/VnkbApplet.xml.h:10
 msgid "_Preferences..."
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:11 src/vnkb-docklet/vnkb-docklet.c:159
+#: src/vnkb-applet/VnkbApplet.xml.h:11
 msgid "_Spelling Checking"
 msgstr ""
 
@@ -238,8 +242,4 @@ msgstr ""
 #: src/vnkb-applet/VnkbApplet.xml.h:15 src/vnkb-docklet/vnkb-docklet.c:142
 #: src/vnkb-docklet/vnkb-docklet.c:150
 msgid "_Vni"
-msgstr ""
-
-#: src/vnkb-docklet/vnkb-docklet.c:137
-msgid "E_xit"
 msgstr ""

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vnkb-applet VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-19 10:54+0700\n"
-"PO-Revision-Date: 2004-04-19 10:54+0700\n"
+"POT-Creation-Date: 2004-04-21 14:12+0700\n"
+"PO-Revision-Date: 2004-04-21 14:14+0700\n"
 "Last-Translator: pclouds <pclouds@vnlinux.org>\n"
 "Language-Team: GnomeVI <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -52,23 +52,27 @@ msgstr "Chức năng"
 msgid "Shortcut"
 msgstr "Phím tắt"
 
-#: src/libvnkb/vnkb.c:679 src/libvnkb/vnkb.c:717
+#: src/libvnkb/vnkb.c:583
+msgid "Enable Xvnkb"
+msgstr "Bật Xvnkb"
+
+#: src/libvnkb/vnkb.c:679 src/libvnkb/vnkb.c:719
 msgid "Off"
 msgstr "Tắt"
 
-#: src/libvnkb/vnkb.c:680 src/libvnkb/vnkb.c:689 src/libvnkb/vnkb.c:718
+#: src/libvnkb/vnkb.c:680 src/libvnkb/vnkb.c:689 src/libvnkb/vnkb.c:720
 msgid "Vni"
 msgstr "Vni"
 
-#: src/libvnkb/vnkb.c:681 src/libvnkb/vnkb.c:719
+#: src/libvnkb/vnkb.c:681 src/libvnkb/vnkb.c:721
 msgid "Telex"
 msgstr "Telex"
 
-#: src/libvnkb/vnkb.c:682 src/libvnkb/vnkb.c:720
+#: src/libvnkb/vnkb.c:682 src/libvnkb/vnkb.c:722
 msgid "Viqr"
 msgstr "Viqr"
 
-#: src/libvnkb/vnkb.c:683 src/libvnkb/vnkb.c:721
+#: src/libvnkb/vnkb.c:683 src/libvnkb/vnkb.c:723
 msgid "Viqr*"
 msgstr "Viqr*"
 
@@ -218,11 +222,11 @@ msgstr "_Kiểu gõ"
 msgid "_Off"
 msgstr "_Tắt"
 
-#: src/vnkb-applet/VnkbApplet.xml.h:10 src/vnkb-docklet/vnkb-docklet.c:136
+#: src/vnkb-applet/VnkbApplet.xml.h:10
 msgid "_Preferences..."
 msgstr "_Tùy thích..."
 
-#: src/vnkb-applet/VnkbApplet.xml.h:11 src/vnkb-docklet/vnkb-docklet.c:159
+#: src/vnkb-applet/VnkbApplet.xml.h:11
 msgid "_Spelling Checking"
 msgstr "_Kiểm lỗi chính tả"
 
@@ -243,9 +247,8 @@ msgstr "_Unicode"
 msgid "_Vni"
 msgstr "_Vni"
 
-#: src/vnkb-docklet/vnkb-docklet.c:137
-msgid "E_xit"
-msgstr "T_hoát"
+#~ msgid "E_xit"
+#~ msgstr "T_hoát"
 
 #~ msgid "Star Viqr"
 #~ msgstr "Star Viqr"

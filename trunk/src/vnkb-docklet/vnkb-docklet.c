@@ -133,8 +133,8 @@ static GtkActionEntry entries[] = {
   {"IM",NULL,_("_Input Method")},
   {"CS",NULL,_("_Charset")},
   {"About",NULL,_("_About..."),NULL,NULL,G_CALLBACK(vnkb_docklet_about_cb)},
-  {"Props",NULL,_("_Preferences..."),NULL,NULL,G_CALLBACK(vnkb_docklet_pref_cb)},
-  {"Exit",NULL,_("E_xit"),NULL,NULL,G_CALLBACK(vnkb_docklet_exit_cb)},
+  {"Props",GTK_STOCK_PREFERENCES,NULL,NULL,NULL,G_CALLBACK(vnkb_docklet_pref_cb)},
+  {"Exit",GTK_STOCK_QUIT,NULL,NULL,NULL,G_CALLBACK(vnkb_docklet_exit_cb)},
 };
 
 static GtkRadioActionEntry im_entries[] = {
@@ -156,7 +156,7 @@ static GtkRadioActionEntry cs_entries[] = {
 
 static GtkToggleActionEntry toggle_entries[] = {
   {"Enable",NULL,_("_Enable"),NULL,NULL,G_CALLBACK(vnkb_docklet_enabled_cb),0},
-  {"Spell",NULL,_("_Spelling Checking"),NULL,NULL,G_CALLBACK(vnkb_docklet_spelling_cb),0},
+  {"Spell",GTK_STOCK_SPELL_CHECK,NULL,NULL,NULL,G_CALLBACK(vnkb_docklet_spelling_cb),0},
 };
 
 static char *xml = 
@@ -181,7 +181,7 @@ static char *xml =
 "    <menuitem action=\"Enable\" />"
 "    <menuitem action=\"Spell\" />"
 "    <menuitem action=\"Props\" />"
-"    <menuitem action=\"About\" />"
+/*"    <menuitem action=\"About\" />"*/
 "    <menuitem action=\"Exit\" />"
 "  </popup>"
 "</ui>";

@@ -173,7 +173,7 @@ void vnkb_init_charset(Vnkb *vnkb)
 {
   long v;
 
-  v = UkGetPropValue(AIMCharset, VKC_UTF8);
+  v = UkGetPropValue(vnkb->driver == DRIVER_UNIKEY ? BIMCharset : AIMCharset, VKC_UTF8);
   vnkb->charset = v;
   vnkb_update_charset(vnkb);
 }
@@ -181,7 +181,7 @@ void vnkb_init_charset(Vnkb *vnkb)
 void vnkb_init_method(Vnkb *vnkb)
 {
   long v;
-  v = UkGetPropValue(AIMMethod, VKM_TELEX);
+  v = UkGetPropValue(vnkb->driver == DRIVER_UNIKEY ? BIMMethod : AIMMethod, VKM_TELEX);
   vnkb->method = v;
 
   vnkb_update_method(vnkb);
@@ -190,7 +190,7 @@ void vnkb_init_method(Vnkb *vnkb)
 void vnkb_init_enabled(Vnkb *vnkb)
 {
   long v;
-  v = UkGetPropValue(AIMMethod, VKM_TELEX);
+  v = UkGetPropValue(vnkb->driver == DRIVER_UNIKEY ? BIMMethod : AIMMethod, VKM_TELEX);
   vnkb->enabled = v != VKM_OFF;
   vnkb->backup_method = UkGetPropValue(AIMUsing, VKM_TELEX);
   vnkb_update_enabled(vnkb);
@@ -580,7 +580,7 @@ void vnkb_show_preferences (Vnkb *vnkb)
 
   gtk_list_store_append(store,&iter);
   gtk_list_store_set(store,&iter,
-		     0,"Enable",
+		     0,_("Enable Xvnkb"),
 		     1,g_new0(KeyEntry,1),
 		     -1);
 
@@ -703,6 +703,8 @@ void vnkb_update_label(Vnkb *vnkb)
   }
 
   gtk_widget_modify_fg(vnkb->label,GTK_STATE_NORMAL,vnkb->enabled ? &vnkb->color_enabled : &vnkb->color_disabled);
+  /*gtk_widget_modify_bg(vnkb->button,GTK_STATE_NORMAL,!vnkb->enabled ? &vnkb->color_enabled : &vnkb->color_disabled);
+  gtk_widget_modify_fg(vnkb->button,GTK_STATE_NORMAL,vnkb->enabled ? &vnkb->color_enabled : &vnkb->color_disabled);*/
 
   switch (vnkb->label_mode) {
   case VNKB_LABEL_CUSTOM:

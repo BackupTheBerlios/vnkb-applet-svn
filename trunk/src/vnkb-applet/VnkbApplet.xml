@@ -14,9 +14,9 @@
     <cmd type="radio" group="CS" name="CS_Vps" _label="V_ps"/>
 
     <cmd name="Enable" _label="_Enable" type="toggle" />
-    <cmd name="Spell" _label="_Spelling Checking" type="toggle" />
+    <cmd name="Spell" type="toggle" _label="_Spelling Checking" pixtype="stock" pixname="gtk-spell-check" />
 
-    <cmd name="Props" _label="_Preferences..." pixtype="stock" pixname="gtk-properties" />
+    <cmd name="Props" _label="_Preferences..." pixtype="stock" pixname="gtk-preferences" />
     <cmd name="About" _label="_About..." pixtype="stock" pixname="gnome-stock-about" />
   </commands>
   <popups>
@@ -40,7 +40,7 @@
       <menuitem name="Item 0" verb="Spell" />
 
       <menuitem name="Item 1" verb="Props" />
-      <menuitem name="Item 3" verb="About" />
+      <!-- menuitem name="Item 3" verb="About" / -->
     </popup>
   </popups>
 </Root>
