@@ -244,7 +244,7 @@ void vnkb_save_config(Vnkb *vnkb)
 	case VKC_VIQR: param ="VIQR"; break;
 	case VKC_VISCII: param ="VISCII"; break;
 	case VKC_VPS: param ="VPS"; break;
-	default: param = NULL;
+	default: param = "UTF8"; break;
 	}
 	if (param)
 	  fprintf(fp,"charset=%s\n",param);
@@ -258,7 +258,7 @@ void vnkb_save_config(Vnkb *vnkb)
 	case VKM_VIQR_STAR: param = "VIQR*"; break;
 	case VKM_VNI: param = "VNI"; break;
 	case VKM_TELEX: param = "TELEX"; break;
-	default:param = NULL;
+	default:param = "TELEX"; break;
 	}
 	if (param)
 	  fprintf(fp,"method=%s\n",param);
@@ -269,7 +269,7 @@ void vnkb_save_config(Vnkb *vnkb)
 	case VNKB_LABEL_IM: param = "im"; break;
 	case VNKB_LABEL_DEFAULT: param = "default"; break;
 	case VNKB_LABEL_CUSTOM: param = "custom"; break;
-	default: param = NULL;
+	default: param = "default"; break;
 	}
 	if (param)
 	  fprintf(fp,"label_mode=%s\n",param);
