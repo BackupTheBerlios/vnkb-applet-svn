@@ -32,6 +32,16 @@
 #ifndef __XVNKB_H
 #define __XVNKB_H
 
+#define VK_SHIFT				0x01
+#define	VK_CAPS_LOCK			0x02
+#define VK_CONTROL				0x04
+#define VK_ALT					0x08
+#define VK_WINKEY				0x40
+#define	VK_NUM_LOCK				0x10
+#define	VK_SCROLL_LOCK			0x80
+#define	VK_NOTACCEPT_STATES		0x6C
+#define VK_UPPERCASE_STATES		(VK_SHIFT|VK_CAPS_LOCK)
+
 // when ukxim is run in xvnkb sync mode, it will
 // use these atoms for synchronization
 #define VKP_CHARSET	"VK_CHARSET"
@@ -67,6 +77,10 @@ typedef enum {
   VKC_UTF8
 } vk_charsets;
 
+typedef struct {
+	long state;
+	long sym;
+} vk_hotkey_info;
 
 //pklong: added atoms for stored preferd GUI posistion
 #define UKP_GUI_POS_X "UK_GUI_X_POSITION"

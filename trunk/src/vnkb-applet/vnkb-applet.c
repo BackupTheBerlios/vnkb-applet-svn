@@ -123,6 +123,7 @@ vnkb_applet_fill (VnkbApplet *fish)
   vnkb_init_charset(vnkb);
   vnkb_init_method(vnkb);
   vnkb_init_enabled(vnkb);
+  vnkb_init_spelling(vnkb);
 
   g_signal_connect(G_OBJECT(vnkb->button),
 		   "button-press-event",
@@ -149,6 +150,20 @@ vnkb_applet_update_enabled(Vnkb *vnkb)
 				(fish->vnkb.enabled ? "1" : "0"),
 				NULL);
   vnkb_update_label(&fish->vnkb);
+}
+
+static void
+vnkb_applet_update_spelling(Vnkb *vnkb)
+{
+  VnkbApplet *fish = (VnkbApplet*)vnkb->panel;
+  PanelApplet *applet = (PanelApplet *) fish;
+  BonoboUIComponent *component;
+  component = panel_applet_get_popup_component (applet);
+  bonobo_ui_component_set_prop (component,
+				"/commands/Spell",
+				"state",
+				(fish->vnkb.spelling ? "1" : "0"),
+				NULL);
 }
 
 static void
@@ -230,6 +245,7 @@ vnkb_applet_instance_init (VnkbApplet      *fish,
   fish->vnkb.update_charset = vnkb_applet_update_charset;
   fish->vnkb.update_method = vnkb_applet_update_method;
   fish->vnkb.update_enabled = vnkb_applet_update_enabled;
+  fish->vnkb.update_spelling = vnkb_applet_update_spelling;
 
   fish->orientation = PANEL_APPLET_ORIENT_UP;
   panel_applet_set_flags (PANEL_APPLET (fish),
@@ -319,6 +335,13 @@ static void vnkb_applet_ui_component_event (BonoboUIComponent 			*comp,
     gboolean state;
     state = !strcmp(state_string,"1");
     vnkb_set_enabled(&data->vnkb,state);
+    return;
+  }
+
+  if (!strcmp(path,"Spell")) {
+    gboolean state;
+    state = !strcmp(state_string,"1");
+    vnkb_set_spelling(&data->vnkb,state);
     return;
   }
 

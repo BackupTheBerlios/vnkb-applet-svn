@@ -372,7 +372,7 @@ egg_cell_renderer_keys_get_size (GtkCellRenderer *cell,
 /* FIXME: Currently we don't differentiate between a 'bogus' key (like tab in
  * GTK mode) and a removed key.
  */
-   
+#include <stdio.h>   
 static gboolean
 grab_key_callback (GtkWidget    *widget,
                    GdkEventKey  *event,
@@ -390,8 +390,29 @@ grab_key_callback (GtkWidget    *widget,
   
   keys = EGG_CELL_RENDERER_KEYS (data);
 
-  if (is_modifier (event->hardware_keycode))
+  if (!event->state) {
+    if (!is_modifier(event->hardware_keycode)) {
+      if (accel_mods == 0 && accel_keyval == GDK_Escape)
+	goto out; /* cancel */
+
+      /* clear the accelerator on Backspace */
+      if (accel_mods == 0 && accel_keyval == GDK_BackSpace) {
+	cleared = TRUE;
+	goto out;
+      }
+    }
+
     return TRUE;
+  }
+
+  if (is_modifier (event->hardware_keycode)) {
+    accel_keyval = gdk_keyval_to_lower (upper);
+    if (accel_keyval == GDK_ISO_Left_Tab) 
+      accel_keyval = GDK_Tab;
+    accel_mods = event->state;
+    edited = TRUE;
+    goto out;
+  }
 
   edited = FALSE;
   cleared = FALSE;
@@ -432,15 +453,6 @@ grab_key_callback (GtkWidget    *widget,
   else
     g_assert_not_reached ();
     
-  if (accel_mods == 0 && accel_keyval == GDK_Escape)
-    goto out; /* cancel */
-
-  /* clear the accelerator on Backspace */
-  if (accel_mods == 0 && accel_keyval == GDK_BackSpace)
-    {
-      cleared = TRUE;
-      goto out;
-    }
 
   if (keys->accel_mode == EGG_CELL_RENDERER_KEYS_MODE_GTK)
     {

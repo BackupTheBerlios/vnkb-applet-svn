@@ -50,7 +50,9 @@ typedef struct
 
 //------------------------------------------
 Atom AIMCharset, AIMUsing, AIMMethod, AIMViqrStarGui, AIMViqrStarCore;
-Atom ASuspend;
+Atom ASuspend,AIMSwitchKey,AIMSpelling;
+
+void vnkb_xvnkb_update_switchkey(Vnkb *,int,int);
 
 void
 vnkb_get_sync_atoms(int xvnkbSync)
@@ -66,6 +68,8 @@ vnkb_get_sync_atoms(int xvnkbSync)
     AIMCharset = XInternAtom(display, VKP_CHARSET, False);
     AIMMethod = XInternAtom(display, VKP_METHOD, False);
     AIMUsing = XInternAtom(display, VKP_USING, False);
+    AIMSwitchKey = XInternAtom(display,VKP_HOTKEY,0);
+    AIMSpelling = XInternAtom(display,VKP_SPELLING,0);
   }
   else {
     AIMCharset = XInternAtom(display, UKP_CHARSET, False);
@@ -179,6 +183,14 @@ void vnkb_init_enabled(Vnkb *vnkb)
   vnkb_update_enabled(vnkb);
 }
 
+void vnkb_init_spelling(Vnkb *vnkb)
+{
+  long v;
+  v = UkGetPropValue(AIMSpelling, 0);
+  vnkb->enabled = v;
+  vnkb_update_spelling(vnkb);
+}
+
 void
 vnkb_toggle_enabled(Vnkb *applet)
 {
@@ -209,6 +221,12 @@ void vnkb_update_enabled(Vnkb *applet)
 {
   if (applet->update_enabled)
     applet->update_enabled(applet);
+}
+
+void vnkb_update_spelling(Vnkb *applet)
+{
+  if (applet->update_spelling)
+    applet->update_spelling(applet);
 }
 
 GdkFilterReturn
@@ -278,6 +296,19 @@ vnkb_set_enabled(Vnkb *vnkb,gboolean state)
   }
 }
 
+void
+vnkb_set_spelling(Vnkb *vnkb,gboolean state)
+{
+  if (vnkb->set_spelling)
+    vnkb->set_spelling(vnkb,state);
+  else {
+    if (state != vnkb->spelling) {
+      vnkb->enabled = state;
+      UkSetPropValue(AIMSpelling,state);
+    }
+  }
+}
+
 void vnkb_set_charset(Vnkb *vnkb,int cs)
 {
   if (vnkb->charset != cs) {
@@ -329,7 +360,8 @@ shortcut_edited_cb(GtkCellRendererText   *cell,
 		   guint		  keycode,
 		   gpointer               data)
 {
-  GtkTreeModel *model = GTK_TREE_MODEL(data);
+  Vnkb *vnkb = (Vnkb*)data;
+  GtkTreeModel *model = GTK_TREE_MODEL(vnkb->store);
   GtkTreePath *path = gtk_tree_path_new_from_string (path_string);
   GtkTreeIter iter;
   KeyEntry *key_entry, tmp_key;
@@ -354,6 +386,7 @@ shortcut_edited_cb(GtkCellRendererText   *cell,
   *key_entry = tmp_key;
   gtk_tree_model_row_changed (model, path, &iter);
   gtk_tree_path_free (path);
+  vnkb_xvnkb_update_switchkey(vnkb,mask,keycode);
 }
 
 static void
@@ -385,7 +418,8 @@ entry_enabled_changed_cb(GtkEntry *b,Vnkb *vnkb)
 {
   if (vnkb->text_enabled)
     g_free(vnkb->text_enabled);
-  vnkb->text_enabled = g_strdup(gtk_entry_get_text(GTK_ENTRY(vnkb->widget_text_enabled)));
+  vnkb->text_enabled = g_strdup(gtk_entry_get_text(b));
+  vnkb_update_label(vnkb);
 }
 
 static void
@@ -393,7 +427,26 @@ entry_disabled_changed_cb(GtkEntry *b,Vnkb *vnkb)
 {
   if (vnkb->text_disabled)
     g_free(vnkb->text_disabled);
-  vnkb->text_disabled = g_strdup(gtk_entry_get_text(GTK_ENTRY(vnkb->widget_text_disabled)));
+  vnkb->text_disabled = g_strdup(gtk_entry_get_text(b));
+  vnkb_update_label(vnkb);
+}
+
+static void
+fontbutton_enabled_set_cb(GtkFontButton *b,Vnkb *vnkb)
+{
+  if (vnkb->font_enabled)
+    g_free(vnkb->font_enabled);
+  vnkb->font_enabled = g_strdup(gtk_font_button_get_font_name(b));
+  vnkb_update_label(vnkb);
+}
+
+static void
+fontbutton_disabled_set_cb(GtkFontButton *b,Vnkb *vnkb)
+{
+  if (vnkb->font_disabled)
+    g_free(vnkb->font_disabled);
+  vnkb->font_disabled = g_strdup(gtk_font_button_get_font_name(b));
+  vnkb_update_label(vnkb);
 }
 
 
@@ -424,24 +477,24 @@ void vnkb_show_preferences (Vnkb *vnkb)
   xml = glade_xml_new (VNKB_GLADEDIR "/vnkb-preferences.glade", NULL, GETTEXT_PACKAGE);
   dlg = glade_xml_get_widget(xml,"vnkb_preferences_dialog");
 
-  vnkb->widget_text_enabled = glade_xml_get_widget(xml,"entry_enabled");
-  g_signal_connect(G_OBJECT(vnkb->widget_text_enabled),"changed",
+  vnkb->widget_text_enabled = w = glade_xml_get_widget(xml,"entry_enabled");
+  g_signal_connect(G_OBJECT(w),"changed",
 		   G_CALLBACK(entry_enabled_changed_cb),
 		   vnkb);
   if (vnkb->text_enabled)
-    gtk_entry_set_text(GTK_ENTRY(vnkb->text_enabled),vnkb->text_enabled);
+    gtk_entry_set_text(GTK_ENTRY(w),vnkb->text_enabled);
 
-  vnkb->widget_text_disabled = glade_xml_get_widget(xml,"entry_disabled");
-  g_signal_connect(G_OBJECT(vnkb->widget_text_enabled),"changed",
+  vnkb->widget_text_disabled = w = glade_xml_get_widget(xml,"entry_disabled");
+  g_signal_connect(G_OBJECT(w),"changed",
 		   G_CALLBACK(entry_disabled_changed_cb),
 		   vnkb);
   if (vnkb->text_disabled)
-    gtk_entry_set_text(GTK_ENTRY(vnkb->text_enabled),vnkb->text_disabled);
+    gtk_entry_set_text(GTK_ENTRY(w),vnkb->text_disabled);
 
   //gtk_dialog_set_default_response (GTK_DIALOG (dlg), GTK_RESPONSE_OK);
 
   treeview = glade_xml_get_widget(xml,"treeview_shortcut");
-  store = gtk_list_store_new(2,G_TYPE_STRING,G_TYPE_POINTER);
+  vnkb->store = store = gtk_list_store_new(2,G_TYPE_STRING,G_TYPE_POINTER);
   gtk_tree_view_set_model(GTK_TREE_VIEW(treeview),GTK_TREE_MODEL(store));
   col = gtk_tree_view_column_new_with_attributes(_("Function"),
 						 gtk_cell_renderer_text_new(),
@@ -455,7 +508,7 @@ void vnkb_show_preferences (Vnkb *vnkb)
 					   NULL);
   g_signal_connect(G_OBJECT(cell),"accel_edited",
 		   G_CALLBACK(shortcut_edited_cb),
-		   store);
+		   vnkb);
   col = gtk_tree_view_column_new_with_attributes(_("Shortcut"),cell,NULL);
   gtk_tree_view_column_set_cell_data_func (col, cell, accel_set_func, NULL, NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW(treeview),col);
@@ -501,6 +554,22 @@ void vnkb_show_preferences (Vnkb *vnkb)
 		    G_CALLBACK(colorbutton_disabled_set_cb), 
 		    vnkb);
 
+  button = glade_xml_get_widget (xml, "fontbutton_enabled");
+  if (vnkb->font_enabled)
+    gtk_font_button_set_font_name(GTK_FONT_BUTTON(button),
+				  vnkb->font_enabled);
+  g_signal_connect (button, "font-set",
+		    G_CALLBACK(fontbutton_enabled_set_cb), 
+		    vnkb);
+
+  button = glade_xml_get_widget (xml, "fontbutton_disabled");
+  if (vnkb->font_disabled)
+    gtk_font_button_set_font_name(GTK_FONT_BUTTON(button),
+				  vnkb->font_disabled);
+  g_signal_connect (button, "font-set",
+		    G_CALLBACK(fontbutton_disabled_set_cb), 
+		    vnkb);
+
   button = glade_xml_get_widget (xml, "button_close");
   g_signal_connect_swapped (button, "clicked",
 			    (GCallback) gtk_widget_destroy, 
@@ -526,7 +595,7 @@ void vnkb_update_label(Vnkb *vnkb)
 {
   char *label;
   int type;
-
+  char *new_label = NULL;
 
   gtk_widget_modify_fg(vnkb->label,GTK_STATE_NORMAL,vnkb->enabled ? &vnkb->color_enabled : &vnkb->color_disabled);
 
@@ -549,5 +618,29 @@ void vnkb_update_label(Vnkb *vnkb)
     break;
   default: label = vnkb->enabled ? "V" : "N"; break;
   }
-  gtk_label_set_text(GTK_LABEL(vnkb->label),label);
+
+  if (vnkb->enabled && vnkb->font_enabled) {
+    label = new_label = g_strdup_printf("<span font_desc=\"%s\">%s</span>",vnkb->font_enabled,label);
+  }
+  if (!vnkb->enabled && vnkb->font_disabled) {
+    label = new_label = g_strdup_printf("<span font_desc=\"%s\">%s</span>",vnkb->font_disabled,label);
+  }
+  if (new_label) {
+    gtk_label_set_markup(GTK_LABEL(vnkb->label),new_label);
+    g_free(new_label);
+  } else
+    gtk_label_set(GTK_LABEL(vnkb->label),label);
+}
+
+void vnkb_xvnkb_update_switchkey(Vnkb *vnkb,int state,int code)
+{
+  vk_hotkey_info hk;
+  GdkWindow *gdkroot = gdk_get_default_root_window();
+  Display *display = GDK_WINDOW_XDISPLAY(gdkroot);
+
+  hk.state = state;
+  hk.sym = XKeycodeToKeysym(display,code,0);
+  if (state & VK_SHIFT)
+    hk.sym = toupper(hk.sym);
+  UkSetPropValues(AIMSwitchKey,&hk,2);
 }

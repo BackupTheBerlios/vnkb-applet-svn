@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-17 11:56+0700\n"
+"POT-Creation-Date: 2004-04-17 15:34+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,19 +45,27 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
-#: src/libvnkb/vnkb.c:458
+#: src/libvnkb/vnkb.c:499
+msgid "Function"
+msgstr ""
+
+#: src/libvnkb/vnkb.c:512
+msgid "Shortcut"
+msgstr ""
+
+#: src/libvnkb/vnkb.c:612
 msgid "Off"
 msgstr ""
 
-#: src/libvnkb/vnkb.c:459
+#: src/libvnkb/vnkb.c:613
 msgid "Vni"
 msgstr ""
 
-#: src/libvnkb/vnkb.c:460
+#: src/libvnkb/vnkb.c:614
 msgid "Telex"
 msgstr ""
 
-#: src/libvnkb/vnkb.c:461
+#: src/libvnkb/vnkb.c:615
 msgid "Viqr"
 msgstr ""
 
@@ -131,68 +139,64 @@ msgstr ""
 msgid "Vnkb Factory"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:1 src/vnkb-docklet/vnkb-docklet.c:107
-#: src/vnkb-docklet/vnkb-docklet.c:114
+#: src/vnkb-applet/VnkbApplet.xml.h:1 src/vnkb-docklet/vnkb-docklet.c:114
+#: src/vnkb-docklet/vnkb-docklet.c:121
 msgid "V_iqr"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:2 src/vnkb-docklet/vnkb-docklet.c:115
+#: src/vnkb-applet/VnkbApplet.xml.h:2 src/vnkb-docklet/vnkb-docklet.c:122
 msgid "V_ps"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:3 src/vnkb-docklet/vnkb-docklet.c:113
+#: src/vnkb-applet/VnkbApplet.xml.h:3 src/vnkb-docklet/vnkb-docklet.c:120
 msgid "Vi_scii"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:4 src/vnkb-docklet/vnkb-docklet.c:98
+#: src/vnkb-applet/VnkbApplet.xml.h:4 src/vnkb-docklet/vnkb-docklet.c:105
 msgid "_About..."
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:5 src/vnkb-docklet/vnkb-docklet.c:97
+#: src/vnkb-applet/VnkbApplet.xml.h:5 src/vnkb-docklet/vnkb-docklet.c:104
 msgid "_Charset"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:6 src/vnkb-docklet/vnkb-docklet.c:120
+#: src/vnkb-applet/VnkbApplet.xml.h:6 src/vnkb-docklet/vnkb-docklet.c:127
 msgid "_Enable"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:7 src/vnkb-docklet/vnkb-docklet.c:96
+#: src/vnkb-applet/VnkbApplet.xml.h:7 src/vnkb-docklet/vnkb-docklet.c:103
 msgid "_Input Method"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:8 src/vnkb-docklet/vnkb-docklet.c:104
+#: src/vnkb-applet/VnkbApplet.xml.h:8 src/vnkb-docklet/vnkb-docklet.c:111
 msgid "_Off"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:9 src/vnkb-docklet/vnkb-docklet.c:99
+#: src/vnkb-applet/VnkbApplet.xml.h:9 src/vnkb-docklet/vnkb-docklet.c:106
 msgid "_Preferences..."
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:10 src/vnkb-docklet/vnkb-docklet.c:116
+#: src/vnkb-applet/VnkbApplet.xml.h:10 src/vnkb-docklet/vnkb-docklet.c:128
+msgid "_Spelling Checking"
+msgstr ""
+
+#: src/vnkb-applet/VnkbApplet.xml.h:11 src/vnkb-docklet/vnkb-docklet.c:123
 msgid "_Tcvn3"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:11 src/vnkb-docklet/vnkb-docklet.c:106
+#: src/vnkb-applet/VnkbApplet.xml.h:12 src/vnkb-docklet/vnkb-docklet.c:113
 msgid "_Telex"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:12 src/vnkb-docklet/vnkb-docklet.c:111
+#: src/vnkb-applet/VnkbApplet.xml.h:13 src/vnkb-docklet/vnkb-docklet.c:118
 msgid "_Unicode"
 msgstr ""
 
-#: src/vnkb-applet/VnkbApplet.xml.h:13 src/vnkb-docklet/vnkb-docklet.c:105
-#: src/vnkb-docklet/vnkb-docklet.c:112
+#: src/vnkb-applet/VnkbApplet.xml.h:14 src/vnkb-docklet/vnkb-docklet.c:112
+#: src/vnkb-docklet/vnkb-docklet.c:119
 msgid "_Vni"
 msgstr ""
 
-#: src/vnkb-applet/vnkb-applet.c:151
-msgid "V"
-msgstr ""
-
-#: src/vnkb-applet/vnkb-applet.c:151
-msgid "N"
-msgstr ""
-
-#: src/vnkb-docklet/vnkb-docklet.c:100
+#: src/vnkb-docklet/vnkb-docklet.c:107
 msgid "E_xit"
 msgstr ""

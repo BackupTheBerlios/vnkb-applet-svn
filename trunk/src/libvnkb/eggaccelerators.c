@@ -410,8 +410,13 @@ egg_virtual_accelerator_name (guint                  accelerator_key,
   else
     {
       keyval_name = gdk_keyval_name (gdk_keyval_to_lower (accelerator_key));
+      if (!keyval_name) {
+	GdkWindow *gdkroot = gdk_get_default_root_window();
+	Display *display = GDK_WINDOW_XDISPLAY(gdkroot);
+        keyval_name = g_strdup(XKeysymToString(XKeycodeToKeysym(display, keycode, 0)));
+      }
       if (!keyval_name)
-        keyval_name = "";
+	keyval_name = g_strdup_printf("0x%02x",keycode);
     }
 
   l = 0;

@@ -8,6 +8,7 @@
 static void vnkb_docklet_update_charset(Vnkb *applet);
 static void vnkb_docklet_update_method(Vnkb *applet);
 static void vnkb_docklet_update_enabled(Vnkb *applet);
+static void vnkb_docklet_update_spelling(Vnkb *applet);
 
 static EggTrayIcon *docklet;
 static Vnkb *vnkb;
@@ -70,6 +71,12 @@ vnkb_docklet_enabled_cb(GtkToggleAction *action)
 }
 
 static void
+vnkb_docklet_spelling_cb(GtkToggleAction *action)
+{
+  vnkb_set_spelling(vnkb,gtk_toggle_action_get_active(action));
+}
+
+static void
 button_popup_cb(GtkWidget *w,gpointer data)
 {
   gtk_menu_popup(GTK_MENU(menu),NULL,NULL,NULL,NULL,0,gtk_get_current_event_time());
@@ -118,6 +125,7 @@ static GtkRadioActionEntry cs_entries[] = {
 
 static GtkToggleActionEntry toggle_entries[] = {
   {"Enable",NULL,_("_Enable"),NULL,NULL,G_CALLBACK(vnkb_docklet_enabled_cb),0},
+  {"Spell",NULL,_("_Spelling Checking"),NULL,NULL,G_CALLBACK(vnkb_docklet_spelling_cb),0},
 };
 
 static char *xml = 
@@ -139,6 +147,7 @@ static char *xml =
 "    </menu>"
 ""
 "    <menuitem action=\"Enable\" />"
+"    <menuitem action=\"Spell\" />"
 "    <menuitem action=\"Props\" />"
 "    <menuitem action=\"About\" />"
 "    <menuitem action=\"Exit\" />"
@@ -155,6 +164,7 @@ int main(int argc,char **argv)
   vnkb->update_charset = vnkb_docklet_update_charset;
   vnkb->update_method = vnkb_docklet_update_method;
   vnkb->update_enabled = vnkb_docklet_update_enabled;
+  vnkb->update_spelling = vnkb_docklet_update_spelling;
 
   docklet = egg_tray_icon_new("Gaim");
 
@@ -175,6 +185,7 @@ int main(int argc,char **argv)
   vnkb_init_charset(vnkb);
   vnkb_init_method(vnkb);
   vnkb_init_enabled(vnkb);
+  vnkb_init_spelling(vnkb);
   vnkb_set_event_filter(vnkb,TRUE);
 
   vnkb->initialized = TRUE;	/* done */
@@ -240,4 +251,12 @@ vnkb_docklet_update_enabled(Vnkb *applet)
   GtkWidget *w = gtk_ui_manager_get_widget(uim,cmd);
   gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(w),applet->enabled);
   vnkb_update_label(applet);
+}
+
+static void
+vnkb_docklet_update_spelling(Vnkb *applet) 
+{
+  char *cmd = "/MainMenu/Spell";
+  GtkWidget *w = gtk_ui_manager_get_widget(uim,cmd);
+  gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(w),applet->spelling);
 }

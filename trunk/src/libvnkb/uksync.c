@@ -159,6 +159,13 @@ void UkSetPropValue(Atom atom, long value)
 		  (unsigned char *)&value, 1);
 }
 
+void UkSetPropValues(Atom atom, void* value,int n)
+{
+  XChangeProperty(display, RootWindow, atom, XA_CARDINAL, 32, 
+		  PropModeReplace, 
+		  (unsigned char *)value, n);
+}
+
 //-------------------------------------------------
 long UkGetPropValue(Atom atom, long defValue)
 {

@@ -38,6 +38,7 @@ int UnikeyToSyncMethod(int uk);
 int SyncToUnikeyMethod(int sync);
 
 void UkSetPropValue(Atom atom, long value);
+void UkSetPropValues(Atom atom, void* value,int nr_long);
 long UkGetPropValue(Atom atom, long defValue);
 
 #endif
