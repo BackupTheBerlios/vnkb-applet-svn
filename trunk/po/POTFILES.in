@@ -1,5 +1,5 @@
-VnkbApplet_Factory.server.in.in
-VnkbApplet.xml
-vnkb-applet.c
-vnkb-docklet.c
-vnkb.c
+src/vnkb-applet/VnkbApplet_Factory.server.in.in
+src/vnkb-applet/VnkbApplet.xml
+src/vnkb-applet/vnkb-applet.c
+src/vnkb-docklet/vnkb-docklet.c
+src/libvnkb/vnkb.c

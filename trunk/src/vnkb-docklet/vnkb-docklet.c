@@ -119,6 +119,31 @@ static GtkToggleActionEntry toggle_entries[] = {
   {"Enable",NULL,_("_Enable"),NULL,NULL,G_CALLBACK(vnkb_docklet_enabled_cb),0},
 };
 
+static char *xml = 
+"<ui>"
+"  <popup name=\"MainMenu\">"
+"    <menu action=\"IM\">"
+"      <menuitem action=\"IM_Off\" />"
+"      <menuitem action=\"IM_Vni\" />"
+"      <menuitem action=\"IM_Telex\" />"
+"      <menuitem action=\"IM_Viqr\" />"
+"    </menu>"
+"    <menu action=\"CS\">"
+"      <menuitem action=\"CS_Unicode\" />"
+"      <menuitem action=\"CS_Tcvn3\" />"
+"      <menuitem action=\"CS_Vni\" />"
+"      <menuitem action=\"CS_Viqr\" />"
+"      <menuitem action=\"CS_Viscii\" />"
+"      <menuitem action=\"CS_Vps\" />"
+"    </menu>"
+""
+"    <menuitem action=\"Enable\" />"
+"    <menuitem action=\"Props\" />"
+"    <menuitem action=\"About\" />"
+"    <menuitem action=\"Exit\" />"
+"  </popup>"
+"</ui>";
+
 int main(int argc,char **argv)
 {
 
@@ -141,7 +166,7 @@ int main(int argc,char **argv)
 
   uim = gtk_ui_manager_new();
   gtk_ui_manager_insert_action_group(uim,actions,0);
-  gtk_ui_manager_add_ui_from_file(uim,"vnkb-docklet.xml",NULL);
+  gtk_ui_manager_add_ui_from_string(uim,xml,-1,NULL);
   menu = gtk_ui_manager_get_widget(uim,"/MainMenu");
 
   vnkb_setup_widget(vnkb,GTK_WIDGET(docklet));
