@@ -170,7 +170,6 @@ vnkb_applet_update_enabled(Vnkb *vnkb)
 				"state",
 				(fish->vnkb.enabled ? "1" : "0"),
 				NULL);
-  vnkb_update_label(&fish->vnkb);
 }
 
 static void

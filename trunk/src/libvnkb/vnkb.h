@@ -12,6 +12,7 @@ struct _Vnkb {
   GtkWidget         	*button;
   GtkWidget *widget_text_enabled,*widget_text_disabled;
   GtkListStore *store;		/* for preferences dialog (shortcut) */
+  GtkTooltips *tooltip;
 
   gboolean      	 enabled;
   gboolean      	 spelling;

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-18 09:04+0700\n"
+"POT-Creation-Date: 2004-04-19 10:54+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,32 +45,59 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
-#: src/libvnkb/vnkb.c:563
+#: src/libvnkb/vnkb.c:564
 msgid "Function"
 msgstr ""
 
-#: src/libvnkb/vnkb.c:576
+#: src/libvnkb/vnkb.c:577
 msgid "Shortcut"
 msgstr ""
 
-#: src/libvnkb/vnkb.c:688
+#: src/libvnkb/vnkb.c:679 src/libvnkb/vnkb.c:717
 msgid "Off"
 msgstr ""
 
-#: src/libvnkb/vnkb.c:689
+#: src/libvnkb/vnkb.c:680 src/libvnkb/vnkb.c:689 src/libvnkb/vnkb.c:718
 msgid "Vni"
 msgstr ""
 
-#: src/libvnkb/vnkb.c:690
+#: src/libvnkb/vnkb.c:681 src/libvnkb/vnkb.c:719
 msgid "Telex"
 msgstr ""
 
-#: src/libvnkb/vnkb.c:691
+#: src/libvnkb/vnkb.c:682 src/libvnkb/vnkb.c:720
 msgid "Viqr"
 msgstr ""
 
-#: src/libvnkb/vnkb.c:692
+#: src/libvnkb/vnkb.c:683 src/libvnkb/vnkb.c:721
 msgid "Viqr*"
+msgstr ""
+
+#: src/libvnkb/vnkb.c:684 src/libvnkb/vnkb.c:693
+msgid "Unknown"
+msgstr ""
+
+#: src/libvnkb/vnkb.c:688
+msgid "Unicode"
+msgstr ""
+
+#: src/libvnkb/vnkb.c:690
+msgid "Viscii"
+msgstr ""
+
+#: src/libvnkb/vnkb.c:691
+msgid "Vps"
+msgstr ""
+
+#: src/libvnkb/vnkb.c:692
+msgid "Tcvn3"
+msgstr ""
+
+#: src/libvnkb/vnkb.c:696
+#, c-format
+msgid ""
+"Charset: %s\n"
+"Input method: %s"
 msgstr ""
 
 #: src/libvnkb/vnkb-preferences.glade.h:1

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vnkb-applet VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-18 09:04+0700\n"
-"PO-Revision-Date: 2004-04-17 20:34+0700\n"
+"POT-Creation-Date: 2004-04-19 10:54+0700\n"
+"PO-Revision-Date: 2004-04-19 10:54+0700\n"
 "Last-Translator: pclouds <pclouds@vnlinux.org>\n"
 "Language-Team: GnomeVI <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -44,34 +44,62 @@ msgstr "Loại phím tắt"
 msgid "Disabled"
 msgstr "Tắt"
 
-#: src/libvnkb/vnkb.c:563
+#: src/libvnkb/vnkb.c:564
 msgid "Function"
 msgstr "Chức năng"
 
-#: src/libvnkb/vnkb.c:576
+#: src/libvnkb/vnkb.c:577
 msgid "Shortcut"
 msgstr "Phím tắt"
 
-#: src/libvnkb/vnkb.c:688
+#: src/libvnkb/vnkb.c:679 src/libvnkb/vnkb.c:717
 msgid "Off"
 msgstr "Tắt"
 
-#: src/libvnkb/vnkb.c:689
+#: src/libvnkb/vnkb.c:680 src/libvnkb/vnkb.c:689 src/libvnkb/vnkb.c:718
 msgid "Vni"
 msgstr "Vni"
 
-#: src/libvnkb/vnkb.c:690
+#: src/libvnkb/vnkb.c:681 src/libvnkb/vnkb.c:719
 msgid "Telex"
 msgstr "Telex"
 
-#: src/libvnkb/vnkb.c:691
+#: src/libvnkb/vnkb.c:682 src/libvnkb/vnkb.c:720
 msgid "Viqr"
 msgstr "Viqr"
 
-#: src/libvnkb/vnkb.c:692
-#, fuzzy
+#: src/libvnkb/vnkb.c:683 src/libvnkb/vnkb.c:721
 msgid "Viqr*"
-msgstr "Viqr"
+msgstr "Viqr*"
+
+#: src/libvnkb/vnkb.c:684 src/libvnkb/vnkb.c:693
+msgid "Unknown"
+msgstr "Không rõ"
+
+#: src/libvnkb/vnkb.c:688
+msgid "Unicode"
+msgstr "Unicode"
+
+#: src/libvnkb/vnkb.c:690
+msgid "Viscii"
+msgstr "Viscii"
+
+#: src/libvnkb/vnkb.c:691
+msgid "Vps"
+msgstr "Vps"
+
+#: src/libvnkb/vnkb.c:692
+msgid "Tcvn3"
+msgstr "Tcvn3"
+
+#: src/libvnkb/vnkb.c:696
+#, c-format
+msgid ""
+"Charset: %s\n"
+"Input method: %s"
+msgstr ""
+"Bảng mã: %s\n"
+"Kiểu gõ: %s"
 
 #: src/libvnkb/vnkb-preferences.glade.h:1
 msgid "*"
@@ -163,9 +191,8 @@ msgid "V_ps"
 msgstr "V_ps"
 
 #: src/vnkb-applet/VnkbApplet.xml.h:3 src/vnkb-docklet/vnkb-docklet.c:145
-#, fuzzy
 msgid "Vi_qr*"
-msgstr "Viqr"
+msgstr "Vi_qr*"
 
 #: src/vnkb-applet/VnkbApplet.xml.h:4 src/vnkb-docklet/vnkb-docklet.c:151
 msgid "Vi_scii"

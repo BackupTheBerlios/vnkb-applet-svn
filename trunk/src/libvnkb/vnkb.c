@@ -51,6 +51,7 @@ typedef struct
 } KeyEntry;
 
 
+void vnkb_update_label(Vnkb *vnkb);
 //------------------------------------------
 Atom AIMCharset, AIMUsing, AIMMethod;
 Atom BIMCharset, BIMUsing, BIMMethod;
@@ -162,6 +163,9 @@ vnkb_setup_widget (Vnkb *fish,GtkWidget *widget)
 
   if (fish->widget_setup)
     fish->widget_setup(fish,widget);
+
+  fish->tooltip = gtk_tooltips_new();
+
   gtk_widget_show_all (widget);
 }
 
@@ -188,6 +192,7 @@ void vnkb_init_enabled(Vnkb *vnkb)
   long v;
   v = UkGetPropValue(AIMMethod, VKM_TELEX);
   vnkb->enabled = v != VKM_OFF;
+  vnkb->backup_method = UkGetPropValue(AIMUsing, VKM_TELEX);
   vnkb_update_enabled(vnkb);
 }
 
@@ -227,6 +232,7 @@ void vnkb_update_method(Vnkb *applet)
 
 void vnkb_update_enabled(Vnkb *applet)
 {
+  vnkb_update_label(applet);
   if (applet->update_enabled)
     applet->update_enabled(applet);
 }
@@ -265,7 +271,6 @@ vnkb_event_filter_cb(GdkXEvent 	*xevent,
   } else if (ev->atom == AIMMethod || ev->atom == BIMMethod) {
     v = UkGetPropValue(ev->atom,VKM_TELEX);
     vnkb_set_method(vnkb,v);
-    vnkb_set_enabled(vnkb,v != VKM_OFF);
     return GDK_FILTER_REMOVE;
   } else if (ev->atom == AIMUsing || ev->atom == BIMUsing) {
     v = UkGetPropValue(ev->atom,VKM_TELEX);
@@ -285,20 +290,13 @@ vnkb_set_enabled(Vnkb *vnkb,gboolean state)
   else {
     if (state != vnkb->enabled) {
       vnkb->enabled = state;
-      vnkb_update_label(vnkb);
+      vnkb_update_enabled(vnkb);
       if (!vnkb->enabled) {
-	vnkb->backup_method = vnkb->method;
-	if (vnkb->backup_method == VKM_OFF) 
-	  vnkb->backup_method = VKM_TELEX;
-	UkSetPropValue(AIMUsing,vnkb->backup_method);
-	UkSetPropValue(BIMUsing,vnkb->backup_method);
-	UkSetPropValue(AIMMethod,VKM_OFF);
-	UkSetPropValue(BIMMethod,VKM_OFF);
+      	vnkb_set_method(vnkb,VKM_OFF);
       } else {
-	if (vnkb->backup_method == VKM_OFF) 
+	if (vnkb->backup_method == VKM_OFF)
 	  vnkb->backup_method = VKM_TELEX;
-	UkSetPropValue(AIMMethod,vnkb->backup_method);
-	UkSetPropValue(BIMMethod,vnkb->backup_method);
+      	vnkb_set_method(vnkb,vnkb->backup_method);
       }
     }
   }
@@ -330,6 +328,7 @@ void vnkb_set_charset(Vnkb *vnkb,int cs)
       UkSetPropValue(AIMCharset,vnkb->charset);
       UkSetPropValue(BIMCharset,vnkb->charset);
     }
+    vnkb_update_charset(vnkb);
   }
 }
 
@@ -340,17 +339,15 @@ void vnkb_set_method(Vnkb *vnkb,int im)
   if (im == VKM_VIQR) {
     v = UkGetPropValue(BIMViqrStarGui,0);
     if (v) {
-      g_print("Caught it!\n");
       im = VKM_VIQR_STAR;
       UkSetPropValue(BIMViqrStarGui,0);
     }
   }
 
   if (vnkb->method != im) {
-    if (vnkb->method != VKM_OFF)
-      vnkb->backup_method = vnkb->method;
+    if (im != VKM_OFF)
+      vnkb->backup_method = im;
     vnkb->method = im;
-    g_print("%d %d\n",vnkb->method,vnkb->backup_method);
     switch (im) {
     case VKM_VIQR_STAR:
       if (vnkb->driver == DRIVER_UNIKEY) {
@@ -368,12 +365,16 @@ void vnkb_set_method(Vnkb *vnkb,int im)
 */
     default:
       if (im == VKM_OFF) {
+      	if (vnkb->backup_method == VKM_OFF)
+	  vnkb->backup_method = VKM_TELEX;
 	UkSetPropValue(AIMUsing,vnkb->backup_method);
 	UkSetPropValue(BIMUsing,vnkb->backup_method);
       }
       UkSetPropValue(AIMMethod,vnkb->method);
       UkSetPropValue(BIMMethod,vnkb->method);
     }
+    vnkb_set_enabled(vnkb,im != VKM_OFF);
+    vnkb_update_method(vnkb);
   }
 }
 
@@ -672,6 +673,34 @@ void vnkb_update_label(Vnkb *vnkb)
   char *label;
   int type;
   char *new_label = NULL;
+  char *im,*cs;
+
+  switch (vnkb->method) {
+  case VKM_OFF: im = _("Off");break;
+  case VKM_VNI: im = _("Vni"); break;
+  case VKM_TELEX: im = _("Telex"); break;
+  case VKM_VIQR: im = _("Viqr"); break;
+  case VKM_VIQR_STAR: im = _("Viqr*"); break;
+  default: im = _("Unknown");
+  }
+
+  switch (vnkb->charset) {
+  case VKC_UTF8: cs = _("Unicode");break;
+  case VKC_VNI: cs = _("Vni"); break;
+  case VKC_VISCII: cs = _("Viscii"); break;
+  case VKC_VPS: cs = _("Vps"); break;
+  case VKC_TCVN: cs = _("Tcvn3"); break;
+  default: cs = _("Unknown");
+  }
+
+  label = g_strdup_printf(_("Charset: %s\nInput method: %s"),cs,im);
+  if (label) {
+    gtk_tooltips_set_tip(vnkb->tooltip,
+			 vnkb->button,
+			 label,
+			 NULL);
+    g_free(label);
+  }
 
   gtk_widget_modify_fg(vnkb->label,GTK_STATE_NORMAL,vnkb->enabled ? &vnkb->color_enabled : &vnkb->color_disabled);
 
