@@ -1,0 +1,32 @@
+<oaf_info>
+
+<oaf_server iid="OAFIID:VnkbApplet_Factory"
+	    type="exe"
+	    location="/mnt/work/vnkb/vnkb-applet">
+
+	<oaf_attribute name="repo_ids" type="stringv">
+		<item value="IDL:Bonobo/GenericFactory:1.0"/>
+		<item value="IDL:Bonobo/Unknown:1.0"/>
+	</oaf_attribute>
+	<oaf_attribute name="name" type="string" _value="Vnkb Factory"/>
+	<oaf_attribute name="description" type="string" _value="Vnkb Factory"/>
+
+</oaf_server>
+
+<oaf_server iid="OAFIID:VnkbApplet"
+	    type="factory" 
+	    location="OAFIID:VnkbApplet_Factory">
+
+	<oaf_attribute name="repo_ids" type="stringv">
+		<item value="IDL:GNOME/Vertigo/PanelAppletShell:1.0"/>
+		<item value="IDL:Bonobo/Control:1.0"/>
+		<item value="IDL:Bonobo/Unknown:1.0"/>
+	</oaf_attribute>
+	<oaf_attribute name="name" type="string" _value="Vnkb"/>
+	<oaf_attribute name="description" type="string" _value="Vietnamese Keyboard Frontend"/>
+	<oaf_attribute name="panel:category" type="string" _value="Utility"/>
+	<oaf_attribute name="panel:icon" type="string" value="gnome-fish.png"/>
+
+</oaf_server>
+
+</oaf_info>
