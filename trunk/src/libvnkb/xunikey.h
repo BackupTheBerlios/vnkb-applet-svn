@@ -1,4 +1,4 @@
-/* vnkb.c:
+/* xunikey.h:
  *
  * Copyright (C) 1998-2002 Free Software Foundation, Inc.
  *
