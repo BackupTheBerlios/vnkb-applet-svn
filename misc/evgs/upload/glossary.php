@@ -131,8 +131,14 @@ if (isset($_GET['action']) || isset($_GET['search_id']))
 
 		$sort_by = (isset($_GET['sort_by'])) ? intval($_GET['sort_by']) : null;
 	}
+	else if ($action == 'show_unanswered')
+	{
+	}
+	else if ($action == 'show_24h')
+	{
+	}
 	else
-			message($lang_common['Bad request']);
+		message($lang_common['Bad request']);
 
 
 	// If a valid search_id was supplied we attempt to fetch the search results from the db
@@ -178,68 +184,85 @@ if (isset($_GET['action']) || isset($_GET['search_id']))
 	}
 	else
 	{
-		$keyword_results = $author_results = array();
-
-		if (!empty($author) || !empty($keywords) || !empty($source) || !empty($destination) || !empty($description))
+		if ($action == 'search')
 		{
-			// If it's a search for author name (and that author name isn't Guest)
-			if ($author && strcasecmp($author, 'Guest') && strcasecmp($author, $lang_common['Guest']))
+			$keyword_results = $author_results = array();
+
+			if (!empty($author) || !empty($keywords) || !empty($source) || !empty($destination) || !empty($description))
 			{
-				switch ($db_type)
+				// If it's a search for author name (and that author name isn't Guest)
+				if ($author && strcasecmp($author, 'Guest') && strcasecmp($author, $lang_common['Guest']))
 				{
-					case 'pgsql':
-						$result = $db->query('SELECT id FROM '.$db->prefix.'users WHERE username ILIKE \''.$db->escape($author).'\'') or error('Unable to fetch users', __FILE__, __LINE__, $db->error());
-						break;
+					switch ($db_type)
+					{
+						case 'pgsql':
+							$result = $db->query('SELECT id FROM '.$db->prefix.'users WHERE username ILIKE \''.$db->escape($author).'\'') or error('Unable to fetch users', __FILE__, __LINE__, $db->error());
+							break;
 
-					default:
-						$result = $db->query('SELECT id FROM '.$db->prefix.'users WHERE username LIKE \''.$db->escape($author).'\'') or error('Unable to fetch users', __FILE__, __LINE__, $db->error());
-						break;
-				}
+						default:
+							$result = $db->query('SELECT id FROM '.$db->prefix.'users WHERE username LIKE \''.$db->escape($author).'\'') or error('Unable to fetch users', __FILE__, __LINE__, $db->error());
+							break;
+					}
 
-				if ($db->num_rows($result))
-				{
-					$user_ids = '';
-					while ($row = $db->fetch_row($result))
-						$user_ids .= (($user_ids != '') ? ',' : '').$row[0];
+					if ($db->num_rows($result))
+					{
+						$user_ids = '';
+						while ($row = $db->fetch_row($result))
+							$user_ids .= (($user_ids != '') ? ',' : '').$row[0];
 
-					$result = $db->query('SELECT id FROM '.$db->prefix.'glossary_items WHERE user_id IN('.$user_ids.')') or error('Unable to fetch matched glossary item list', __FILE__, __LINE__, $db->error());
+						$result = $db->query('SELECT id FROM '.$db->prefix.'glossary_items WHERE user_id IN('.$user_ids.')') or error('Unable to fetch matched glossary item list', __FILE__, __LINE__, $db->error());
 
-					$search_ids = array();
-					while ($row = $db->fetch_row($result))
-						$author_results[] = $row[0];
+								$search_ids = array();
+								while ($row = $db->fetch_row($result))
+								$author_results[] = $row[0];
 
-					$db->free_result($result);
-				}
+								$db->free_result($result);
+								}
+								}
+
+
+								$search_ids = $author_results;
+
+								$num_hits = count($search_ids);
+
+								$where_conditions = array();
+								if (!empty($source))
+								$where_conditions[] = 'src LIKE \''.$db->escape($source).'\'';
+
+								if (!empty($destination))
+								$where_conditions[] = 'dst LIKE \''.$db->escape($destination).'\'';
+
+								if (!empty($description))
+									$where_conditions[] = 'description LIKE \''.$db->escape($description).'\'';
+
+								if (count($where_conditions))
+									$where_conditions = implode(' AND ',$where_conditions);
+								else
+									$where_conditions = '';
+
+								if ($num_hits)
+								{
+									if ($while_conditions != '')
+										$while_conditions = ' AND '.$while_conditions;
+									$result = $db->query('SELECT DISTINCT id FROM '.$db->prefix.'glossary_items WHERE id IN('.implode(',', $search_ids).') '.$where_conditions, true) or error('Unable to fetch topic list', __FILE__, __LINE__, $db->error());
+								}
+								else
+									$result = $db->query('SELECT DISTINCT id FROM '.$db->prefix.'glossary_items WHERE '.$where_conditions, true) or error('Unable to fetch topic list', __FILE__, __LINE__, $db->error());
+
+								$search_ids = array();
+								while ($row = $db->fetch_row($result))
+									$search_ids[] = $row[0];
+
+								$db->free_result($result);
+
+								$num_hits = count($search_ids);
 			}
-
-
-			$search_ids = $author_results;
-
-			$num_hits = count($search_ids);
-
-			$where_conditions = array();
-			if (!empty($source))
-				$where_conditions[] = 'src LIKE \''.$db->escape($source).'\'';
-
-			if (!empty($destination))
-				$where_conditions[] = 'dst LIKE \''.$db->escape($destination).'\'';
-				
-			if (!empty($description))
-				$where_conditions[] = 'description LIKE \''.$db->escape($description).'\'';
-				
-			if (count($where_conditions))
-				$where_conditions = implode(' AND ',$where_conditions);
 			else
-				$where_conditions = '';
-
-			if ($num_hits)
-			{
-				if ($while_conditions != '')
-					$while_conditions = ' AND '.$while_conditions;
-				$result = $db->query('SELECT DISTINCT id FROM '.$db->prefix.'glossary_items WHERE id IN('.implode(',', $search_ids).') '.$where_conditions, true) or error('Unable to fetch topic list', __FILE__, __LINE__, $db->error());
-			}
-			else
-				$result = $db->query('SELECT DISTINCT id FROM '.$db->prefix.'glossary_items WHERE '.$where_conditions, true) or error('Unable to fetch topic list', __FILE__, __LINE__, $db->error());
+				message($lang_common['Bad request']);
+		}
+		else if ($action == 'show_unanswered')
+		{
+			$result = $db->query('SELECT id FROM '.$db->prefix.'glossary_items WHERE topic_id=0') or error('Unable to fetch topic list', __FILE__, __LINE__, $db->error());
 
 			$search_ids = array();
 			while ($row = $db->fetch_row($result))
@@ -249,8 +272,18 @@ if (isset($_GET['action']) || isset($_GET['search_id']))
 
 			$num_hits = count($search_ids);
 		}
-		else
-			message($lang_common['Bad request']);
+		else if ($action == 'show_24h')
+		{
+			$result = $db->query('SELECT id FROM '.$db->prefix.'glossary_items WHERE mtime>'.(time() - 86400)) or error('Unable to fetch topic list', __FILE__, __LINE__, $db->error());
+
+			$search_ids = array();
+			while ($row = $db->fetch_row($result))
+				$search_ids[] = $row[0];
+
+			$db->free_result($result);
+
+			$num_hits = count($search_ids);
+		}
 
 
 		// Prune "old" search results
@@ -402,7 +435,7 @@ if (isset($_GET['action']) || isset($_GET['search_id']))
 <?php
 
 		show_newgloss_box();
-		$footer_style = 'search';
+		$footer_style = 'glossary';
 		require PUN_ROOT.'footer.php';
 	}
 	else
@@ -427,6 +460,7 @@ if (isset($_GET['action']) || isset($_GET['search_id']))
 </div>
 <?php
 		show_newgloss_box();
+		$footer_style = 'glossary';
 		require PUN_ROOT.'footer.php';
 	}
 }
@@ -484,5 +518,6 @@ require PUN_ROOT.'header.php';
 
 <?php
 
+$footer_style = 'glossary';
 require PUN_ROOT.'footer.php';
 
