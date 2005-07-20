@@ -83,6 +83,7 @@ function show_gloss_item($cur_gloss,$history_mode = false)
 {
 	global $pun_config,$pun_user;
 	include PUN_ROOT.'lang/'.$pun_user['language'].'/topic.php';
+	$dsts = parse_evgs_destination($cur_gloss['dst']);
 ?>
 <div class="blockpost">
 	<h2><?php echo '__Glossary:'.$cur_gloss['src'];?></h2>
@@ -101,7 +102,17 @@ function show_gloss_item($cur_gloss,$history_mode = false)
 				<div class="postmsg">
 					<dl>
 						<dd>__Source: <?php echo pun_htmlspecialchars($cur_gloss['src']); ?></dd>
-						<dd>__Translation: <?php echo pun_htmlspecialchars($cur_gloss['dst']); ?></dd>
+<?php if (count($dsts) == 1): ?>
+						<dd>__Translation: <?php echo pun_htmlspecialchars($dsts[0]); ?></dd>
+<?php else: ?>
+						<dd>__Translation:
+							<ul>
+<?php	foreach ($dsts as $dst): ?>
+								<li><?php echo pun_htmlspecialchars($dst); ?></li>
+<?php 	endforeach; ?>
+							</ul>
+						</dd>
+<?php endif; ?>
 					</dl>
 					<?php echo $cur_gloss['description']; ?>
 				</div>
@@ -132,4 +143,9 @@ function show_gloss_item($cur_gloss,$history_mode = false)
 	</div>
 </div>
 <?php
+}
+
+function parse_evgs_destination($destination)
+{
+	return explode('|',$destination);
 }
