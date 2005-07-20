@@ -72,7 +72,7 @@ else if ($footer_style == 'glossary')
 	if (!$pun_user['is_guest'])
 	{
 		echo "\n\t\t\t".'<dl id="searchlinks" class="conl">'."\n\t\t\t\t".'<dt><strong>'.$lang_common['Search links'].'</strong></dt>'."\n\t\t\t\t".'<dd><a href="glossary.php?action=show_24h">'.'Show recent items'.'</a></dd>'."\n";
-		echo "\t\t\t\t".'<dd><a href="glossary.php?action=show_unanswered">'.'Show uncommented items'.'</a></dd>'."\n";
+		echo "\t\t\t\t".'<dd><a href="glossary.php?action=show_unanswered">'.'Show uncommented items'.'</a></dd>'."\n\t\t\t</dl>";
 	}
 	else
 	{
