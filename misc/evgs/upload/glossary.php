@@ -322,7 +322,7 @@ if (isset($_GET['action']) || isset($_GET['search_id']))
 		}
 
 		$substr_sql = ($db_type != 'sqlite') ? 'SUBSTRING' : 'SUBSTR';
-		$sql = 'SELECT g.id, g.user_id, g.username, g.src, g.dst, g.ctime, g.mtime, g.topic_id, '.$substr_sql.'(g.description, 1, 1000) AS description FROM '.$db->prefix.'glossary_items AS g WHERE g.id IN('.$search_results.') ORDER BY '.$sort_by_sql;
+		$sql = 'SELECT g.id, g.user_id, g.username, g.src, g.dst, g.ctime, g.mtime, g.topic_id, g.rev_id, '.$substr_sql.'(g.description, 1, 1000) AS description FROM '.$db->prefix.'glossary_items AS g WHERE g.id IN('.$search_results.') ORDER BY '.$sort_by_sql;
 
 
 		// Determine the topic or post offset (based on $_GET['p'])
