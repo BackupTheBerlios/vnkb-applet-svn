@@ -52,15 +52,35 @@ $cur_gloss = $db->fetch_assoc($result);
 
 if (isset($_POST['action']))
 {
-	if ($_POST['action'] == 'editgloss')
+	switch ($_POST['action'])
 	{
-	$cur_gloss = array(
-		'id' => $id,
-		'src' => (isset($_POST['source'])) ? strtolower(trim($_POST['source'])) : null,
-		'dst' => (isset($_POST['destination'])) ? strtolower(trim($_POST['destination'])) : null,
-		'description' => (isset($_POST['description'])) ? strtolower(trim($_POST['description'])) : null
-		);
-		process_newgloss($cur_gloss,true);
+		case 'editgloss':
+			$cur_gloss = array(
+				'id' => $id,
+				'src' => (isset($_POST['source'])) ? strtolower(trim($_POST['source'])) : null,
+				'dst' => (isset($_POST['destination'])) ? strtolower(trim($_POST['destination'])) : null,
+				'description' => (isset($_POST['description'])) ? strtolower(trim($_POST['description'])) : null
+				);
+				process_newgloss($cur_gloss,true);
+			break;
+
+		case 'vote':
+				$vote_id = intval($_POST['vote']);
+				$dsts = parse_evgs_destination($cur_gloss['dst']);
+				if (!isset($dsts[$vote_id]))
+					message($lang_common['Bad request']);
+				if ($cur_gloss['votes'] != '')
+					$votes = unserialize($cur_gloss['votes']);
+				else
+					$votes = array();
+				$votes[$pun_user['id']] = $dsts[$vote_id];
+				$cur_gloss['votes'] = serialize($votes);
+				$db->query('UPDATE '.$db->prefix.'glossary_items SET votes=\''.$db->escape($cur_gloss['votes']).'\' WHERE id='.$id) or error('Could note update votes',__FILE__,__LINE__,$db->error());
+				redirect('glossitem.php?id='.$id,'Vote updated.');
+			break;
+
+		default:
+			message($lang_common['Bad request']);
 	}
 }
 
@@ -73,9 +93,43 @@ switch ($action)
 		if ($pun_user['is_guest'])
 			message($lang_common['Bad request']);
 		show_newgloss_box($cur_gloss,true);
-?>
+		break;
 
+	case 'vote':
+		$dsts = parse_evgs_destination($cur_gloss['dst']);
+?>
+<div class="blockform">
+	<h2><?php echo '__Glossary:'.$cur_gloss['src'];?></h2>
+	<div class="box">
+		<form id="search" method="post" action="glossitem.php?id=<?php echo $id ?>">
+			<input type="hidden" name="action" value="vote" />
+			<div class="inform">
+				<fieldset>
+					<legend><?php echo 'Translation vote' ?></legend>
+					<div class="infldset">
+						<dl>
+							<dd>__Source: <?php echo pun_htmlspecialchars($cur_gloss['src']); ?></dd>
+							<dd>__Translation:
+								<ul>
+<?php	foreach ($dsts as $idx => $dst): ?>
+									<li><label><input type="radio" name="vote" value="<?php echo $idx?>"/><?php echo pun_htmlspecialchars($dst); ?></label></li>
+<?php 	endforeach; ?>
+								</ul>
+							</dd>
+						</dl>
+							<dd>__Description: <br/>
+								<?php echo $cur_gloss['description']; ?>
+							</dd>
+							
+					</div>
+				</fieldset>
+			</div>
+			<p><input type="submit" name="search" value="<?php echo $lang_common['Submit'] ?>" accesskey="s" /></p>
+		</form>
+	</div>
+</div>
 <?php
+		break;
 
 	default:
 		$result = $db->query('SELECT * FROM '.$db->prefix.'glossary_items WHERE id='.$id) or error('Could not fetch glossary item info',__FILE__,__LINE__,$db->error());

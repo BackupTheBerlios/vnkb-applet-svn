@@ -9,6 +9,7 @@ CREATE TABLE `evgs_glossary_items` (
   `ctime` int(10) unsigned NOT NULL default '0',
   `mtime` int(10) unsigned NOT NULL default '0',
   `description` text NOT NULL,
+  `votes` text NOT NULL,
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM;
 

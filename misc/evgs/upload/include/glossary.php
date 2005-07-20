@@ -9,7 +9,7 @@ function glossary_item_div($topic_id)
 	$cur_gloss = $db->fetch_assoc($result);
 	$cur_gloss['description'] = parse_message($cur_gloss['description'],'1');
 	$username = '<a href="profile.php?id='.$cur_gloss['user_id'].'">'.pun_htmlspecialchars($cur_gloss['username']).'</a>';
-	show_gloss_item($cur_gloss);
+	show_gloss_item($cur_gloss,'viewtopic');
 }
 
 function show_newgloss_box($cur_gloss = null,$edit_mode = false)
@@ -79,11 +79,12 @@ function process_newgloss(&$cur_gloss,$edit_mode = false)
 	return $db->insert_id();
 }
 
-function show_gloss_item($cur_gloss,$history_mode = false)
+function show_gloss_item($cur_gloss,$mode = 'glossary')
 {
 	global $pun_config,$pun_user;
 	include PUN_ROOT.'lang/'.$pun_user['language'].'/topic.php';
 	$dsts = parse_evgs_destination($cur_gloss['dst']);
+	$votes = parse_evgs_votes($cur_gloss['votes'],$dsts);
 ?>
 <div class="blockpost">
 	<h2><?php echo '__Glossary:'.$cur_gloss['src'];?></h2>
@@ -106,11 +107,11 @@ function show_gloss_item($cur_gloss,$history_mode = false)
 						<dd>__Translation: <?php echo pun_htmlspecialchars($dsts[0]); ?></dd>
 <?php else: ?>
 						<dd>__Translation:
-							<ul>
-<?php	foreach ($dsts as $dst): ?>
-								<li><?php echo pun_htmlspecialchars($dst); ?></li>
+							<ol class="orderlist">
+<?php	foreach ($dsts as $idx => $dst): ?>
+								<li><?php echo pun_htmlspecialchars($idx.'. '.$dst); ?>&nbsp;<?php if ($votes['count'] > 0) echo ' ('.($votes[$idx]).')'?></li>
 <?php 	endforeach; ?>
-							</ul>
+							</ol>
 						</dd>
 <?php endif; ?>
 					</dl>
@@ -119,24 +120,33 @@ function show_gloss_item($cur_gloss,$history_mode = false)
 			</div>	
 			<div class="clearer"></div>
 			<div class="postfootright">
+<?php	if (!$pun_user['is_guest']): ?>
 				<ul>
-<?php if ($history_mode): ?>
+<?php		if ($mode == 'history'): ?>
 					<li><a href="glossitem.php?action=revdelete&id=<?php echo $cur_gloss['id'] ?>&rev_id=<?php echo $cur_gloss['rev_id'] ?>">Delete</a></li>
-<?php else: ?>
+<?php		else: ?>
 					<li><a href="glossitem.php?action=history&id=<?php echo $cur_gloss['id'] ?>">History</a></li>
+<?php			if ($cur_gloss['topic_id'] == 0): ?>
 					<li><?php echo $lang_topic['Link separator'] ?></li>
-<?php if ($cur_gloss['topic_id'] == 0): ?>
 					<li><a href="post.php?evgs=<?php echo $cur_gloss['id'] ?>&fid=<?php echo $pun_config['o_evgs_forum'] ?>">Comment</a></li>
-<?php else: ?>
+<?php			else: ?>
+<?php				if ($mode == 'glossary'): ?>
+					<li><?php echo $lang_topic['Link separator'] ?></li>
 					<li><a href="viewtopic.php?id=<?php echo $cur_gloss['topic_id'] ?>">View comments</a></li>
 					<li><?php echo $lang_topic['Link separator'] ?></li>
 					<li><a href="post.php?tid=<?php echo $cur_gloss['topic_id'] ?>">Comment</a></li>
+<?php				endif; ?>
+<?php			endif; ?>
+<?php if (count($dsts) > 1): ?>
+					<li><?php echo $lang_topic['Link separator'] ?></li>
+					<li><a href="glossitem.php?action=vote&id=<?php echo $cur_gloss['id'] ?>">Vote</a></li>
 <?php endif; ?>
 					<li><?php echo $lang_topic['Link separator'] ?></li>
 					<li><a href="glossitem.php?action=edit&id=<?php echo $cur_gloss['id'] ?>">Edit</a></li>
 					<li><?php echo $lang_topic['Link separator'] ?></li>
 					<li><a href="glossitem.php?action=delete&id=<?php echo $cur_gloss['id'] ?>">Delete</a></li>
-<?php endif; ?>
+<?php		endif; ?>
+<?php	endif; ?>
 				</ul>
 			</div>
 		</div>
@@ -148,4 +158,29 @@ function show_gloss_item($cur_gloss,$history_mode = false)
 function parse_evgs_destination($destination)
 {
 	return explode('|',$destination);
+}
+function parse_evgs_votes($votes,$dsts)
+{
+	$rdsts = array();
+	$result = array();
+	foreach ($dsts as $idx => $dst)
+	{
+		$rdsts[$dst] = $idx;
+		$result[$idx] = 0;
+	}
+	$result['count'] = 0;
+	
+	if ($votes != '')
+	{
+		$votedata = unserialize($votes);
+		foreach ($votedata as $uid => $data)
+		{
+			if (isset($rdsts[$data]))
+			{
+				$result[$rdsts[$data]] ++;
+				$result['count'] ++;
+			}
+		}
+	}
+	return $result;
 }
