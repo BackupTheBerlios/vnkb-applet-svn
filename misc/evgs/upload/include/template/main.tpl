@@ -21,6 +21,8 @@
 	</div>
 </div>
 
+<pun_quick_links>
+
 <pun_announcement>
 
 <pun_main>

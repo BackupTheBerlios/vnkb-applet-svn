@@ -1061,3 +1061,8 @@ function dump()
 	echo '</pre>';
 	exit;
 }
+
+function quick_links_callback($matches)
+{
+	return '<a href="glossary.php?action=search&source='.pun_htmlspecialchars($matches[1]).'">'.(isset($matches[3]) ? $matches[3] : pun_htmlspecialchars($matches[1])).'</a>';
+}

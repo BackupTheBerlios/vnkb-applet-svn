@@ -28,3 +28,5 @@ CREATE TABLE `evgs_glossrev_items` (
 ) TYPE=MyISAM;
 
 -- INSERT INTO `evgs_config` VALUES ('o_evgs_forum', '1');
+-- INSERT INTO `evgs_config` VALUES ('o_quick_links', '1');
+-- INSERT INTO `evgs_config` VALUES ('o_quick_links_content', '');

@@ -45,6 +45,7 @@ if (isset($_POST['form_sent']))
 
 
 	$form['evgs_forum'] = intval($form['evgs_forum']);
+	$form['quick_links'] = intval($form['quick_links']);
 
 	while (list($key, $input) = @each($form))
 	{
@@ -100,6 +101,20 @@ while ($room = $db->fetch_assoc($result)) {
 ?>
 										</select>
 										<span>This room is used to store glossary comments.</span>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">Show abc band</th>
+									<td>
+										<input type="radio" name="form[quick_links]" value="1"<?php if ($pun_config['o_quick_links'] == '1') echo ' checked="checked"' ?> />&nbsp;<strong>Yes</strong>&nbsp;&nbsp;&nbsp;<input type="radio" name="form[quick_links]" value="0"<?php if ($pun_config['o_quick_links'] == '0') echo ' checked="checked"' ?> />&nbsp;<strong>No</strong>
+										<span>Show alphabet band or not.</span>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">ABC Band Content</th>
+									<td>
+										<textarea name="form[quick_links_content]" rows="5" cols="55"><?php echo pun_htmlspecialchars($pun_config['o_quick_links_content']) ?></textarea>
+										<span>This text will not be parsed like regular posts and thus may contain HTML.</span>
 									</td>
 								</tr>
 							</table>
