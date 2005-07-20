@@ -284,6 +284,14 @@ if (isset($_POST['form_sent']))
 		// If it's a new topic
 		else if ($fid)
 		{
+			if (isset($_REQUEST['evgs']))
+			{
+				$result = $db->query('SELECT * FROM '.$db->prefix.'glossary_items WHERE id='.intval($_REQUEST['evgs'])) or error('Unable to create topic', __FILE__, __LINE__, $db->error());
+				if (!$db->num_rows($result))
+					message($lang_common['Bad request']);
+				$cur_gloss = $db->fetch_assoc($result);
+				$subject = '[EVGS #'.$cur_gloss['id'].'] '.$cur_gloss['src'];
+			}
 			// Create the topic
 			$db->query('INSERT INTO '.$db->prefix.'topics (poster, subject, posted, last_post, last_poster, forum_id) VALUES(\''.$db->escape($username).'\', \''.$db->escape($subject).'\', '.$now.', '.$now.', \''.$db->escape($username).'\', '.$fid.')') or error('Unable to create topic', __FILE__, __LINE__, $db->error());
 			$new_tid = $db->insert_id();
