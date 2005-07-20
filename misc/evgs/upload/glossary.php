@@ -33,6 +33,7 @@ require PUN_ROOT.'include/common.php';
 
 // Load the search.php language file
 require PUN_ROOT.'lang/'.$pun_user['language'].'/search.php';
+require PUN_ROOT.'include/glossary.php';
 
 
 if ($pun_user['g_read_board'] == '0')
@@ -44,6 +45,45 @@ else if ($pun_user['g_search'] == '0')
 // Detect two byte character sets
 $multibyte = (isset($lang_common['lang_multibyte']) && $lang_common['lang_multibyte']) ? true : false;
 
+if (isset($_POST['action']) && $_POST['action'] == 'newgloss')
+{
+	if ($pun_user['is_guest'])
+		message($lang_common['No permission']);
+	$cur_gloss = array(
+		'src' => (isset($_POST['source'])) ? strtolower(trim($_POST['source'])) : null,
+		'dst' => (isset($_POST['destination'])) ? strtolower(trim($_POST['destination'])) : null,
+		'description' => (isset($_POST['description'])) ? strtolower(trim($_POST['description'])) : null
+		);
+	$id = process_newgloss($cur_gloss);
+	if ($id > 0)
+		redirect('glossary.php?action=search&source='.urlencode($cur_gloss['src']),'__Added successfully new term');
+	else
+	{
+		if (!defined('PUN_HEADER'))
+		{
+			global $pun_user;
+	
+			$page_title = pun_htmlspecialchars($pun_config['o_board_title']).' / '.$lang_common['Info'];
+			require PUN_ROOT.'header.php';
+		}
+		if (isset($cur_gloss['error']))
+		{
+?>
+<div id="msg" class="block">
+	<h2><span><?php echo $lang_common['Info'] ?></span></h2>
+	<div class="box">
+		<div class="inbox">
+		<p><?php echo $cur_gloss['error'] ?></p>
+<?php if (!$no_back_link): ?>		<p><a href="javascript: history.go(-1)"><?php echo $lang_common['Go back'] ?></a></p>
+<?php endif; ?>		</div>
+	</div>
+</div>
+<?php
+		}
+		show_newgloss_box($cur_gloss);
+		require PUN_ROOT.'footer.php';
+	}
+}
 
 // Figure out what to do :-)
 if (isset($_GET['action']) || isset($_GET['search_id']))
@@ -113,7 +153,28 @@ if (isset($_GET['action']) || isset($_GET['search_id']))
 			unset($temp);
 		}
 		else
-			message($lang_search['No hits']);
+		{
+			if (!defined('PUN_HEADER'))
+			{
+				global $pun_user;
+		
+				$page_title = pun_htmlspecialchars($pun_config['o_board_title']).' / '.$lang_common['Info'];
+				require PUN_ROOT.'header.php';
+			}
+?>
+<div id="msg" class="block">
+	<h2><span><?php echo $lang_common['Info'] ?></span></h2>
+	<div class="box">
+		<div class="inbox">
+		<p><?php echo $lang_search['No hits'] ?></p>
+<?php if (!$no_back_link): ?>		<p><a href="javascript: history.go(-1)"><?php echo $lang_common['Go back'] ?></a></p>
+<?php endif; ?>		</div>
+	</div>
+</div>
+<?php
+			show_newgloss_box();
+			require PUN_ROOT.'footer.php';
+		}
 	}
 	else
 	{
@@ -261,7 +322,7 @@ if (isset($_GET['action']) || isset($_GET['search_id']))
 		}
 
 		$substr_sql = ($db_type != 'sqlite') ? 'SUBSTRING' : 'SUBSTR';
-		$sql = 'SELECT g.id, g.src, g.dst, g.ctime, g.mtime, '.$substr_sql.'(g.description, 1, 1000) AS description FROM '.$db->prefix.'glossary_items AS g WHERE g.id IN('.$search_results.') ORDER BY '.$sort_by_sql;
+		$sql = 'SELECT g.id, g.user_id, g.username, g.src, g.dst, g.ctime, g.mtime, g.topic_id, '.$substr_sql.'(g.description, 1, 1000) AS description FROM '.$db->prefix.'glossary_items AS g WHERE g.id IN('.$search_results.') ORDER BY '.$sort_by_sql;
 
 
 		// Determine the topic or post offset (based on $_GET['p'])
@@ -296,7 +357,9 @@ if (isset($_GET['action']) || isset($_GET['search_id']))
 
 <?php
 	foreach ($search_set as $cur_gloss) {
+		show_gloss_item($cur_gloss);
 ?>
+<!--
 <div class="blockpost">
 	<h2><?php echo '__Glossary';?></h2>
 	<div class="box">
@@ -326,6 +389,7 @@ if (isset($_GET['action']) || isset($_GET['search_id']))
 		</div>
 	</div>
 </div>
+-->
 <?php
 }
 ?>
@@ -337,11 +401,34 @@ if (isset($_GET['action']) || isset($_GET['search_id']))
 </div>
 <?php
 
+		show_newgloss_box();
 		$footer_style = 'search';
 		require PUN_ROOT.'footer.php';
 	}
 	else
-		message($lang_search['No hits']);
+	{
+		if (!defined('PUN_HEADER'))
+		{
+			global $pun_user;
+	
+			$page_title = pun_htmlspecialchars($pun_config['o_board_title']).' / '.$lang_common['Info'];
+			require PUN_ROOT.'header.php';
+		}
+
+?>
+<div id="msg" class="block">
+	<h2><span><?php echo $lang_common['Info'] ?></span></h2>
+	<div class="box">
+		<div class="inbox">
+		<p><?php echo $lang_search['No hits'] ?></p>
+<?php if (!$no_back_link): ?>		<p><a href="javascript: history.go(-1)"><?php echo $lang_common['Go back'] ?></a></p>
+<?php endif; ?>		</div>
+	</div>
+</div>
+<?php
+		show_newgloss_box();
+		require PUN_ROOT.'footer.php';
+	}
 }
 
 
@@ -394,6 +481,7 @@ require PUN_ROOT.'header.php';
 		</form>
 	</div>
 </div>
+
 <?php
 
 require PUN_ROOT.'footer.php';

@@ -288,6 +288,13 @@ if (isset($_POST['form_sent']))
 			$db->query('INSERT INTO '.$db->prefix.'topics (poster, subject, posted, last_post, last_poster, forum_id) VALUES(\''.$db->escape($username).'\', \''.$db->escape($subject).'\', '.$now.', '.$now.', \''.$db->escape($username).'\', '.$fid.')') or error('Unable to create topic', __FILE__, __LINE__, $db->error());
 			$new_tid = $db->insert_id();
 
+			if (isset($_REQUEST['evgs']))
+			{
+				$evgs_id = intval($_REQUEST['evgs']);
+				if ($evgs_id > 0)
+					$db->query('UPDATE '.$db->prefix.'glossary_items SET topic_id='.$new_tid.' WHERE id='.$evgs_id) or error('Unable to update glossary item', __FILE__, __LINE__, $db->error());
+			}
+
 			if (!$pun_user['is_guest'])
 			{
 				// To subscribe or not to subscribe, that ...
@@ -468,6 +475,9 @@ $cur_index = 1;
 	<h2><span><?php echo $action ?></span></h2>
 	<div class="box">
 		<?php echo $form."\n" ?>
+<?php if (isset($_REQUEST['evgs'])): ?>
+			<input type="hidden" name="evgs" value="<?php echo pun_htmlspecialchars($_REQUEST['evgs']); ?>" />
+<?php endif; ?>
 			<div class="inform">
 				<fieldset>
 					<legend><?php echo $lang_common['Write message legend'] ?></legend>
