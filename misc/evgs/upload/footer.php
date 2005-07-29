@@ -69,15 +69,16 @@ if ($footer_style == 'index' || $footer_style == 'search')
 }
 else if ($footer_style == 'glossary')
 {
+	require_once(PUN_ROOT.'lang/'.$pun_user['language'].'/evgs.php');
 	if (!$pun_user['is_guest'])
 	{
-		echo "\n\t\t\t".'<dl id="searchlinks" class="conl">'."\n\t\t\t\t".'<dt><strong>'.$lang_common['Search links'].'</strong></dt>'."\n\t\t\t\t".'<dd><a href="glossary.php?action=show_24h">'.'Show recent items'.'</a></dd>'."\n";
-		echo "\t\t\t\t".'<dd><a href="glossary.php?action=show_unanswered">'.'Show uncommented items'.'</a></dd>'."\n\t\t\t</dl>";
+		echo "\n\t\t\t".'<dl id="searchlinks" class="conl">'."\n\t\t\t\t".'<dt><strong>'.$lang_common['Search links'].'</strong></dt>'."\n\t\t\t\t".'<dd><a href="glossary.php?action=show_24h">'.$lang_evgs['Show recent items'].'</a></dd>'."\n";
+		echo "\t\t\t\t".'<dd><a href="glossary.php?action=show_unanswered">'.$lang_evgs['Show uncommented items'].'</a></dd>'."\n\t\t\t</dl>";
 	}
 	else
 	{
-		echo "\n\t\t\t".'<dl id="searchlinks" class="conl">'."\n\t\t\t\t".'<dt><strong>'.$lang_common['Search links'].'</strong></dt><dd><a href="glossary.php?action=show_24h">'.$lang_common['Show recent posts'].'</a></dd>'."\n";
-		echo "\t\t\t\t".'<dd><a href="glossary.php?action=show_unanswered">'.$lang_common['Show unanswered posts'].'</a></dd>'."\n\t\t\t".'</dl>'."\n";
+		echo "\n\t\t\t".'<dl id="searchlinks" class="conl">'."\n\t\t\t\t".'<dt><strong>'.$lang_common['Search links'].'</strong></dt><dd><a href="glossary.php?action=show_24h">'.$lang_evgs['Show recent items'].'</a></dd>'."\n";
+		echo "\t\t\t\t".'<dd><a href="glossary.php?action=show_unanswered">'.$lang_evgs['Show unanswered items'].'</a></dd>'."\n\t\t\t".'</dl>'."\n";
 	}
 }
 else if ($footer_style == 'viewforum' || $footer_style == 'viewtopic')
