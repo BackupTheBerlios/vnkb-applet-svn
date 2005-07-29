@@ -1355,7 +1355,39 @@ else
 		'p_sig_lines'				=> "'4'",
 		'p_allow_banned_email'		=> "'1'",
 		'p_allow_dupe_email'		=> "'0'",
-		'p_force_guest_email'		=> "'1'"
+		'p_force_guest_email'		=> "'1'",
+		'o_evgs_forum'			=> '0',
+		'o_quick_links'			=> '1',
+		'o_quick_links_content'		=> "'".$db->escape('<table class="tablelayout">
+<tr>
+<td align="center">{A*|A}</td>
+<td align="center">{B*|B}</td>
+<td align="center">{C*|C}</td>
+<td align="center">{D*|D}</td>
+<td align="center">{E*|E}</td>
+<td align="center">{F*|F}</td>
+<td align="center">{G*|G}</td>
+<td align="center">{H*|H}</td>
+<td align="center">{I*|I}</td>
+<td align="center">{J*|J}</td>
+<td align="center">{K*|K}</td>
+<td align="center">{L*|L}</td>
+<td align="center">{M*|M}</td>
+<td align="center">{N*|N}</td>
+<td align="center">{O*|O}</td>
+<td align="center">{P*|P}</td>
+<td align="center">{Q*|Q}</td>
+<td align="center">{R*|R}</td>
+<td align="center">{S*|S}</td>
+<td align="center">{T*|T}</td>
+<td align="center">{U*|U}</td>
+<td align="center">{V*|V}</td>
+<td align="center">{W*|W}</td>
+<td align="center">{X*|X}</td>
+<td align="center">{Y*|Y}</td>
+<td align="center">{Z*|Z}</td>
+</tr>
+</table>')."'"
 	);
 
 	while (list($conf_name, $conf_value) = @each($config))
