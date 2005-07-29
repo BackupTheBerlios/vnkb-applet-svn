@@ -33,6 +33,7 @@ require PUN_ROOT.'include/common.php';
 
 // Load the search.php language file
 require PUN_ROOT.'lang/'.$pun_user['language'].'/search.php';
+require PUN_ROOT.'lang/'.$pun_user['language'].'/evgs.php';
 require PUN_ROOT.'include/glossary.php';
 
 
@@ -480,11 +481,11 @@ require PUN_ROOT.'header.php';
 					<legend><?php echo $lang_search['Search criteria legend'] ?></legend>
 					<div class="infldset">
 						<input type="hidden" name="action" value="search" />
-						<label><?php echo '__Source' ?> <input type="text" name="source" size="40" maxlength="100" /><br /></label>
-						<label><?php echo '__Translation' ?> <input type="text" name="destination" size="25" maxlength="25" /><br /></label>
+						<label><?php echo $lang_evgs['Source'] ?> <input type="text" name="source" size="40" maxlength="100" /><br /></label>
+						<label><?php echo $lang_evgs['Translation'] ?> <input type="text" name="destination" size="25" maxlength="25" /><br /></label>
 						<label><?php echo $lang_search['Keyword search'] ?> <input type="text" name="keywords" size="40" maxlength="100" /><br /></label>
 						<label><?php echo $lang_search['Author search'] ?> <input id="author" type="text" name="author" size="25" maxlength="25" /><br /></label>
-						<label><?php echo '__description' ?> <input type="text" name="description" size="25" maxlength="25" /><br /></label>
+						<label><?php echo $lang_evgs['Description'] ?> <input type="text" name="description" size="25" maxlength="25" /><br /></label>
 						<p class="clearb"><?php echo $lang_search['Search info'] ?></p>
 					</div>
 				</fieldset>

@@ -180,13 +180,14 @@ $tpl_main = str_replace('<pun_status>', $tpl_temp, $tpl_main);
 // START SUBST - <pun_quick_links>
 if ($pun_config['o_quick_links'] == '1')
 {
+	require PUN_ROOT.'lang/'.$pun_user['language'].'/evgs.php';
 	ob_start();
 	$quick_links = $pun_config['o_quick_links_content'];
 	$quick_links = preg_replace_callback('/\{([^|}]*)(\|([^}]*))?\}/','quick_links_callback',$quick_links);
 
 ?>
 <div id="quick_links" class="block">
-	<h2><span><?php echo 'Quick links' ?></span></h2>
+	<h2><span><?php echo $lang_evgs['Quick links'] ?></span></h2>
 	<div class="box">
 		<div class="inbox">
 			<div><?php echo $quick_links ?></div>

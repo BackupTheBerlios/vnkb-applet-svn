@@ -33,6 +33,7 @@ require PUN_ROOT.'include/common.php';
 
 // Load the search.php language file
 require PUN_ROOT.'lang/'.$pun_user['language'].'/search.php';
+require PUN_ROOT.'lang/'.$pun_user['language'].'/evgs.php';
 require PUN_ROOT.'include/glossary.php';
 
 
@@ -84,7 +85,7 @@ if (isset($_POST['action']))
 	}
 }
 
-$page_title = 'Edit gloss';
+$page_title = $lang_evgs['Edit glossary'];
 include PUN_ROOT.'header.php';
 
 switch ($action)
@@ -99,7 +100,7 @@ switch ($action)
 		$dsts = parse_evgs_destination($cur_gloss['dst']);
 ?>
 <div class="blockform">
-	<h2><?php echo '__Glossary:'.$cur_gloss['src'];?></h2>
+	<h2><?php echo printf($lang_evgs['Glossary: %s'],$cur_gloss['src'])?></h2>
 	<div class="box">
 		<form id="search" method="post" action="glossitem.php?id=<?php echo $id ?>">
 			<input type="hidden" name="action" value="vote" />
@@ -108,8 +109,8 @@ switch ($action)
 					<legend><?php echo 'Translation vote' ?></legend>
 					<div class="infldset">
 						<dl>
-							<dd>__Source: <?php echo pun_htmlspecialchars($cur_gloss['src']); ?></dd>
-							<dd>__Translation:
+							<dd><?php echo $lang_evgs['Source']?>: <?php echo pun_htmlspecialchars($cur_gloss['src']); ?></dd>
+							<dd><?php echo $lang_evgs['Translation']?>:
 								<ul>
 <?php	foreach ($dsts as $idx => $dst): ?>
 									<li><label><input type="radio" name="vote" value="<?php echo $idx?>"/><?php echo pun_htmlspecialchars($dst); ?></label></li>
@@ -117,7 +118,7 @@ switch ($action)
 								</ul>
 							</dd>
 						</dl>
-							<dd>__Description: <br/>
+							<dd><?php echo $lang_evgs['Description']?>: <br/>
 								<?php echo $cur_gloss['description']; ?>
 							</dd>
 							
