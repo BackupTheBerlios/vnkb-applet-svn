@@ -1345,7 +1345,7 @@ else
 		'o_show_dot'				=> "'0'",
 		'o_quickjump'				=> "'1'",
 		'o_gzip'					=> "'0'",
-		'o_additional_navlinks'		=> "''",
+		'o_additional_navlinks'		=> "'1 = <a href=\"glossary.php\">EVGS</a>'",
 		'o_report_method'			=> "'0'",
 		'o_regs_report'				=> "'0'",
 		'o_mailing_list'			=> "'$email'",
