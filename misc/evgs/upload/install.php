@@ -1227,6 +1227,36 @@ else
 
 	$db->query($sql) or error('Unable to create table '.$db_prefix.'users. Please check your settings and try again.',  __FILE__, __LINE__, $db->error());
 
+	$sql = "CREATE TABLE `".$db_prefix."glossary_items` (
+		`id` int(10) unsigned NOT NULL auto_increment,
+	`rev_id` int(10) unsigned NOT NULL default '1',
+	`topic_id` int(10) unsigned NOT NULL default '0',
+	`src` varchar(100) NOT NULL default '',
+	`dst` varchar(100) NOT NULL default '',
+	`user_id` mediumint(10) unsigned NOT NULL default '0',
+	`username` varchar(200) NOT NULL default '',
+	`ctime` int(10) unsigned NOT NULL default '0',
+	`mtime` int(10) unsigned NOT NULL default '0',
+	`description` text NOT NULL,
+	`votes` text NOT NULL,
+	PRIMARY KEY  (`id`)
+	) TYPE=MyISAM;";
+	$db->query($sql) or error('Unable to create table '.$db_prefix.'glossary_items. Please check your settings and try again.',  __FILE__, __LINE__, $db->error());
+
+	$sql = "CREATE TABLE `".$db_prefix."glossrev_items` (
+		`id` int(10) unsigned NOT NULL default '0',
+	`rev_id` int(10) unsigned NOT NULL default '0',
+	`topic_id` int(10) unsigned NOT NULL default '0',
+	`src` varchar(100) NOT NULL default '',
+	`dst` varchar(100) NOT NULL default '',
+	`user_id` mediumint(10) unsigned NOT NULL default '0',
+	`username` varchar(200) NOT NULL default '',
+	`ctime` int(10) unsigned NOT NULL default '0',
+	`mtime` int(10) unsigned NOT NULL default '0',
+	`description` text NOT NULL,
+	PRIMARY KEY  (`id`,`rev_id`)
+	) TYPE=MyISAM;";
+	$db->query($sql) or error('Unable to create table '.$db_prefix.'glossrev_items. Please check your settings and try again.',  __FILE__, __LINE__, $db->error());
 
 	// Add some indexes
 	switch ($db_type)
