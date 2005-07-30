@@ -23,24 +23,15 @@
 ************************************************************************/
 
 
-// Tell header.php to use the admin template
-define('PUN_ADMIN_CONSOLE', 1);
+// Make sure no one attempts to run this script "directly"
+if (!defined('PUN'))
+	exit;
 
-define('PUN_ROOT', './');
-require PUN_ROOT.'include/common.php';
-require PUN_ROOT.'include/common_admin.php';
-
-
-if ($pun_user['g_id'] > PUN_ADMIN)
-	message($lang_common['No permission']);
-
+// Tell admin_loader.php that this is indeed a plugin and that it is loaded
+define('PUN_PLUGIN_LOADED', 1);
 
 if (isset($_POST['form_sent']))
 {
-	// Lazy referer check (in case base_url isn't correct)
-	if (!isset($_SERVER['HTTP_REFERER']) || !preg_match('#/admin_evgs\.php#i', $_SERVER['HTTP_REFERER']))
-		message($lang_common['Bad referrer']);
-
 	$form = array_map('trim', $_POST['form']);
 
 
@@ -65,7 +56,7 @@ if (isset($_POST['form_sent']))
 	require_once PUN_ROOT.'include/cache.php';
 	generate_config_cache();
 
-	redirect('admin_evgs.php', 'Options updated. Redirecting &hellip;');
+	redirect($_SERVER['REQUEST_URI'], 'Options updated. Redirecting &hellip;');
 }
 
 
@@ -73,13 +64,13 @@ $page_title = pun_htmlspecialchars($pun_config['o_board_title']).' / Admin / Opt
 $form_name = 'update_options';
 require PUN_ROOT.'header.php';
 
-generate_admin_menu('evgs');
+generate_admin_menu($plugin);
 
 ?>
 	<div class="blockform">
 		<h2><span>Options</span></h2>
 		<div class="box">
-			<form method="post" action="admin_evgs.php?action=foo">
+			<form method="post" action="<?php echo $_SERVER['REQUEST_URI'] ?>&amp;foo=bar">
 				<p class="submittop"><input type="submit" name="save" value="Save changes" /></p>
 				<div class="inform">
 				<input type="hidden" name="form_sent" value="1" />

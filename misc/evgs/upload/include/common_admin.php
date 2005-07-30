@@ -49,7 +49,6 @@ function generate_admin_menu($page = '')
 <?php endif; ?>					<li<?php if ($page == 'users') echo ' class="isactive"'; ?>><a href="admin_users.php">Users</a></li>
 <?php if ($is_admin): ?>					<li<?php if ($page == 'groups') echo ' class="isactive"'; ?>><a href="admin_groups.php">User groups</a></li>
 <?php endif; ?><?php if ($is_admin): ?>					<li<?php if ($page == 'options') echo ' class="isactive"'; ?>><a href="admin_options.php">Options</a></li>
-<?php endif; ?><?php if ($is_admin): ?>					<li<?php if ($page == 'evgs') echo ' class="isactive"'; ?>><a href="admin_evgs.php">EVGS</a></li>
 <?php endif; ?><?php if ($is_admin): ?>					<li<?php if ($page == 'permissions') echo ' class="isactive"'; ?>><a href="admin_permissions.php">Permissions</a></li>
 <?php endif; ?>					<li<?php if ($page == 'censoring') echo ' class="isactive"'; ?>><a href="admin_censoring.php">Censoring</a></li>
 <?php if ($is_admin): ?>					<li<?php if ($page == 'ranks') echo ' class="isactive"'; ?>><a href="admin_ranks.php">Ranks</a></li>
