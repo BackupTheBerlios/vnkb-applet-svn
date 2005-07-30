@@ -358,8 +358,9 @@ function evgs_file_check()
 {
 	return array();
 
+}
+
 function evgs_file_repair()
 {
 	return array();
-}
 }

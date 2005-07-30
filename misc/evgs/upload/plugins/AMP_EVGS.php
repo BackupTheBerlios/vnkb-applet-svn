@@ -142,20 +142,25 @@ generate_admin_menu($plugin);
 <?php if (count($func_check)): ?>
 								<tr>
 									<th scope="row">Fatal Errors</th>
-									<td><?php echo join("<br />",$func_check); ?></td>
+									<td>
+										<?php echo nl2br(pun_htmlspecialchars(join("\n",$func_check))); ?>
+										<p>
+											Please make sure <b>include/glossary.php</b> is included in <b>include/common.php</b>
+										</p>
+									</td>
 								</tr>
 <?php else: ?>
 								<tr>
 									<th scope="row">File Check</th>
-									<td><?php echo count($sql_file_check) ? join("<br />",$sql_file_check) : 'OK'; ?></td>
+									<td><?php echo count($sql_file_check) ? nl2br(pun_htmlspecialchars(join("\n",$sql_file_check))) : 'OK'; ?></td>
 								</tr>
 								<tr>
 									<th scope="row">EVGS Configuration</th>
-									<td><?php echo count($sql_config_check) ? join("<br />",$sql_config_check) : 'OK'; ?></td>
+									<td><?php echo count($sql_config_check) ? nl2br(pun_htmlspecialchars(join("\n",$sql_config_check))) : 'OK'; ?></td>
 								</tr>
 								<tr>
 									<th scope="row">EVGS Database</th>
-									<td><?php echo count($sql_table_check) ? join("<br />",$sql_table_check) : 'OK'; ?></td>
+									<td><?php echo count($sql_table_check) ? nl2br(pun_htmlspecialchars(join("\n",$sql_table_check))) : 'OK'; ?></td>
 								</tr>
 <?php endif; ?>
 							</table>
