@@ -79,6 +79,7 @@ define('PUN_MEMBER', 4);
 
 // Load the functions script
 require PUN_ROOT.'include/functions.php';
+require PUN_ROOT.'include/glossary.php';
 
 // Load DB abstraction layer and connect
 require PUN_ROOT.'include/dblayer/common_db.php';

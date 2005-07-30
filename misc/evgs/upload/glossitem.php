@@ -34,7 +34,6 @@ require PUN_ROOT.'include/common.php';
 // Load the search.php language file
 require PUN_ROOT.'lang/'.$pun_user['language'].'/search.php';
 require PUN_ROOT.'lang/'.$pun_user['language'].'/evgs.php';
-require PUN_ROOT.'include/glossary.php';
 
 
 if ($pun_user['g_read_board'] == '0')

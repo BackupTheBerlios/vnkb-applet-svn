@@ -1061,18 +1061,3 @@ function dump()
 	echo '</pre>';
 	exit;
 }
-
-function quick_links_callback($matches)
-{
-	if ($matches[1] == '') {
-		return '
-<script type="text/javascript" src="style/drupal.js"></script>
-<script type="text/javascript" src="style/autocomplete.js"></script>
-<form action="glossary.php" type="post">
-<input class="autocomplete" type="hidden" id="edit-ing-autocomplete" value="glossajax.php" disabled="disabled" />
-<input type="text" maxlength="20" class="form-text form-autocomplete" name="source" id="edit-ing" size="10" value="" />
-<input type="hidden" name="action" value="search" />
-</form>';
-	} else
-		return '<a href="glossary.php?action=search&source='.pun_htmlspecialchars($matches[1]).'">'.(isset($matches[3]) ? $matches[3] : pun_htmlspecialchars($matches[1])).'</a>';
-}

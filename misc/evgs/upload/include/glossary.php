@@ -15,7 +15,7 @@ function glossary_item_div($topic_id)
 function show_newgloss_box($cur_gloss = null,$edit_mode = false)
 {
 	global $lang_search,$lang_common,$pun_user;
-	require PUN_ROOT.'lang/'.$pun_user['language'].'/evgs.php';
+	include PUN_ROOT.'lang/'.$pun_user['language'].'/evgs.php';
 	if ($cur_gloss)
 	{
 		$source = $cur_gloss['src'];
@@ -84,7 +84,7 @@ function show_gloss_item($cur_gloss,$mode = 'glossary')
 {
 	global $pun_config,$pun_user,$lang_common;
 	include PUN_ROOT.'lang/'.$pun_user['language'].'/topic.php';
-	require PUN_ROOT.'lang/'.$pun_user['language'].'/evgs.php';
+	include PUN_ROOT.'lang/'.$pun_user['language'].'/evgs.php';
 	$dsts = parse_evgs_destination($cur_gloss['dst']);
 	$votes = parse_evgs_votes($cur_gloss['votes'],$dsts);
 ?>
@@ -185,4 +185,69 @@ function parse_evgs_votes($votes,$dsts)
 		}
 	}
 	return $result;
+}
+
+function evgs_quick_links()
+{
+	global $pun_config,$tpl_main,$pun_user;
+	// START SUBST - <pun_quick_links>
+	if ($pun_config['o_quick_links'] == '1')
+	{
+		include PUN_ROOT.'lang/'.$pun_user['language'].'/evgs.php';
+		ob_start();
+		$quick_links = $pun_config['o_quick_links_content'];
+		$quick_links = preg_replace_callback('/\{([^|}]*)(\|([^}]*))?\}/','quick_links_callback',$quick_links);
+	
+?>
+<div id="quick_links" class="block">
+	<h2><span><?php echo $lang_evgs['Quick links'] ?></span></h2>
+	<div class="box">
+		<div class="inbox">
+			<div><?php echo $quick_links ?></div>
+		</div>
+	</div>
+</div>
+<?php
+
+	$tpl_temp = trim(ob_get_contents());
+	$tpl_main = str_replace('<pun_quick_links>', $tpl_temp, $tpl_main);
+	ob_end_clean();
+}
+else
+	$tpl_main = str_replace('<pun_quick_links>', '', $tpl_main);
+// END SUBST - <pun_quick_links>
+}
+
+function quick_links_callback($matches)
+{
+	if ($matches[1] == '') {
+		return '
+<script type="text/javascript" src="style/drupal.js"></script>
+<script type="text/javascript" src="style/autocomplete.js"></script>
+<form action="glossary.php" type="post">
+<input class="autocomplete" type="hidden" id="edit-ing-autocomplete" value="glossajax.php" disabled="disabled" />
+<input type="text" maxlength="20" class="form-text form-autocomplete" name="source" id="edit-ing" size="10" value="" />
+<input type="hidden" name="action" value="search" />
+</form>';
+	} else
+		return '<a href="glossary.php?action=search&source='.pun_htmlspecialchars($matches[1]).'">'.(isset($matches[3]) ? $matches[3] : pun_htmlspecialchars($matches[1])).'</a>';
+}
+
+function evgs_footer()
+{
+	global $footer_style,$pun_user,$lang_common;
+	if ($footer_style == 'glossary')
+	{
+		include PUN_ROOT.'lang/'.$pun_user['language'].'/evgs.php';
+		if (!$pun_user['is_guest'])
+		{
+			echo "\n\t\t\t".'<dl id="searchlinks" class="conl">'."\n\t\t\t\t".'<dt><strong>'.$lang_common['Search links'].'</strong></dt>'."\n\t\t\t\t".'<dd><a href="glossary.php?action=show_24h">'.$lang_evgs['Show recent items'].'</a></dd>'."\n";
+			echo "\t\t\t\t".'<dd><a href="glossary.php?action=show_unanswered">'.$lang_evgs['Show uncommented items'].'</a></dd>'."\n\t\t\t</dl>";
+		}
+		else
+		{
+			echo "\n\t\t\t".'<dl id="searchlinks" class="conl">'."\n\t\t\t\t".'<dt><strong>'.$lang_common['Search links'].'</strong></dt><dd><a href="glossary.php?action=show_24h">'.$lang_evgs['Show recent items'].'</a></dd>'."\n";
+			echo "\t\t\t\t".'<dd><a href="glossary.php?action=show_unanswered">'.$lang_evgs['Show uncommented items'].'</a></dd>'."\n\t\t\t".'</dl>'."\n";
+		}
+	}
 }

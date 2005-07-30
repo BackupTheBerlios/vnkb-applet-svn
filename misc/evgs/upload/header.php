@@ -177,32 +177,7 @@ else
 $tpl_main = str_replace('<pun_status>', $tpl_temp, $tpl_main);
 // END SUBST - <pun_status>
 
-// START SUBST - <pun_quick_links>
-if ($pun_config['o_quick_links'] == '1')
-{
-	require PUN_ROOT.'lang/'.$pun_user['language'].'/evgs.php';
-	ob_start();
-	$quick_links = $pun_config['o_quick_links_content'];
-	$quick_links = preg_replace_callback('/\{([^|}]*)(\|([^}]*))?\}/','quick_links_callback',$quick_links);
-
-?>
-<div id="quick_links" class="block">
-	<h2><span><?php echo $lang_evgs['Quick links'] ?></span></h2>
-	<div class="box">
-		<div class="inbox">
-			<div><?php echo $quick_links ?></div>
-		</div>
-	</div>
-</div>
-<?php
-
-	$tpl_temp = trim(ob_get_contents());
-	$tpl_main = str_replace('<pun_quick_links>', $tpl_temp, $tpl_main);
-	ob_end_clean();
-}
-else
-	$tpl_main = str_replace('<pun_quick_links>', '', $tpl_main);
-// END SUBST - <pun_quick_links>
+evgs_quick_links();
 
 // START SUBST - <pun_announcement>
 if ($pun_config['o_announcement'] == '1')
