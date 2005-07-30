@@ -316,14 +316,24 @@ function evgs_config_repair()
 
 function evgs_table_check()
 {
-	return array();
+	global $db;
+	$sql = array();
+	$result = $db->query('SELECT * FROM '.$db->prefix.'glossary_items WHERE id=0');
+	if (!$result)
+		$sql[] = 'Error with '.$db->prefix.'glossary_items';
+	$result = $db->query('SELECT * FROM '.$db->prefix.'glossrev_items WHERE id=0');
+	if (!$result)
+		$sql[] = 'Error with '.$db->prefix.'glossrev_items';
+	return $sql;
 }
 
 function evgs_table_repair()
 {
 	global $db;
 	$sql = array();
-	$sql[] = "CREATE TABLE `".$db->prefix."glossary_items` (
+	$result = $db->query('SELECT * FROM '.$db->prefix.'glossary_items WHERE id=0');
+	if (!$result)
+		$sql[] = "CREATE TABLE `".$db->prefix."glossary_items` (
 		`id` int(10) unsigned NOT NULL auto_increment,
 	`rev_id` int(10) unsigned NOT NULL default '1',
 	`topic_id` int(10) unsigned NOT NULL default '0',
@@ -338,7 +348,9 @@ function evgs_table_repair()
 	PRIMARY KEY  (`id`)
 	) TYPE=MyISAM;";
 
-	$sql[] = "CREATE TABLE `".$db->prefix."glossrev_items` (
+	$result = $db->query('SELECT * FROM '.$db->prefix.'glossrev_items WHERE id=0');
+	if (!$result)
+		$sql[] = "CREATE TABLE `".$db->prefix."glossrev_items` (
 		`id` int(10) unsigned NOT NULL default '0',
 	`rev_id` int(10) unsigned NOT NULL default '0',
 	`topic_id` int(10) unsigned NOT NULL default '0',
