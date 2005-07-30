@@ -108,7 +108,7 @@ function show_gloss_item($cur_gloss,$mode = 'glossary')
 <?php if (count($dsts) == 1): ?>
 						<dd><?php echo $lang_evgs['Translation']?>: <?php echo pun_htmlspecialchars($dsts[0]); ?></dd>
 <?php else: ?>
-						<dd><?php echo $lang['Translation']?>:
+						<dd><?php echo $lang_evgs['Translation']?>:
 							<ol class="orderlist">
 <?php	foreach ($dsts as $idx => $dst): ?>
 								<li><?php echo pun_htmlspecialchars($idx.'. '.$dst); ?>&nbsp;<?php if ($votes['count'] > 0) echo ' ('.($votes[$idx]).')'?></li>
