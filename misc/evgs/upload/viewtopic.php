@@ -177,7 +177,6 @@ require PUN_ROOT.'header.php';
 <?php
 require PUN_ROOT.'include/parser.php';
 	
-include PUN_ROOT.'include/glossary.php';
 glossary_item_div($id);
 
 $bg_switch = true;	// Used for switching background color in posts
