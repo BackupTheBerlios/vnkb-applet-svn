@@ -59,21 +59,140 @@ if (isset($_POST['form_sent']))
 	redirect($_SERVER['REQUEST_URI'], 'Options updated. Redirecting &hellip;');
 }
 
+$func_check = array();
 
-$page_title = pun_htmlspecialchars($pun_config['o_board_title']).' / Admin / Options';
+if (function_exists('evgs_config_check'))
+{
+	$sql_config_check = evgs_config_check();
+	if (count($sql_config_check))
+	{
+		if (function_exists('evgs_config_repair'))
+			$sql_config = evgs_config_repair();
+		else
+		{
+			$sql_config = array();
+			$func_check[] = 'Function evgs_config_repair not found.';
+		}
+	}
+}
+else
+{
+	$sql_config_check = array();
+	$file_check = 'Function evgs_config_check not found.';
+}
+
+if (function_exists('evgs_table_check'))
+{
+	$sql_table_check = evgs_table_check();
+	if (count($sql_table_check))
+	{
+		if (function_exists('evgs_table_repair'))
+			$sql_table = evgs_table_repair();
+		else
+		{
+			$sql_table = array();
+			$func_check[] = 'Function evgs_table_repair not found.';
+		}
+	}
+}
+else
+{
+	$sql_table_check = array();
+	$file_check = 'Function evgs_table_check not found.';
+}
+
+if (function_exists('evgs_file_check'))
+{
+	$sql_file_check = evgs_file_check();
+	if (count($sql_file_check))
+	{
+		if (function_exists('evgs_file_repair'))
+			$sql_file = evgs_file_repair();
+		else
+		{
+			$sql_file = array();
+			$func_check[] = 'Function evgs_file_repair not found.';
+		}
+	}
+}
+else
+{
+	$sql_file_check = array();
+	$func_check[] = 'Function evgs_file_check not found.';
+}
+
+$page_title = pun_htmlspecialchars($pun_config['o_board_title']).' / Admin / EVGS';
 $form_name = 'update_options';
 require PUN_ROOT.'header.php';
 
 generate_admin_menu($plugin);
 
 ?>
+
 	<div class="blockform">
+		<h2><span>Administration</span></h2>
+		<div class="box">
+			<form method="post" action="<?php echo $_SERVER['REQUEST_URI'] ?>&amp;foo=bar">
+				<input type="hidden" name="form_sent" value="1" />
+				<div class="inform">
+					<fieldset>
+						<legend>Status</legend>
+						<div class="infldset">
+							<table class="aligntop" cellspacing="0">
+<?php if (count($func_check)): ?>
+								<tr>
+									<th scope="row">Fatal Errors</th>
+									<td><?php echo join("<br />",$func_check); ?></td>
+								</tr>
+<?php else: ?>
+								<tr>
+									<th scope="row">File Check</th>
+									<td><?php echo count($sql_file_check) ? join("<br />",$sql_file_check) : 'OK'; ?></td>
+								</tr>
+								<tr>
+									<th scope="row">EVGS Configuration</th>
+									<td><?php echo count($sql_config_check) ? join("<br />",$sql_config_check) : 'OK'; ?></td>
+								</tr>
+								<tr>
+									<th scope="row">EVGS Database</th>
+									<td><?php echo count($sql_table_check) ? join("<br />",$sql_table_check) : 'OK'; ?></td>
+								</tr>
+<?php endif; ?>
+							</table>
+					</fieldset>
+<?php if (count($sql_config) || count($sql_table)): ?>
+					<fieldset>
+						<legend>SQL Repair</legend>
+						<div class="infldset">
+							<table class="aligntop" cellspacing="0">
+<?php		foreach ($sql_config as $sql): ?>
+								<tr>
+									<th scope="row">EVGS Configuration</th>
+									<td><?php echo nl2br(pun_htmlspecialchars($sql)); ?></td>
+								</tr>
+<?php		endforeach; ?>
+<?php		foreach ($sql_table as $sql): ?>
+								<tr>
+									<th scope="row">EVGS Database</th>
+									<td><?php echo nl2br(pun_htmlspecialchars($sql)); ?></td>
+								</tr>
+<?php		endforeach; ?>
+							</table>
+					</fieldset>
+<?php endif; ?>
+				</div>
+				<!-- p class="submitend"><input type="submit" name="save" value="Install" /><input type="submit" name="save" value="Repair" /><input type="submit" name="save" value="Backup" /></p -->
+			</form>
+		</div>
+	</div>
+
+	<div class="blockform block2">
 		<h2><span>Options</span></h2>
 		<div class="box">
 			<form method="post" action="<?php echo $_SERVER['REQUEST_URI'] ?>&amp;foo=bar">
 				<p class="submittop"><input type="submit" name="save" value="Save changes" /></p>
-				<div class="inform">
 				<input type="hidden" name="form_sent" value="1" />
+				<div class="inform">
 					<fieldset>
 						<legend>Options</legend>
 						<div class="infldset">

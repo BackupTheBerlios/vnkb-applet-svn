@@ -251,3 +251,115 @@ function evgs_footer()
 		}
 	}
 }
+
+function evgs_config_check()
+{
+	global $pun_config,$db;
+	$err = array();
+	if (!isset($pun_config['o_quick_links']))
+		$err[] = 'o_quick_links is not available';
+	if (!isset($pun_config['o_quick_links_content']))
+		$err[] = 'o_quick_links_content is not available';
+	if (!isset($pun_config['o_evgs_forum']))
+		$err[] = 'o_evgs_forum is not available';
+	else
+	{
+		$result = $db->query('SELECT * FROM '.$db->prefix.'forums WHERE id='.$pun_config['o_evgs_forum']);
+		if ($db->num_rows($result) == 0)
+			$err[] = 'Invalid Comment forum';
+	}
+	return $err;
+}
+
+function evgs_config_repair()
+{
+	global $pun_config,$db;
+	$sql = array();
+	if (!isset($pun_config['o_quick_links']))
+		$sql[] = 'INSERT INTO '.$db->prefix.'config SET conf_name=\'o_quick_links\', conf_value=0;';
+	if (!isset($pun_config['o_quick_links_content']))
+		$sql[] = 'INSERT INTO '.$db->prefix.'config SET conf_name=\'o_quick_links_content\', conf_value=\''.$db->escape('<table class="tablelayout">
+<tr>
+<td align="center">{A*|A}</td>
+<td align="center">{B*|B}</td>
+<td align="center">{C*|C}</td>
+<td align="center">{D*|D}</td>
+<td align="center">{E*|E}</td>
+<td align="center">{F*|F}</td>
+<td align="center">{G*|G}</td>
+<td align="center">{H*|H}</td>
+<td align="center">{I*|I}</td>
+<td align="center">{J*|J}</td>
+<td align="center">{K*|K}</td>
+<td align="center">{L*|L}</td>
+<td align="center">{M*|M}</td>
+<td align="center">{N*|N}</td>
+<td align="center">{O*|O}</td>
+<td align="center">{P*|P}</td>
+<td align="center">{Q*|Q}</td>
+<td align="center">{R*|R}</td>
+<td align="center">{S*|S}</td>
+<td align="center">{T*|T}</td>
+<td align="center">{U*|U}</td>
+<td align="center">{V*|V}</td>
+<td align="center">{W*|W}</td>
+<td align="center">{X*|X}</td>
+<td align="center">{Y*|Y}</td>
+<td align="center">{Z*|Z}</td>
+<td width="100px">{}</td>
+</tr>
+</table>').'\';';
+	if (!isset($pun_config['o_evgs_forum']))
+		$sql[] = 'INSERT INTO '.$db->prefix.'config SET conf_name=\'o_evgs_forum\', conf_value=0;';
+	return $sql;
+}
+
+function evgs_table_check()
+{
+	return array();
+}
+
+function evgs_table_repair()
+{
+	global $db;
+	$sql = array();
+	$sql[] = "CREATE TABLE `".$db->prefix."glossary_items` (
+		`id` int(10) unsigned NOT NULL auto_increment,
+	`rev_id` int(10) unsigned NOT NULL default '1',
+	`topic_id` int(10) unsigned NOT NULL default '0',
+	`src` varchar(100) NOT NULL default '',
+	`dst` varchar(100) NOT NULL default '',
+	`user_id` mediumint(10) unsigned NOT NULL default '0',
+	`username` varchar(200) NOT NULL default '',
+	`ctime` int(10) unsigned NOT NULL default '0',
+	`mtime` int(10) unsigned NOT NULL default '0',
+	`description` text NOT NULL,
+	`votes` text NOT NULL,
+	PRIMARY KEY  (`id`)
+	) TYPE=MyISAM;";
+
+	$sql[] = "CREATE TABLE `".$db->prefix."glossrev_items` (
+		`id` int(10) unsigned NOT NULL default '0',
+	`rev_id` int(10) unsigned NOT NULL default '0',
+	`topic_id` int(10) unsigned NOT NULL default '0',
+	`src` varchar(100) NOT NULL default '',
+	`dst` varchar(100) NOT NULL default '',
+	`user_id` mediumint(10) unsigned NOT NULL default '0',
+	`username` varchar(200) NOT NULL default '',
+	`ctime` int(10) unsigned NOT NULL default '0',
+	`mtime` int(10) unsigned NOT NULL default '0',
+	`description` text NOT NULL,
+	PRIMARY KEY  (`id`,`rev_id`)
+	) TYPE=MyISAM;";
+	return $sql;
+}
+
+function evgs_file_check()
+{
+	return array();
+
+function evgs_file_repair()
+{
+	return array();
+}
+}
