@@ -276,6 +276,7 @@ if (isset($_GET['action']) || isset($_GET['search_id']))
 		else if ($action == 'show_24h')
 		{
 			$result = $db->query('SELECT id FROM '.$db->prefix.'glossary_items WHERE mtime>'.(time() - 86400)) or error('Unable to fetch topic list', __FILE__, __LINE__, $db->error());
+			$sort_by = 4; // mtime
 
 			$search_ids = array();
 			while ($row = $db->fetch_row($result))
