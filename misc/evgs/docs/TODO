@@ -1,3 +1,14 @@
 Virtual category/forum
 i18n/l10n
 poll result bars
+delete/revdelete item chưa hoạt động
+Đổi title của glossitem cho thích hợp
+i18n/l10n redirect message
+sửa gloss xong, refresh nó post lại
+layout lại glossview cho đẹp hơn
+make table cho phần search/new gloss
+support ajax glossary search
+xml import/export (backup) - xem dokeos
+user view riêng (forum view là để maintain/develop)
+tạo phiên bản (đáng tag)
+
