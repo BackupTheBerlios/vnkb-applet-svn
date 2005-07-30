@@ -1,5 +1,5 @@
 <?php
-function glossary_item_div($topic_id)
+function evgs_item_div($topic_id)
 {
 	global $db,$pun_user,$pun_config,$lang_topic,$lang_common;
 
