@@ -63,6 +63,7 @@ if (isset($_POST['action']))
 				'description' => (isset($_POST['description'])) ? strtolower(trim($_POST['description'])) : null
 				);
 				process_newgloss($cur_gloss,true);
+				redirect('glossitem.php?id='.$id,'Glossary updated.');
 			break;
 
 		case 'vote':
