@@ -263,3 +263,36 @@ DIV.txtarea TEXTAREA, INPUT.longinput {WIDTH: 100%}
 /* 10.3 Other templates */
 
 #punredirect DIV.block, #punmaint DIV.block {MARGIN: 50px 20% 12px 20%}
+
+/* the following is from http://brandedthoughts.co.uk/taxonomy/term/28 */
+/*
+** Autocomplete styles
+*/
+/* Suggestion list */
+#autocomplete {
+  position: absolute;
+  border: 1px solid;
+  overflow: hidden;
+}
+#autocomplete ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#autocomplete li {
+  background: #fff;
+  color: #000;
+  white-space: pre;
+  cursor: default;
+}
+#autocomplete li.selected {
+  background: #0072b9;
+  color: #fff;
+}
+/* Animated throbber */
+input.form-autocomplete {
+  background: url('../../img/throbber.gif') no-repeat 100% 2px;
+}
+input.throbbing {
+  background-position: 100% -18px;
+}
