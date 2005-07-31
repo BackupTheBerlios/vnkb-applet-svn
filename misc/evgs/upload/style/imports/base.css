@@ -296,3 +296,12 @@ input.form-autocomplete {
 input.throbbing {
   background-position: 100% -18px;
 }
+
+TABLE.tablelayout {
+	padding: 0px;
+}
+
+
+TABLE.tablelayout TR TD{
+	border: none;
+}
