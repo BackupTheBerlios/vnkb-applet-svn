@@ -225,7 +225,7 @@ function quick_links_callback($matches)
 <script type="text/javascript" src="style/drupal.js"></script>
 <script type="text/javascript" src="style/autocomplete.js"></script>
 <form action="glossary.php" type="post">
-<input class="autocomplete" type="hidden" id="edit-ing-autocomplete" value="glossajax.php" disabled="disabled" />
+<input autocomplete="off" class="autocomplete" type="hidden" id="edit-ing-autocomplete" value="glossajax.php" disabled="disabled" />
 <input type="text" maxlength="20" class="form-text form-autocomplete" name="source" id="edit-ing" size="10" value="" />
 <input type="hidden" name="action" value="search" />
 </form>';
